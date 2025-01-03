@@ -8,17 +8,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Fornece operações CRUD (CREATE, READ, UPDATE, DELETE) para interação com o banco de dados.
+ */
 public class DatabaseService {
   private final DatabaseManager databaseManager;
 
+  /**
+   * Inicializa o DatabaseManager para gerenciar a conexão com o banco de dados.
+   */
   public DatabaseService() {
     this.databaseManager = new DatabaseManager();
   }
 
-  // CREATE
+  /**
+   * CREATE: Executa uma consulta de INSERT, gerando um ID do tipo UUID para o registro.
+   *
+   * @param query Consulta de INSERT a ser executada.
+   * @param params Valores do registro.
+   */
   public void create(String query, Object... params) {
     Object[] newParams = new Object[params.length + 1];
-    newParams[0] = UUID.randomUUID();
+    newParams[0] = UUID.randomUUID(); // Gera um UUID único para o item.
     System.arraycopy(params, 0, newParams, 1, params.length);
 
     try (PreparedStatement statement = databaseManager.connection.prepareStatement(query)) {
@@ -29,7 +40,13 @@ public class DatabaseService {
     }
   }
 
-  // READ
+  /**
+   * READ: Executa uma consulta de SELECT e retorna os resultados como uma lista de arrays de objetos.
+   *
+   * @param query Consulta de SELECT a ser executada.
+   * @param params Parâmetros da consulta.
+   * @return Uma lista contendo todos os registros da tabela.
+   */
   public ArrayList<Object[]> read(String query, Object... params) {
     ArrayList<Object[]> results = new ArrayList<>();
     try (PreparedStatement statement = databaseManager.connection.prepareStatement(query)) {
@@ -51,7 +68,12 @@ public class DatabaseService {
     return results;
   }
 
-  // UPDATE
+  /**
+   * UPDATE: Executa uma consulta de UPDATE com base no ID fornecido.
+   *
+   * @param query Consulta de UPDATE a ser executada.
+   * @param params Novos valores do registro e parâmetros.
+   */
   public void update(String query, Object... params) {
     try (PreparedStatement statement = databaseManager.connection.prepareStatement(query)) {
       setParameters(statement, params);
@@ -61,7 +83,12 @@ public class DatabaseService {
     }
   }
 
-  // DELETE
+  /**
+   * DELETE: Executa uma consulta de DELETE com base no ID fornecido.
+   *
+   * @param query Consulta de DELETE a ser executada.
+   * @param params Parâmetros da consulta.
+   */
   public void delete(String query, Object... params) {
     try (PreparedStatement statement = databaseManager.connection.prepareStatement(query)) {
       setParameters(statement, params);
@@ -71,7 +98,15 @@ public class DatabaseService {
     }
   }
 
-  // METHODS
+  // RECURSOS
+
+  /**
+   * Define os parâmetros da consulta SQL.
+   *
+   * @param statement O statement preparado para executar a consulta SQL.
+   * @param params Os parâmetros que serão atribuídos à consulta SQL.
+   * @throws SQLException Se ocorrer um erro ao definir os parâmetros no statement.
+   */
   private void setParameters(PreparedStatement statement, Object[] params) throws SQLException {
     for (int i = 0; i < params.length; i++) {
       statement.setObject(i + 1, params[i]);
