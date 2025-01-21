@@ -11,8 +11,7 @@ public class RevenueModel {
                         String period,
                         String revenue,
                         String description
-                       )
-    {
+                        ){
         this.name = name;
         this.value = value;
         this.period = period;
