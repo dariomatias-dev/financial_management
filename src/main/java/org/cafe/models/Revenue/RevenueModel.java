@@ -1,3 +1,4 @@
+package org.cafe.models.Revenue;
 public class RevenueModel {
     private String name;
     private double value;
