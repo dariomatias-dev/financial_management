@@ -1,22 +1,25 @@
 package org.cafe.models.Revenue;
-public class RevenueModel {
+public class revenue {
     private String name;
-    private double value;
+    private double GrossValue;
+    private double NetValue;
     private String period;
-    private String revenue;
+    private String RevenueType;
     private String description;
 
-    public RevenueModel(String name,
-                        int value,
-                        String period,
-                        String revenue,
-                        String description
-                        )
+    public revenue(String name,
+                   double Grossvalue,
+                   double Netvalue,
+                   String period,
+                   String RevenueType,
+                   String description
+    )
     {
         this.name = name;
-        this.value = value;
+        this.GrossValue = Grossvalue;
+        this.NetValue = NetValue;
         this.period = period;
-        this.revenue = revenue;
+        this.RevenueType = RevenueType;
         this.description = description;
     }
 
@@ -28,12 +31,19 @@ public class RevenueModel {
         this.name = name;
     }
 
-    public double getValue() {
-        return value;
+    public double getGrossValue() {
+        return GrossValue;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setGrossValue(double GrossValue) {
+        this.GrossValue = GrossValue;
+    }
+    public double getNetValue() {
+        return NetValue;
+    }
+
+    public void setNetValue(double NetValue) {
+        this.NetValue = NetValue;
     }
 
     public String getPeriod() {
@@ -44,12 +54,12 @@ public class RevenueModel {
         this.period = period;
     }
 
-    public String getRevenue() {
-        return revenue;
+    public String getRevenueType() {
+        return RevenueType;
     }
 
-    public void setRevenue(String revenue) {
-        this.revenue = revenue;
+    public void setRevenueType(String revenueType) {
+        this.RevenueType = revenueType;
     }
 
     public String getDescription() {
