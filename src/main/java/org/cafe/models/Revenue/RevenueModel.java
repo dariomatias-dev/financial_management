@@ -5,7 +5,13 @@ public class RevenueModel {
     private String revenue;
     private String description;
 
-    public RevenueModel(String name, int value, String period, String revenue, String description) {
+    public RevenueModel(String name,
+                        int value,
+                        String period,
+                        String revenue,
+                        String description
+                       )
+    {
         this.name = name;
         this.value = value;
         this.period = period;
