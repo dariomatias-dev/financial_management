@@ -1,5 +1,6 @@
 package org.cafe.models.Revenue;
-public class revenue {
+
+public class RevenueModel {
     private String name;
     private double GrossValue;
     private double NetValue;
@@ -7,7 +8,7 @@ public class revenue {
     private String RevenueType;
     private String description;
 
-    public revenue(String name,
+    public RevenueModel(String name,
                    double Grossvalue,
                    double Netvalue,
                    String period,
