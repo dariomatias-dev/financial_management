@@ -1,11 +1,13 @@
 package org.cafe.models.userAccount;
 
+import java.util.Date;
+
 public class UserAccountModel {
     private String name;
     private double telephone;
     private String email;
     private double cpf;
-    private double dataBirth;
+    private Date dataBirth;
     private String password;
 
     public UserAccountModel(
@@ -13,7 +15,7 @@ public class UserAccountModel {
         double telephone,
         String email,
         double cpf,
-        double dataBirth,
+        Date dataBirth,
         String password
     ) {
         this.name = name;
@@ -40,7 +42,7 @@ public class UserAccountModel {
         return  cpf;
     }
 
-    public double getDataBirth() {
+    public Date getDataBirth() {
         return dataBirth;
     }
 
@@ -64,7 +66,7 @@ public class UserAccountModel {
         this.cpf = cpf;
     }
 
-    public void setDataBirth(double dataBirth){
+    public void setDataBirth(Date dataBirth){
         this.dataBirth = dataBirth;
     }
 

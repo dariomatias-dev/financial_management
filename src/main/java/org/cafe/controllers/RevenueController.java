@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class RevenueController extends DatabaseController<RevenueModel> {
     public RevenueController(DatabaseService databaseService) {
         super(
-                databaseService,
-                "revenues",
-                new String[]{ "name","GrossValue", "NetValue", "period","RevenueType","description" }
+            databaseService,
+            "revenues",
+            new String[]{ "name","GrossValue", "NetValue", "period","RevenueType","description" }
         );
     }
 
@@ -19,12 +19,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
             RevenueModel RevenueModel
     ) {
         Object[] values = {
-                RevenueModel.getName(),
-                RevenueModel.getGrossValue(),
-                RevenueModel.getNetValue(),
-                RevenueModel.getPeriod(),
-                RevenueModel.getRevenueType(),
-                RevenueModel.getDescription()
+            RevenueModel.getName(),
+            RevenueModel.getGrossValue(),
+            RevenueModel.getNetValue(),
+            RevenueModel.getPeriod(),
+            RevenueModel.getRevenueType(),
+            RevenueModel.getDescription()
 
         };
 
@@ -40,12 +40,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
         Object[] row = results.getFirst();
 
         return new RevenueModel(
-                (String) row[0],
-                (double) row[1],
-                (double) row[2],
-                (String) row[3],
-                (String) row[4],
-                (String) row[5]
+            (String) row[0],
+            (double) row[1],
+            (double) row[2],
+            (String) row[3],
+            (String) row[4],
+            (String) row[5]
         );
     }
 
@@ -54,14 +54,14 @@ public class RevenueController extends DatabaseController<RevenueModel> {
         ArrayList<RevenueModel> expenses = new ArrayList<>();
         for (Object[] row : results) {
             expenses.add(
-                    new RevenueModel(
-                            (String) row[0],
-                            (double) row[1],
-                            (double) row[2],
-                            (String) row[3],
-                            (String) row[4],
-                            (String) row[5]
-                    )
+                new RevenueModel(
+                    (String) row[0],
+                    (double) row[1],
+                    (double) row[2],
+                    (String) row[3],
+                    (String) row[4],
+                    (String) row[5]
+                )
             );
         }
 
@@ -73,12 +73,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
             RevenueModel updatedRevenue
     ) {
         Object[] values = {
-                updatedRevenue.getName(),
-                updatedRevenue.getGrossValue(),
-                updatedRevenue.getNetValue(),
-                updatedRevenue.getPeriod(),
-                updatedRevenue.getRevenueType(),
-                updatedRevenue.getDescription(),
+            updatedRevenue.getName(),
+            updatedRevenue.getGrossValue(),
+            updatedRevenue.getNetValue(),
+            updatedRevenue.getPeriod(),
+            updatedRevenue.getRevenueType(),
+            updatedRevenue.getDescription(),
         };
 
         super.setById(id, values);

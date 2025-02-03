@@ -4,7 +4,11 @@ import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
 import org.cafe.models.userAccount.UserAccountModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.InvalidPropertiesFormatException;
 
 public class UserAccountController extends DatabaseController<UserAccountModel> {
     public UserAccountController(DatabaseService databaseService) {
@@ -17,35 +21,45 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
 
     public void create(
             UserAccountModel userAccount
-    ) {
+    ) throws InvalidPropertiesFormatException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String dateFormatted = simpleDateFormat.format(userAccount.getDataBirth());
+
         Object[] values = {
-            userAccount.getName(),
-            userAccount.getTelephone(),
-            userAccount.getEmail(),
-            userAccount.getCpf(),
-            userAccount.getDataBirth(),
-            userAccount.getPassword(),
+                userAccount.getName(),
+                userAccount.getTelephone(),
+                userAccount.getEmail(),
+                userAccount.getCpf(),
+                dateFormatted,
+                userAccount.getPassword(),
         };
 
         super.insert(values);
     }
 
     public UserAccountModel get() {
-        ArrayList<Object[]> results = super.findAll();
-        if (results.isEmpty()) {
-            throw new IllegalArgumentException("Usuario não encontrada.");
+        try {
+            ArrayList<Object[]> results = super.findAll();
+            if (results.isEmpty()) {
+                throw new IllegalArgumentException("Usuario não encontrada.");
+            }
+
+            Object[] row = results.getFirst();
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            Date dataBirth = simpleDateFormat.parse(((String) row[4]));
+
+            return new UserAccountModel(
+                    (String) row[0],
+                    (double) row[1],
+                    (String) row[2],
+                    (double) row[3],
+                    dataBirth,
+                    (String) row[5]
+            );
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
-
-        Object[] row = results.getFirst();
-
-        return new UserAccountModel(
-            (String) row[0],
-            (double) row[1],
-            (String) row[2],
-            (double) row[3],
-            (double) row[4],
-            (String) row[5]
-        );
     }
 
     public void update(
