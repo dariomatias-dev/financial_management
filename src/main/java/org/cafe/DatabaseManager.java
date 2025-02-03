@@ -37,12 +37,32 @@ public class DatabaseManager {
 
   void createTasksTable() {
     String schemaTablesSql = """
-      CREATE TABLE IF NOT EXISTS expenses (
+      CREATE TABLE IF NOT EXISTS UserAccount (
+          id VARCHAR(36) PRIMARY KEY,
+          name TEXT NOT NULL,
+          telephone REAL NOT NULL,
+          email TEXT NOT NULL UNIQUE,
+          cpf REAL NOT NULL UNIQUE,
+          dataBirth TEXT NOT NULL,
+          password TEXT NOT NULL
+      );
+              
+      CREATE TABLE IF NOT EXISTS Expenses (
         id VARCHAR(36) PRIMARY KEY,
         name TEXT NOT NULL,
         value REAL NOT NULL,
         period TEXT NOT NULL,
         description TEXT
+      );
+      
+      CREATE TABLE IF NOT EXISTS Revenue (
+          id VARCHAR(36) PRIMARY KEY,
+          name TEXT NOT NULL,
+          grossValue REAL NOT NULL,
+          netValue REAL NOT NULL,
+          period TEXT NOT NULL,
+          description TEXT,
+          revenueType TEXT NOT NULL
       );
     """;
 
