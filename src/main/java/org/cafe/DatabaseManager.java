@@ -55,14 +55,14 @@ public class DatabaseManager {
         description TEXT
       );
       
-      CREATE TABLE IF NOT EXISTS Revenue (
+      CREATE TABLE IF NOT EXISTS Revenues (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
-          grossValue REAL NOT NULL,
-          netValue REAL NOT NULL,
+          gross_value REAL NOT NULL,
+          net_value REAL NOT NULL,
           period TEXT NOT NULL,
           description TEXT,
-          revenueType TEXT NOT NULL
+          revenue_type TEXT NOT NULL
       );
     """;
 

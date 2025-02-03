@@ -10,7 +10,7 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
   public ExpenseController(DatabaseService databaseService) {
     super(
       databaseService,
-      "expenses",
+      "Expenses",
       new String[]{ "name", "value", "period", "description" }
     );
   }

@@ -10,8 +10,8 @@ public class RevenueController extends DatabaseController<RevenueModel> {
     public RevenueController(DatabaseService databaseService) {
         super(
             databaseService,
-            "revenues",
-            new String[]{ "name","GrossValue", "NetValue", "period","RevenueType","description" }
+            "Revenues",
+            new String[]{ "name", "gross_value", "net_value", "period", "description", "revenue_type" }
         );
     }
 

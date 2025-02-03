@@ -14,7 +14,7 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
     public UserAccountController(DatabaseService databaseService) {
         super(
             databaseService,
-            "user_account",
+            "UserAccount",
             new String[]{ "name", "telephone", "email", "cpf", "data_birth", "password" }
         );
     }
