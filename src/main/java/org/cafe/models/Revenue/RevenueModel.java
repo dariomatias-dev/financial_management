@@ -2,26 +2,27 @@ package org.cafe.models.Revenue;
 
 public class RevenueModel {
     private String name;
-    private double GrossValue;
-    private double NetValue;
+    private double grossValue;
+    private double netValue;
     private String period;
-    private String RevenueType;
+    private String revenueType;
     private String description;
 
-    public RevenueModel(String name,
-                   double Grossvalue,
-                   double Netvalue,
-                   String period,
-                   String RevenueType,
-                   String description
+    public RevenueModel(
+       String name,
+       double grossValue,
+       double netValue,
+       String period,
+       String description,
+       String revenueType
     )
     {
         this.name = name;
-        this.GrossValue = Grossvalue;
-        this.NetValue = NetValue;
+        this.grossValue = grossValue;
+        this.netValue = netValue;
         this.period = period;
-        this.RevenueType = RevenueType;
         this.description = description;
+        this.revenueType = revenueType;
     }
 
     public String getName() {
@@ -33,18 +34,18 @@ public class RevenueModel {
     }
 
     public double getGrossValue() {
-        return GrossValue;
+        return grossValue;
     }
 
-    public void setGrossValue(double GrossValue) {
-        this.GrossValue = GrossValue;
+    public void setGrossValue(double grossValue) {
+        this.grossValue = grossValue;
     }
     public double getNetValue() {
-        return NetValue;
+        return netValue;
     }
 
-    public void setNetValue(double NetValue) {
-        this.NetValue = NetValue;
+    public void setNetValue(double netValue) {
+        this.netValue = netValue;
     }
 
     public String getPeriod() {
@@ -56,11 +57,11 @@ public class RevenueModel {
     }
 
     public String getRevenueType() {
-        return RevenueType;
+        return revenueType;
     }
 
     public void setRevenueType(String revenueType) {
-        this.RevenueType = revenueType;
+        this.revenueType = revenueType;
     }
 
     public String getDescription() {
