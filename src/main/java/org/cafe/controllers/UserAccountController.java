@@ -47,15 +47,16 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
             Object[] row = results.getFirst();
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            Date dataBirth = simpleDateFormat.parse(((String) row[4]));
+            Date dataBirth = simpleDateFormat.parse(((String) row[5]));
 
             return new UserAccountModel(
                     (String) row[0],
-                    (double) row[1],
-                    (String) row[2],
-                    (double) row[3],
+                    (String) row[1],
+                    (double) row[2],
+                    (String) row[3],
+                    (double) row[4],
                     dataBirth,
-                    (String) row[5]
+                    (String) row[6]
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);

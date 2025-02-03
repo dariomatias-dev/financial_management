@@ -1,7 +1,7 @@
 package org.cafe.models.expense;
 
 public class ExpenseModel {
-  String id;
+  private String id;
   private String name;
   private double value;
   private String period;

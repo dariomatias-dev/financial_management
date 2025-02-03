@@ -1,6 +1,7 @@
-package org.cafe.models.Revenue;
+package org.cafe.models.revenue;
 
 public class RevenueModel {
+    private String id;
     private String name;
     private double grossValue;
     private double netValue;
@@ -9,20 +10,29 @@ public class RevenueModel {
     private String description;
 
     public RevenueModel(
+       String id,
        String name,
        double grossValue,
        double netValue,
        String period,
        String description,
        String revenueType
-    )
-    {
+    ) {
+        this.id = id;
         this.name = name;
         this.grossValue = grossValue;
         this.netValue = netValue;
         this.period = period;
         this.description = description;
         this.revenueType = revenueType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,6 +50,7 @@ public class RevenueModel {
     public void setGrossValue(double grossValue) {
         this.grossValue = grossValue;
     }
+
     public double getNetValue() {
         return netValue;
     }

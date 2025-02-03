@@ -2,7 +2,7 @@ package org.cafe.controllers;
 
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.Revenue.RevenueModel;
+import org.cafe.models.revenue.RevenueModel;
 
 import java.util.ArrayList;
 
@@ -41,11 +41,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
 
         return new RevenueModel(
             (String) row[0],
-            (double) row[1],
+            (String) row[1],
             (double) row[2],
-            (String) row[3],
+            (double) row[3],
             (String) row[4],
-            (String) row[5]
+            (String) row[5],
+            (String) row[6]
         );
     }
 
@@ -56,11 +57,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
             expenses.add(
                 new RevenueModel(
                     (String) row[0],
-                    (double) row[1],
+                    (String) row[1],
                     (double) row[2],
-                    (String) row[3],
+                    (double) row[3],
                     (String) row[4],
-                    (String) row[5]
+                    (String) row[5],
+                    (String) row[6]
                 )
             );
         }
