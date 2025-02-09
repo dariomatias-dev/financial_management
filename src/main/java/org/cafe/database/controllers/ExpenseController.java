@@ -2,9 +2,10 @@ package org.cafe.database.controllers;
 
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.ExpenseModel;
+import org.cafe.models.expense.ExpenseModel;
 
 import java.util.ArrayList;
+import org.cafe.models.expense.CreateExpenseModel;
 
 public class ExpenseController extends DatabaseController<ExpenseModel> {
   public ExpenseController(DatabaseService databaseService) {
@@ -16,13 +17,13 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
   }
 
   public void create(
-    ExpenseModel expenseModel
+    CreateExpenseModel expense
   ) {
     Object[] values = {
-      expenseModel.getName(),
-      expenseModel.getValue(),
-      expenseModel.getPeriod(),
-      expenseModel.getDescription(),
+      expense.getName(),
+      expense.getValue(),
+      expense.getPeriod(),
+      expense.getDescription(),
     };
 
     super.insert(values);
@@ -65,13 +66,13 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
 
   public void updateById(
     String id,
-    ExpenseModel updatedExpense
+    ExpenseModel updateExpense
   ) {
     Object[] values = {
-      updatedExpense.getName(),
-      updatedExpense.getValue(),
-      updatedExpense.getPeriod(),
-      updatedExpense.getDescription(),
+      updateExpense.getName(),
+      updateExpense.getValue(),
+      updateExpense.getPeriod(),
+      updateExpense.getDescription(),
     };
 
     super.setById(id, values);

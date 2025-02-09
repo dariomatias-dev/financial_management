@@ -1,6 +1,8 @@
 package org.cafe.views.Expense.components;
 
+import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
+import org.cafe.models.expense.CreateExpenseModel;
 
 /**
  *
@@ -175,6 +177,27 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
     }//GEN-LAST:event_calcelButtonMouseClicked
 
     private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
+        String name = nameField.getText();
+        String valueText = valueField.getText();
+        String description = descriptionField.getText();
+
+        if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double value;
+        try {
+            value = Double.parseDouble(valueText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        CreateExpenseModel expense = new CreateExpenseModel(name, value, "", description);
+        expenseController.create(expense);
+
+        this.dispose();
     }//GEN-LAST:event_createButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

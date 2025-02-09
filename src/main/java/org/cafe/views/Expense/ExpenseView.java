@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.DefaultListModel;
 import org.cafe.database.controllers.ExpenseController;
-import org.cafe.models.ExpenseModel;
+import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.Expense.components.CreateExpenseRegisterView;
 import java.text.NumberFormat;
 
