@@ -26,6 +26,10 @@ public class ExpenseView extends javax.swing.JFrame {
 
         initComponents();
 
+        listExpenses();
+    }
+
+    private void listExpenses() {
         ArrayList<ExpenseModel> expenses = expenseController.getAll();
 
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -46,6 +50,15 @@ public class ExpenseView extends javax.swing.JFrame {
 
             model.addElement(displayText);
         }
+    }
+
+    private void updateScreen() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        expenseList.setModel(model);
+
+        model.clear();
+
+        listExpenses();
     }
 
     /**
@@ -184,7 +197,7 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-        CreateExpenseRegisterView createExpenseRegisterView = new CreateExpenseRegisterView(expenseController);
+        CreateExpenseRegisterView createExpenseRegisterView = new CreateExpenseRegisterView(expenseController, this::updateScreen);
 
         createExpenseRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked

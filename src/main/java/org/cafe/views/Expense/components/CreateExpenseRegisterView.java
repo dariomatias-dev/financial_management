@@ -10,14 +10,18 @@ import org.cafe.models.expense.CreateExpenseModel;
  */
 public class CreateExpenseRegisterView extends javax.swing.JFrame {
 
+    private Runnable onExpenseCreated;
     private final ExpenseController expenseController;
 
     /**
      * Construtor.
      *
      * @param expenseController Controlador de despesas.
+     * @param onExpenseCreated Função para atualização da tela de
+     * listagem das despesas.
      */
-    public CreateExpenseRegisterView(ExpenseController expenseController) {
+    public CreateExpenseRegisterView(ExpenseController expenseController, Runnable onExpenseCreated) {
+        this.onExpenseCreated = onExpenseCreated;
         this.expenseController = expenseController;
 
         initComponents();
@@ -196,10 +200,12 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
 
         CreateExpenseModel expense = new CreateExpenseModel(name, value, "", description);
         expenseController.create(expense);
+        
+        onExpenseCreated.run();
 
         this.dispose();
     }//GEN-LAST:event_createButtonMouseClicked
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JButton calcelButton;
