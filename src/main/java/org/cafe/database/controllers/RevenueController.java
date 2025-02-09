@@ -2,7 +2,7 @@ package org.cafe.database.controllers;
 
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.revenue.RevenueModel;
+import org.cafe.models.RevenueModel;
 
 import java.util.ArrayList;
 

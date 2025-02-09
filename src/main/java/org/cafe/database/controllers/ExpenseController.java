@@ -2,7 +2,7 @@ package org.cafe.database.controllers;
 
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.expense.ExpenseModel;
+import org.cafe.models.ExpenseModel;
 
 import java.util.ArrayList;
 

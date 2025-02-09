@@ -1,4 +1,4 @@
-package org.cafe.models.userAccount;
+package org.cafe.models;
 
 import java.util.Date;
 

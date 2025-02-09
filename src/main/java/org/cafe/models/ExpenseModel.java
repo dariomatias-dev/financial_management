@@ -1,4 +1,4 @@
-package org.cafe.models.expense;
+package org.cafe.models;
 
 public class ExpenseModel {
   private String id;

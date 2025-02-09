@@ -2,7 +2,7 @@ package org.cafe.database.controllers;
 
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.userAccount.UserAccountModel;
+import org.cafe.models.UserAccountModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
