@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 public class ExpenseView extends javax.swing.JFrame {
 
     private final ExpenseController expenseController;
+    private ArrayList<ExpenseModel> expenses;
 
     /**
      * Construtor.
@@ -29,35 +30,32 @@ public class ExpenseView extends javax.swing.JFrame {
         listExpenses();
     }
 
+    /**
+     * Lista todas as despesas.
+     */
     private void listExpenses() {
-        ArrayList<ExpenseModel> expenses = expenseController.getAll();
-
+        expenses = expenseController.getAll();
         DefaultListModel<String> model = new DefaultListModel<>();
         expenseList.setModel(model);
 
-        Locale brazilianLocale = new Locale.Builder()
-                .setLanguage("pt")
-                .setRegion("BR")
-                .build();
-
+        Locale brazilianLocale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
 
         for (ExpenseModel expense : expenses) {
             String expenseName = expense.getName();
             String formattedValue = currencyFormat.format(expense.getValue());
-
             String displayText = expenseName + "     -     " + formattedValue;
-
             model.addElement(displayText);
         }
     }
 
+    /**
+     * Atualiza a lista de despesas para exibir somente as despesas que existem.
+     */
     private void updateScreen() {
         DefaultListModel<String> model = new DefaultListModel<>();
         expenseList.setModel(model);
-
         model.clear();
-
         listExpenses();
     }
 
@@ -189,7 +187,11 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-        // TODO add your handling code here:
+        ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+
+        expenseController.removeById(selectedExpense.getId());
+        
+        updateScreen();
     }//GEN-LAST:event_deleteButtonMouseClicked
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
