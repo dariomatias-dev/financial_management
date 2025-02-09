@@ -5,7 +5,7 @@ import java.util.Locale;
 import javax.swing.DefaultListModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
-import org.cafe.views.Expense.components.CreateExpenseRegisterView;
+import org.cafe.views.Expense.components.ManagerRegisterView;
 import java.text.NumberFormat;
 
 /**
@@ -199,7 +199,7 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-        CreateExpenseRegisterView createExpenseRegisterView = new CreateExpenseRegisterView(expenseController, this::updateScreen);
+        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, this::updateScreen);
 
         createExpenseRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked

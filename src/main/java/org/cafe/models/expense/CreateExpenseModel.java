@@ -1,6 +1,7 @@
 package org.cafe.models.expense;
 
 public class CreateExpenseModel {
+
     private String name;
     private double value;
     private String period;
@@ -22,28 +23,28 @@ public class CreateExpenseModel {
         return name;
     }
 
-    public double getValue() {
-        return value;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getValue() {
+        return value;
     }
 
     public void setValue(double value) {
         this.value = value;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
     public void setPeriod(String period) {
         this.period = period;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {

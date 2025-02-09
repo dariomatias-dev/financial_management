@@ -8,9 +8,9 @@ import org.cafe.models.expense.CreateExpenseModel;
  *
  * @author Dário
  */
-public class CreateExpenseRegisterView extends javax.swing.JFrame {
+public class ManagerRegisterView extends javax.swing.JFrame {
 
-    private Runnable onExpenseCreated;
+    private final Runnable onExpenseCreated;
     private final ExpenseController expenseController;
 
     /**
@@ -20,7 +20,7 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
      * @param onExpenseCreated Função para atualização da tela de
      * listagem das despesas.
      */
-    public CreateExpenseRegisterView(ExpenseController expenseController, Runnable onExpenseCreated) {
+    public ManagerRegisterView(ExpenseController expenseController, Runnable onExpenseCreated) {
         this.onExpenseCreated = onExpenseCreated;
         this.expenseController = expenseController;
 
