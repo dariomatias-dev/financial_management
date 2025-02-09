@@ -118,6 +118,11 @@ public class ExpenseView extends javax.swing.JFrame {
         });
 
         updateButton.setText("Atualizar");
+        updateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateButtonMouseClicked(evt);
+            }
+        });
 
         addButton.setText("Adicionar");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -190,7 +195,7 @@ public class ExpenseView extends javax.swing.JFrame {
         ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
 
         expenseController.removeById(selectedExpense.getId());
-        
+
         updateScreen();
     }//GEN-LAST:event_deleteButtonMouseClicked
 
@@ -199,10 +204,17 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, this::updateScreen);
+        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, null, this::updateScreen);
 
         createExpenseRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
+    
+    private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+        ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, selectedExpense, this::updateScreen);
+
+        createExpenseRegisterView.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_updateButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

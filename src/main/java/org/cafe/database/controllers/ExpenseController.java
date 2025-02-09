@@ -64,10 +64,7 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
     return expenses;
   }
 
-  public void updateById(
-    String id,
-    ExpenseModel updateExpense
-  ) {
+  public void update(ExpenseModel updateExpense) {
     Object[] values = {
       updateExpense.getName(),
       updateExpense.getValue(),
@@ -75,6 +72,6 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
       updateExpense.getDescription(),
     };
 
-    super.setById(id, values);
+    super.setById(updateExpense.getId(), values);
   }
 }

@@ -3,28 +3,37 @@ package org.cafe.views.Expense.components;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.CreateExpenseModel;
+import org.cafe.models.expense.ExpenseModel;
 
-/**
- *
- * @author Dário
- */
 public class ManagerRegisterView extends javax.swing.JFrame {
-
-    private final Runnable onExpenseCreated;
+    
+    private final Runnable onUpdateScreen;
     private final ExpenseController expenseController;
+    private final ExpenseModel data;
 
     /**
      * Construtor.
      *
      * @param expenseController Controlador de despesas.
-     * @param onExpenseCreated Função para atualização da tela de
-     * listagem das despesas.
+     * @param data Dados do registro selecionado caso seja para atualizar.
+     * @param onUpdateScreen Função para atualização da tela de listagem das
+     * despesas.
      */
-    public ManagerRegisterView(ExpenseController expenseController, Runnable onExpenseCreated) {
-        this.onExpenseCreated = onExpenseCreated;
+    public ManagerRegisterView(ExpenseController expenseController, ExpenseModel data, Runnable onUpdateScreen) {
         this.expenseController = expenseController;
-
+        this.data = data;
+        this.onUpdateScreen = onUpdateScreen;
+        
         initComponents();
+        
+        if (data != null) {
+            nameField.setText(data.getName());
+            valueField.setText(String.valueOf(data.getValue()));
+            descriptionField.setText(data.getDescription());
+            
+            screenTitle.setText("Atualizar Despesa");
+            actionButton.setText("Atualizar");
+        }
     }
 
     /**
@@ -44,7 +53,7 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         valueLabell = new javax.swing.JLabel();
         descriptionField = new javax.swing.JTextField();
         descriptionLabel = new javax.swing.JLabel();
-        createButton = new javax.swing.JButton();
+        actionButton = new javax.swing.JButton();
         calcelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -85,10 +94,15 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         descriptionLabel.setForeground(new java.awt.Color(0, 0, 0));
         descriptionLabel.setText("Descrição:");
 
-        createButton.setText("Criar");
-        createButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        actionButton.setText("Criar");
+        actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                createButtonMouseClicked(evt);
+                actionButtonMouseClicked(evt);
+            }
+        });
+        actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonActionPerformed(evt);
             }
         });
 
@@ -113,7 +127,7 @@ public class ManagerRegisterView extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(calcelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(createButton))
+                        .addComponent(actionButton))
                     .addGroup(backgroundLayout.createSequentialGroup()
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameLabel)
@@ -145,7 +159,7 @@ public class ManagerRegisterView extends javax.swing.JFrame {
                 .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createButton)
+                    .addComponent(actionButton)
                     .addComponent(calcelButton))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -180,16 +194,16 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_calcelButtonMouseClicked
 
-    private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
+    private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
         String name = nameField.getText();
         String valueText = valueField.getText();
         String description = descriptionField.getText();
-
+        
         if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         double value;
         try {
             value = Double.parseDouble(valueText);
@@ -197,19 +211,28 @@ public class ManagerRegisterView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        CreateExpenseModel expense = new CreateExpenseModel(name, value, "", description);
-        expenseController.create(expense);
         
-        onExpenseCreated.run();
-
+        if (data != null) {
+            ExpenseModel expense = new ExpenseModel(data.getId(), name, value, "", description);
+            expenseController.update(expense);
+        } else {
+            CreateExpenseModel expense = new CreateExpenseModel(name, value, "", description);
+            expenseController.create(expense);
+        }
+        
+        onUpdateScreen.run();
+        
         this.dispose();
-    }//GEN-LAST:event_createButtonMouseClicked
-    
+    }//GEN-LAST:event_actionButtonMouseClicked
+
+    private void actionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_actionButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton actionButton;
     private javax.swing.JPanel background;
     private javax.swing.JButton calcelButton;
-    private javax.swing.JButton createButton;
     private javax.swing.JTextField descriptionField;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextField nameField;
