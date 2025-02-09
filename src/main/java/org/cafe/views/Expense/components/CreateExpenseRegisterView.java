@@ -1,12 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package org.cafe.views.Expense.components;
 
-import java.util.ArrayList;
 import org.cafe.database.controllers.ExpenseController;
-import org.cafe.models.ExpenseModel;
 
 /**
  *
@@ -181,8 +175,6 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
     }//GEN-LAST:event_calcelButtonMouseClicked
 
     private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
-        ArrayList<ExpenseModel> expenses = expenseController.getAll();
-        System.out.println(expenses);
     }//GEN-LAST:event_createButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

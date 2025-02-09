@@ -1,11 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package org.cafe.views.Expense;
 
+import java.util.ArrayList;
+import java.util.Locale;
+import javax.swing.DefaultListModel;
 import org.cafe.database.controllers.ExpenseController;
+import org.cafe.models.ExpenseModel;
 import org.cafe.views.Expense.components.CreateExpenseRegisterView;
+import java.text.NumberFormat;
 
 /**
  *
@@ -24,6 +25,27 @@ public class ExpenseView extends javax.swing.JFrame {
         this.expenseController = expenseController;
 
         initComponents();
+
+        ArrayList<ExpenseModel> expenses = expenseController.getAll();
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        expenseList.setModel(model);
+
+        Locale brazilianLocale = new Locale.Builder()
+                .setLanguage("pt")
+                .setRegion("BR")
+                .build();
+
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
+
+        for (ExpenseModel expense : expenses) {
+            String expenseName = expense.getName();
+            String formattedValue = currencyFormat.format(expense.getValue());
+
+            String displayText = expenseName + "     -     " + formattedValue;
+
+            model.addElement(displayText);
+        }
     }
 
     /**
@@ -68,11 +90,7 @@ public class ExpenseView extends javax.swing.JFrame {
             }
         });
 
-        expenseList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        expenseList.setBorder(null);
         jScrollPane1.setViewportView(expenseList);
 
         deleteButton.setForeground(new java.awt.Color(255, 0, 51));
@@ -101,7 +119,6 @@ public class ExpenseView extends javax.swing.JFrame {
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,6 +134,7 @@ public class ExpenseView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
                         .addComponent(addButton)))
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
