@@ -1,4 +1,4 @@
-package org.cafe;
+package org.cafe.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

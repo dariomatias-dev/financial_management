@@ -1,7 +1,5 @@
 package org.cafe.database;
 
-import org.cafe.DatabaseManager;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
