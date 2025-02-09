@@ -4,16 +4,26 @@
  */
 package org.cafe.views.Expense.components;
 
+import java.util.ArrayList;
+import org.cafe.database.controllers.ExpenseController;
+import org.cafe.models.ExpenseModel;
+
 /**
  *
  * @author Dário
  */
 public class CreateExpenseRegisterView extends javax.swing.JFrame {
 
+    private final ExpenseController expenseController;
+
     /**
-     * Creates new form CreateExpenseRegisterView
+     * Construtor.
+     *
+     * @param expenseController Controlador de despesas.
      */
-    public CreateExpenseRegisterView() {
+    public CreateExpenseRegisterView(ExpenseController expenseController) {
+        this.expenseController = expenseController;
+
         initComponents();
     }
 
@@ -76,6 +86,11 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
         descriptionLabel.setText("Descrição:");
 
         createButton.setText("Criar");
+        createButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createButtonMouseClicked(evt);
+            }
+        });
 
         calcelButton.setText("Cancelar");
         calcelButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -165,40 +180,10 @@ public class CreateExpenseRegisterView extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_calcelButtonMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateExpenseRegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateExpenseRegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateExpenseRegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateExpenseRegisterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateExpenseRegisterView().setVisible(true);
-            }
-        });
-    }
+    private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
+        ArrayList<ExpenseModel> expenses = expenseController.getAll();
+        System.out.println(expenses);
+    }//GEN-LAST:event_createButtonMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;

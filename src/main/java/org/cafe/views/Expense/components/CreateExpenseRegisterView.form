@@ -164,6 +164,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Criar"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="createButtonMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="calcelButton">
           <Properties>

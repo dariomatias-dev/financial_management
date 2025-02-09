@@ -4,6 +4,7 @@
  */
 package org.cafe.views;
 
+import org.cafe.database.controllers.ExpenseController;
 import org.cafe.views.Expense.ExpenseView;
 
 /**
@@ -12,10 +13,16 @@ import org.cafe.views.Expense.ExpenseView;
  */
 public class MainView extends javax.swing.JFrame {
 
+    private final ExpenseController expenseController;
+
     /**
-     * Creates new form MainView1
+     * Construtor.
+     *
+     * @param expenseController Controlador de despesas.
      */
-    public MainView() {
+    public MainView(ExpenseController expenseController) {
+        this.expenseController = expenseController;
+
         initComponents();
     }
 
@@ -132,46 +139,10 @@ public class MainView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void expenseFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expenseFieldMouseClicked
-        ExpenseView expenseView = new ExpenseView();
-        
+        ExpenseView expenseView = new ExpenseView(expenseController);
+
         expenseView.setVisible(true);
     }//GEN-LAST:event_expenseFieldMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
