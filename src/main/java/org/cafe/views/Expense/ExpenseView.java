@@ -7,6 +7,7 @@ import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.Expense.components.ManagerRegisterView;
 import java.text.NumberFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -192,11 +193,19 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-        ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+        int confirm = JOptionPane.showConfirmDialog(
+            null, 
+            "Você realmente deseja excluir este registro?", 
+            "Confirmar Exclusão", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE
+        );
 
-        expenseController.removeById(selectedExpense.getId());
-
-        updateScreen();
+        if (confirm == JOptionPane.YES_OPTION) {
+            ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+            expenseController.removeById(selectedExpense.getId());
+            updateScreen();
+        }
     }//GEN-LAST:event_deleteButtonMouseClicked
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
