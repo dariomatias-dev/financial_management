@@ -1,9 +1,8 @@
-package org.cafe.models;
+package org.cafe.models.user_accaount;
 
 import java.util.Date;
 
-public class UserAccountModel {
-    private String id;
+public class CreateUserAccountModel {
     private String name;
     private double telephone;
     private String email;
@@ -11,30 +10,20 @@ public class UserAccountModel {
     private Date dataBirth;
     private String password;
 
-    public UserAccountModel(
-        String id,
-        String name,
-        double telephone,
-        String email,
-        double cpf,
-        Date dataBirth,
-        String password
+    public CreateUserAccountModel(
+            String name,
+            double telephone,
+            String email,
+            double cpf,
+            Date dataBirth,
+            String password
     ) {
-        this.id = id;
         this.name = name;
         this.telephone = telephone;
         this.email = email;
         this.cpf = cpf;
         this.dataBirth = dataBirth;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
