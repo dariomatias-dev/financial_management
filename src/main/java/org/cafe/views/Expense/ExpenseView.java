@@ -1,19 +1,13 @@
 package org.cafe.views.expense;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import javax.swing.DefaultListModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.expense.components.manager_register.ManagerRegisterView;
-import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 import org.cafe.utils.CurrencyFormatter;
 
-/**
- *
- * @author Dário
- */
 public class ExpenseView extends javax.swing.JFrame {
 
     private final ExpenseController expenseController;
@@ -110,11 +104,6 @@ public class ExpenseView extends javax.swing.JFrame {
                 deleteButtonMouseClicked(evt);
             }
         });
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
 
         updateButton.setText("Atualizar");
         updateButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -182,6 +171,7 @@ public class ExpenseView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Ação de sair da tela.
     private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
         this.dispose();
     }//GEN-LAST:event_exitButtonMouseClicked
@@ -190,25 +180,27 @@ public class ExpenseView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
+    // Ação de excluir registro.
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "Você realmente deseja excluir este registro?",
-                "Confirmar Exclusão",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
+        if (verifyRecords("excluir")) {
+            // Confirmar remoção de registro.
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Você realmente deseja excluir este registro?",
+                    "Confirmar Exclusão",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
-            expenseController.removeById(selectedExpense.getId());
-            updateScreen();
+            // Se o usuário confirmar, exclui o registro.
+            if (confirm == JOptionPane.YES_OPTION) {
+                ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+                expenseController.removeById(selectedExpense.getId());
+
+                updateScreen();
+            }
         }
     }//GEN-LAST:event_deleteButtonMouseClicked
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
         ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, null, this::updateScreen);
@@ -217,11 +209,44 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-        ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
-        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, selectedExpense, this::updateScreen);
+        if (verifyRecords("atualizar")) {
+            ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+            ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, selectedExpense, this::updateScreen);
 
-        createExpenseRegisterView.setVisible(true);        // TODO add your handling code here:
+            createExpenseRegisterView.setVisible(true);
+        }
     }//GEN-LAST:event_updateButtonMouseClicked
+
+    private boolean verifyRecords(
+            String actionName
+    ) {
+        // Verifica se existe registros.
+        if (expenses.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    String.format("Não há registros para %s.", actionName),
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return false;
+        }
+
+        // Verifica se um registro foi selecionado.
+        int selectedIndex = expenseList.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Por favor, selecione um registro.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return false;
+        }
+
+        return true;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

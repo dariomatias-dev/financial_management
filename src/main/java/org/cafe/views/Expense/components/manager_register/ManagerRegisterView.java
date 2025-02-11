@@ -68,27 +68,9 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         nameLabel.setForeground(new java.awt.Color(0, 0, 0));
         nameLabel.setText("Nome:");
 
-        nameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
-            }
-        });
-
-        valueField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                valueFieldActionPerformed(evt);
-            }
-        });
-
         valueLabell.setBackground(new java.awt.Color(0, 0, 0));
         valueLabell.setForeground(new java.awt.Color(0, 0, 0));
         valueLabell.setText("Valor:");
-
-        descriptionField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descriptionFieldActionPerformed(evt);
-            }
-        });
 
         descriptionLabel.setBackground(new java.awt.Color(0, 0, 0));
         descriptionLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -98,11 +80,6 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 actionButtonMouseClicked(evt);
-            }
-        });
-        actionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionButtonActionPerformed(evt);
             }
         });
 
@@ -178,18 +155,6 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
-
-    private void valueFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valueFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_valueFieldActionPerformed
-
-    private void descriptionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_descriptionFieldActionPerformed
-
     private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
         this.dispose();
     }//GEN-LAST:event_calcelButtonMouseClicked
@@ -224,10 +189,6 @@ public class ManagerRegisterView extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_actionButtonMouseClicked
-
-    private void actionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_actionButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actionButton;
