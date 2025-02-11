@@ -5,6 +5,7 @@ import org.cafe.database.DatabaseService;
 import org.cafe.models.expense.ExpenseModel;
 
 import java.util.ArrayList;
+
 import org.cafe.models.expense.CreateExpenseModel;
 
 public class ExpenseController extends DatabaseController<ExpenseModel> {
