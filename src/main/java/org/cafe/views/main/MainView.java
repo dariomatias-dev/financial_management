@@ -1,11 +1,11 @@
-package org.cafe.views;
+package org.cafe.views.main;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
-import org.cafe.views.Expense.ExpenseView;
+import org.cafe.views.expense.ExpenseView;
 
 public class MainView extends javax.swing.JFrame {
 

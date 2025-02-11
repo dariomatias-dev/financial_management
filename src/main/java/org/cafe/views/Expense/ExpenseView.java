@@ -1,11 +1,11 @@
-package org.cafe.views.Expense;
+package org.cafe.views.expense;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.DefaultListModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
-import org.cafe.views.Expense.components.ManagerRegisterView;
+import org.cafe.views.expense.components.manager_register.ManagerRegisterView;
 import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 

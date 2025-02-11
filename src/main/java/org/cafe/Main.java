@@ -2,7 +2,7 @@ package org.cafe;
 
 import org.cafe.database.DatabaseService;
 import org.cafe.database.controllers.ExpenseController;
-import org.cafe.views.MainView;
+import org.cafe.views.main.MainView;
 
 public class Main {
   public static void main(String[] args) {
