@@ -1,12 +1,12 @@
 package org.cafe.views;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Locale;
 import org.cafe.database.controllers.ExpenseController;
+import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.Expense.ExpenseView;
 
-/**
- *
- * @author Dário
- */
 public class MainView extends javax.swing.JFrame {
 
     private final ExpenseController expenseController;
@@ -20,6 +20,19 @@ public class MainView extends javax.swing.JFrame {
         this.expenseController = expenseController;
 
         initComponents();
+
+        int expensesAmountValue = 0;
+
+        ArrayList<ExpenseModel> expenses = expenseController.getAll();
+        for (ExpenseModel expense : expenses) {
+            expensesAmountValue += expense.getValue();
+        }
+
+        Locale brazilianLocale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
+        String formattedValue = currencyFormat.format(expensesAmountValue);
+
+        expensesAmount.setText(formattedValue);
     }
 
     /**
@@ -36,7 +49,7 @@ public class MainView extends javax.swing.JFrame {
         background = new javax.swing.JPanel();
         expenseField = new javax.swing.JDesktopPane();
         expenseTitle = new javax.swing.JLabel();
-        expenseValue = new javax.swing.JLabel();
+        expensesAmount = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -75,32 +88,32 @@ public class MainView extends javax.swing.JFrame {
         expenseTitle.setForeground(new java.awt.Color(0, 0, 0));
         expenseTitle.setText("Despesas");
 
-        expenseValue.setBackground(new java.awt.Color(255, 0, 0));
-        expenseValue.setForeground(new java.awt.Color(255, 0, 0));
-        expenseValue.setText("R$ 2.000,00");
+        expensesAmount.setBackground(new java.awt.Color(255, 0, 0));
+        expensesAmount.setForeground(new java.awt.Color(255, 0, 0));
+        expensesAmount.setText("R$ 2.000,00");
 
         expenseField.setLayer(expenseTitle, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        expenseField.setLayer(expenseValue, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        expenseField.setLayer(expensesAmount, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout expenseFieldLayout = new javax.swing.GroupLayout(expenseField);
         expenseField.setLayout(expenseFieldLayout);
         expenseFieldLayout.setHorizontalGroup(
             expenseFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(expenseFieldLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, expenseFieldLayout.createSequentialGroup()
+                .addContainerGap(373, Short.MAX_VALUE)
                 .addGroup(expenseFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(expenseValue)
+                    .addComponent(expensesAmount)
                     .addComponent(expenseTitle))
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
         expenseFieldLayout.setVerticalGroup(
             expenseFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(expenseFieldLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(127, 127, 127)
                 .addComponent(expenseTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(expenseValue)
-                .addContainerGap())
+                .addComponent(expensesAmount)
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
@@ -144,7 +157,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JPanel background;
     private javax.swing.JDesktopPane expenseField;
     private javax.swing.JLabel expenseTitle;
-    private javax.swing.JLabel expenseValue;
+    private javax.swing.JLabel expensesAmount;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
