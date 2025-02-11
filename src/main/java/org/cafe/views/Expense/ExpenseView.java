@@ -8,6 +8,7 @@ import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.expense.components.manager_register.ManagerRegisterView;
 import java.text.NumberFormat;
 import javax.swing.JOptionPane;
+import org.cafe.utils.CurrencyFormatter;
 
 /**
  *
@@ -39,12 +40,9 @@ public class ExpenseView extends javax.swing.JFrame {
         DefaultListModel<String> model = new DefaultListModel<>();
         expenseList.setModel(model);
 
-        Locale brazilianLocale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
-
         for (ExpenseModel expense : expenses) {
             String expenseName = expense.getName();
-            String formattedValue = currencyFormat.format(expense.getValue());
+            String formattedValue = CurrencyFormatter.format(expense.getValue());
             String displayText = expenseName + "     -     " + formattedValue;
             model.addElement(displayText);
         }
@@ -194,11 +192,11 @@ public class ExpenseView extends javax.swing.JFrame {
 
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
         int confirm = JOptionPane.showConfirmDialog(
-            null, 
-            "Você realmente deseja excluir este registro?", 
-            "Confirmar Exclusão", 
-            JOptionPane.YES_NO_OPTION, 
-            JOptionPane.WARNING_MESSAGE
+                null,
+                "Você realmente deseja excluir este registro?",
+                "Confirmar Exclusão",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -217,7 +215,7 @@ public class ExpenseView extends javax.swing.JFrame {
 
         createExpenseRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
-    
+
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
         ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
         ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, selectedExpense, this::updateScreen);

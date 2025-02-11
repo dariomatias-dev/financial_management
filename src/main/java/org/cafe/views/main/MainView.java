@@ -1,8 +1,7 @@
 package org.cafe.views.main;
 
-import java.text.NumberFormat;
+import org.cafe.utils.CurrencyFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.views.expense.ExpenseView;
@@ -27,10 +26,8 @@ public class MainView extends javax.swing.JFrame {
         for (ExpenseModel expense : expenses) {
             expensesAmountValue += expense.getValue();
         }
-
-        Locale brazilianLocale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
-        String formattedValue = currencyFormat.format(expensesAmountValue);
+        
+        String formattedValue = CurrencyFormatter.format(expensesAmountValue);
 
         expensesAmount.setText(formattedValue);
     }
