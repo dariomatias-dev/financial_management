@@ -2,23 +2,20 @@ package org.cafe.models.revenue;
 
 public class CreateRevenueModel {
   private String name;
-  private double grossValue;
-  private double netValue;
+  private double value;
   private String period;
   private String revenueType;
   private String description;
 
   public CreateRevenueModel(
     String name,
-    double grossValue,
-    double netValue,
+    double value,
     String period,
     String revenueType,
     String description
   ) {
     this.name = name;
-    this.grossValue = grossValue;
-    this.netValue = netValue;
+    this.value = value;
     this.period = period;
     this.revenueType = revenueType;
     this.description = description;
@@ -32,22 +29,15 @@ public class CreateRevenueModel {
     this.name = name;
   }
 
-  public double getGrossValue() {
-    return grossValue;
+  public double getValue() {
+    return value;
   }
 
-  public void setGrossValue(double grossValue) {
-    this.grossValue = grossValue;
+  public void setValue(double value) {
+    this.value = value;
   }
 
-  public double getNetValue() {
-    return netValue;
-  }
-
-  public void setNetValue(double netValue) {
-    this.netValue = netValue;
-  }
-
+  
   public String getPeriod() {
     return period;
   }
