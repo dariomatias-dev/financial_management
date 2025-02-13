@@ -5,23 +5,23 @@ import org.cafe.database.DatabaseService;
 import org.cafe.models.revenue.RevenueModel;
 
 import java.util.ArrayList;
+import org.cafe.models.revenue.CreateRevenueModel;
 
 public class RevenueController extends DatabaseController<RevenueModel> {
   public RevenueController(DatabaseService databaseService) {
     super(
       databaseService,
       "Revenues",
-      new String[]{ "name", "gross_value", "net_value", "period", "description", "revenue_type" }
+      new String[]{ "name", "value", "period", "description", "revenue_type" }
     );
   }
 
   public void create(
-    RevenueModel RevenueModel
+            CreateRevenueModel RevenueModel
   ) {
     Object[] values = {
       RevenueModel.getName(),
-      RevenueModel.getGrossValue(),
-      RevenueModel.getNetValue(),
+      RevenueModel.getValue(),
       RevenueModel.getPeriod(),
       RevenueModel.getRevenueType(),
       RevenueModel.getDescription()
@@ -43,46 +43,40 @@ public class RevenueController extends DatabaseController<RevenueModel> {
       (String) row[0],
       (String) row[1],
       (double) row[2],
-      (double) row[3],
+      (String) row[3],
       (String) row[4],
-      (String) row[5],
-      (String) row[6]
+      (String) row[5]
     );
   }
 
   public ArrayList<RevenueModel> getAll() {
     ArrayList<Object[]> results = super.findAll();
-    ArrayList<RevenueModel> expenses = new ArrayList<>();
+    ArrayList<RevenueModel> revenues = new ArrayList<>();
     for (Object[] row : results) {
-      expenses.add(
+      revenues.add(
         new RevenueModel(
           (String) row[0],
           (String) row[1],
           (double) row[2],
-          (double) row[3],
+          (String) row[3],
           (String) row[4],
-          (String) row[5],
-          (String) row[6]
+          (String) row[5]
         )
       );
     }
 
-    return expenses;
+    return revenues;
   }
 
-  public void updateById(
-    String id,
-    RevenueModel updatedRevenue
-  ) {
+  public void update(RevenueModel updateRevenue) {
     Object[] values = {
-      updatedRevenue.getName(),
-      updatedRevenue.getGrossValue(),
-      updatedRevenue.getNetValue(),
-      updatedRevenue.getPeriod(),
-      updatedRevenue.getRevenueType(),
-      updatedRevenue.getDescription(),
+      updateRevenue.getName(),
+      updateRevenue.getValue(),
+      updateRevenue.getPeriod(),
+      updateRevenue.getRevenueType(),
+      updateRevenue.getDescription(),
     };
 
-    super.setById(id, values);
+    super.setById(updateRevenue.getId(), values);
   }
 }
