@@ -1,5 +1,7 @@
 package org.cafe.views.budget.components.manager_budget;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.cafe.core.formatters.DateMaskFormatter;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
@@ -12,6 +14,10 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
     new DateMaskFormatter().applyMask(initialDateField);
     new DateMaskFormatter().applyMask(endDateField);
+    
+    Date currentDate = new Date();
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    initialDateField.setText(formatter.format(currentDate));
   }
 
   /**
