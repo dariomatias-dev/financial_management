@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.CurrencyFormatter;
-import org.cafe.views.expense.components.manager_register.ManagerRegisterView;
+import org.cafe.views.expense.components.manager_expense.ManagerExpenseView;
 
 public class ExpenseView extends javax.swing.JFrame {
 
@@ -203,17 +203,17 @@ public class ExpenseView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonMouseClicked
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-      ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, null, this::updateScreen);
+      ManagerExpenseView createManagerRegisterView = new ManagerExpenseView(expenseController, null, this::updateScreen);
 
-      createExpenseRegisterView.setVisible(true);
+      createManagerRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
       if (verifyRecords("atualizar")) {
         ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
-        ManagerRegisterView createExpenseRegisterView = new ManagerRegisterView(expenseController, selectedExpense, this::updateScreen);
+        ManagerExpenseView updateManagerRegisterView = new ManagerExpenseView(expenseController, selectedExpense, this::updateScreen);
 
-        createExpenseRegisterView.setVisible(true);
+        updateManagerRegisterView.setVisible(true);
       }
     }//GEN-LAST:event_updateButtonMouseClicked
 
