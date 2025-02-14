@@ -94,18 +94,6 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
     jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
-    endDateField.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        endDateFieldActionPerformed(evt);
-      }
-    });
-
-    initialDateField.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        initialDateFieldActionPerformed(evt);
-      }
-    });
-
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -168,11 +156,11 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addComponent(endDateLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(endDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+        .addGap(18, 18, 18)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(actionButton)
           .addComponent(calcelButton))
-        .addGap(16, 16, 16))
+        .addContainerGap(18, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,14 +184,6 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_actionButtonMouseClicked
-
-  private void endDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endDateFieldActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_endDateFieldActionPerformed
-
-  private void initialDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initialDateFieldActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_initialDateFieldActionPerformed
 
   /**
    * @param args the command line arguments
