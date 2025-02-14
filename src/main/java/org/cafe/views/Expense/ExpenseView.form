@@ -70,7 +70,7 @@
                           <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                           <Component id="screenTitle" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="254" max="32767" attributes="0"/>
+                          <EmptySpace pref="235" max="32767" attributes="0"/>
                           <Component id="addButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
