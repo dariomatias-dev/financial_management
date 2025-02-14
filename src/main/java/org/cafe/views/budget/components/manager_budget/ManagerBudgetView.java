@@ -1,20 +1,35 @@
 package org.cafe.views.budget.components.manager_budget;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import org.cafe.core.formatters.DateMaskFormatter;
+import org.cafe.database.controllers.BudgetController;
+import org.cafe.models.budget.CreateBudgetModel;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
+  private final Runnable onUpdateScreen;
+  private final BudgetController budgetController;
 
   /**
    * Construtor.
+   *
+   * @param budgetController Controlador de orçamentos.
+   * @param onUpdateScreen Função para atualização da tela de listagem das
+   * despesas.
    */
-  public ManagerBudgetView() {
+  public ManagerBudgetView(BudgetController budgetController, Runnable onUpdateScreen) {
+    this.budgetController = budgetController;
+    this.onUpdateScreen = onUpdateScreen;
+
     initComponents();
 
     new DateMaskFormatter().applyMask(initialDateField);
     new DateMaskFormatter().applyMask(endDateField);
-    
+
     Date currentDate = new Date();
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     initialDateField.setText(formatter.format(currentDate));
@@ -35,14 +50,14 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     nameField = new javax.swing.JTextField();
     valueField = new javax.swing.JTextField();
     valueLabell = new javax.swing.JLabel();
-    descriptionField = new javax.swing.JTextField();
-    descriptionLabel = new javax.swing.JLabel();
+    categoryField = new javax.swing.JTextField();
+    categoryLabel = new javax.swing.JLabel();
     actionButton = new javax.swing.JButton();
     calcelButton = new javax.swing.JButton();
-    descriptionLabel1 = new javax.swing.JLabel();
+    statusLabel = new javax.swing.JLabel();
     initialDateLabel = new javax.swing.JLabel();
     endDateLabel = new javax.swing.JLabel();
-    jComboBox1 = new javax.swing.JComboBox<>();
+    statusSelect = new javax.swing.JComboBox<>();
     endDateField = new javax.swing.JFormattedTextField();
     initialDateField = new javax.swing.JFormattedTextField();
 
@@ -62,9 +77,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     valueLabell.setForeground(new java.awt.Color(0, 0, 0));
     valueLabell.setText("Descrição:");
 
-    descriptionLabel.setBackground(new java.awt.Color(0, 0, 0));
-    descriptionLabel.setForeground(new java.awt.Color(0, 0, 0));
-    descriptionLabel.setText("Categoria:");
+    categoryLabel.setBackground(new java.awt.Color(0, 0, 0));
+    categoryLabel.setForeground(new java.awt.Color(0, 0, 0));
+    categoryLabel.setText("Categoria:");
 
     actionButton.setText("Criar");
     actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -80,9 +95,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       }
     });
 
-    descriptionLabel1.setBackground(new java.awt.Color(0, 0, 0));
-    descriptionLabel1.setForeground(new java.awt.Color(0, 0, 0));
-    descriptionLabel1.setText("Status:");
+    statusLabel.setBackground(new java.awt.Color(0, 0, 0));
+    statusLabel.setForeground(new java.awt.Color(0, 0, 0));
+    statusLabel.setText("Status:");
 
     initialDateLabel.setBackground(new java.awt.Color(0, 0, 0));
     initialDateLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -92,7 +107,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     endDateLabel.setForeground(new java.awt.Color(0, 0, 0));
     endDateLabel.setText("Data Final:");
 
-    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
+    statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
@@ -107,16 +122,16 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(nameField)
           .addComponent(valueField)
-          .addComponent(descriptionField)
+          .addComponent(categoryField)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(nameLabel)
               .addComponent(valueLabell)
-              .addComponent(descriptionLabel)
-              .addComponent(descriptionLabel1)
+              .addComponent(categoryLabel)
+              .addComponent(statusLabel)
               .addComponent(initialDateLabel)
               .addComponent(endDateLabel)
-              .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addComponent(statusSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(0, 0, Short.MAX_VALUE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
@@ -141,13 +156,13 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(descriptionLabel)
+        .addComponent(categoryLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(categoryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(descriptionLabel1)
+        .addComponent(statusLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(statusSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(initialDateLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -182,59 +197,60 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     }//GEN-LAST:event_calcelButtonMouseClicked
 
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
+      String name = nameField.getText();
+      String category = categoryField.getText();
+      String initialDateText = initialDateField.getText();
+      String endDateText = endDateField.getText();
+      String status = (String) statusSelect.getSelectedItem();
+
+      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty() || status.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      LocalDateTime initialDate;
+      LocalDateTime endDate;
+
+      try {
+        initialDate = LocalDateTime.parse(initialDateText, formatter);
+        endDate = LocalDateTime.parse(endDateText, formatter);
+      } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, insira as datas no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      CreateBudgetModel newBudget = new CreateBudgetModel(
+              name,
+              category,
+              category,
+              status,
+              initialDate,
+              endDate
+      );
+
+      budgetController.create(newBudget);
+
+      onUpdateScreen.run();
+
       this.dispose();
     }//GEN-LAST:event_actionButtonMouseClicked
-
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(ManagerBudgetView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(ManagerBudgetView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(ManagerBudgetView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(ManagerBudgetView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new ManagerBudgetView().setVisible(true);
-      }
-    });
-  }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton actionButton;
   private javax.swing.JPanel background;
   private javax.swing.JButton calcelButton;
-  private javax.swing.JTextField descriptionField;
-  private javax.swing.JLabel descriptionLabel;
-  private javax.swing.JLabel descriptionLabel1;
+  private javax.swing.JTextField categoryField;
+  private javax.swing.JLabel categoryLabel;
   private javax.swing.JFormattedTextField endDateField;
   private javax.swing.JLabel endDateLabel;
   private javax.swing.JFormattedTextField initialDateField;
   private javax.swing.JLabel initialDateLabel;
-  private javax.swing.JComboBox<String> jComboBox1;
   private javax.swing.JTextField nameField;
   private javax.swing.JLabel nameLabel;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JLabel statusLabel;
+  private javax.swing.JComboBox<String> statusSelect;
   private javax.swing.JTextField valueField;
   private javax.swing.JLabel valueLabell;
   // End of variables declaration//GEN-END:variables

@@ -1,7 +1,6 @@
 package org.cafe.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -36,7 +35,7 @@ public class DatabaseManager {
   }
 
   void createTasksTable() {
-    String schemaTablesSql = """
+    String createUserAccountTable = """
       CREATE TABLE IF NOT EXISTS UserAccount (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
@@ -46,7 +45,9 @@ public class DatabaseManager {
           dataBirth TEXT NOT NULL,
           password TEXT NOT NULL
       );
+    """;
 
+    String createExpensesTable = """
       CREATE TABLE IF NOT EXISTS Expenses (
         id VARCHAR(36) PRIMARY KEY,
         name TEXT NOT NULL,
@@ -54,7 +55,9 @@ public class DatabaseManager {
         period TEXT NOT NULL,
         description TEXT
       );
+    """;
 
+    String createRevenuesTable = """
       CREATE TABLE IF NOT EXISTS Revenues (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
@@ -64,7 +67,9 @@ public class DatabaseManager {
           description TEXT,
           revenue_type TEXT NOT NULL
       );
+    """;
 
+    String createBudgetsTable = """
       CREATE TABLE IF NOT EXISTS Budgets (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
@@ -78,9 +83,12 @@ public class DatabaseManager {
 
     try {
       Statement statement = connection.createStatement();
-      statement.execute(schemaTablesSql);
+      statement.execute(createUserAccountTable);
+      statement.execute(createExpensesTable);
+      statement.execute(createRevenuesTable);
+      statement.execute(createBudgetsTable);
     } catch (SQLException e) {
-      throw new RuntimeException("Error creating tasks table: " + e.getMessage(), e);
+      throw new RuntimeException("Error creating tables: " + e.getMessage(), e);
     }
   }
 }
