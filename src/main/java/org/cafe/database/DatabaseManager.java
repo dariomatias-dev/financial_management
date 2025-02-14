@@ -46,7 +46,7 @@ public class DatabaseManager {
           dataBirth TEXT NOT NULL,
           password TEXT NOT NULL
       );
-              
+
       CREATE TABLE IF NOT EXISTS Expenses (
         id VARCHAR(36) PRIMARY KEY,
         name TEXT NOT NULL,
@@ -54,7 +54,7 @@ public class DatabaseManager {
         period TEXT NOT NULL,
         description TEXT
       );
-      
+
       CREATE TABLE IF NOT EXISTS Revenues (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
@@ -63,6 +63,16 @@ public class DatabaseManager {
           period TEXT NOT NULL,
           description TEXT,
           revenue_type TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS Budgets (
+          id VARCHAR(36) PRIMARY KEY,
+          name TEXT NOT NULL,
+          description TEXT NOT NULL,
+          category TEXT NOT NULL,
+          status TEXT NOT NULL,
+          initial_date TEXT NOT NULL,
+          end_date TEXT NOT NULL
       );
     """;
 
