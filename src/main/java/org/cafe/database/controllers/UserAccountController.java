@@ -1,14 +1,13 @@
 package org.cafe.database.controllers;
 
-import org.cafe.database.DatabaseController;
-import org.cafe.database.DatabaseService;
-import org.cafe.models.user_accaount.UserAccountModel;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InvalidPropertiesFormatException;
+import org.cafe.database.DatabaseController;
+import org.cafe.database.DatabaseService;
+import org.cafe.models.user_accaount.UserAccountModel;
 
 public class UserAccountController extends DatabaseController<UserAccountModel> {
   public UserAccountController(DatabaseService databaseService) {
