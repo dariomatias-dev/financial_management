@@ -4,23 +4,28 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetController;
+import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.views.budget.BudgetView;
 import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
 public class BudgetsView extends javax.swing.JFrame {
   private final BudgetController budgetController;
+  private final BudgetItemController budgetItemController;
   private ArrayList<BudgetModel> budgets;
 
   /**
    * Construtor.
    *
    * @param budgetController Controlador de orçamentos.
+   * @param budgetItemController Controlador de itens de orçamento.
    */
   public BudgetsView(
-          BudgetController budgetController
+          BudgetController budgetController,
+          BudgetItemController budgetItemController
   ) {
     this.budgetController = budgetController;
+    this.budgetItemController = budgetItemController;
 
     initComponents();
 
@@ -249,7 +254,7 @@ public class BudgetsView extends javax.swing.JFrame {
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
     if (verifyRecords("acessar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
-      BudgetView budgetView = new BudgetView(budgetController, selectedBudget, this::updateScreen);
+      BudgetView budgetView = new BudgetView(budgetItemController, selectedBudget);
 
       budgetView.setVisible(true);
     }

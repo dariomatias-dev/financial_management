@@ -1,20 +1,47 @@
-package org.cafe.views.budget;
+ package org.cafe.views.budget;
 
-import org.cafe.database.controllers.BudgetController;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
+import org.cafe.models.budget_item.BudgetItemModel;
+import org.cafe.utils.CurrencyFormatter;
 
 public class BudgetView extends javax.swing.JFrame {
+  private final BudgetItemController budgetItemController;
+  private ArrayList<BudgetItemModel> budgetItems;
 
   /**
    * Construtor.
    *
-   * @param budgetController Controlador de orçamentos.
-   * @param data Dados do registro selecionado.
-   * @param onUpdateScreen Função para atualização da tela de listagem dos
+   * @param budgetItemController Controlador de itens de orçamento.
+   * @param budget Dados do registro selecionado.
    * orçamentos.
    */
-  public BudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
+  public BudgetView(BudgetItemController budgetItemController, BudgetModel budget) {
+    this.budgetItemController = budgetItemController;
+
     initComponents();
+    
+    screenTitle.setText(budget.getName());
+
+    listBudgetItems(budget.getId());
+  }
+
+  /**
+   * Lista todos os itens de orçamento.
+   */
+  private void listBudgetItems(String budgetId) {
+    budgetItems = budgetItemController.getAllByBudgetId(budgetId);
+    DefaultListModel<String> model = new DefaultListModel<>();
+    budgetItemList.setModel(model);
+
+    for (BudgetItemModel budgetItem : budgetItems) {
+      String budgetItemName = budgetItem.getName();
+      String formattedValue = CurrencyFormatter.format(budgetItem.getValue());
+      String displayText = budgetItemName + "     -     " + formattedValue;
+      model.addElement(displayText);
+    }
   }
 
   /**
@@ -30,7 +57,7 @@ public class BudgetView extends javax.swing.JFrame {
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
-    budgetList = new javax.swing.JList<>();
+    budgetItemList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -51,8 +78,8 @@ public class BudgetView extends javax.swing.JFrame {
       }
     });
 
-    budgetList.setBorder(null);
-    jScrollPane1.setViewportView(budgetList);
+    budgetItemList.setBorder(null);
+    jScrollPane1.setViewportView(budgetItemList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -151,7 +178,7 @@ public class BudgetView extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
-  private javax.swing.JList<String> budgetList;
+  private javax.swing.JList<String> budgetItemList;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
   private javax.swing.JScrollPane jScrollPane1;

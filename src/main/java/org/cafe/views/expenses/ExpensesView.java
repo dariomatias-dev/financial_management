@@ -9,7 +9,6 @@ import org.cafe.utils.CurrencyFormatter;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
-
   private final ExpenseController expenseController;
   private ArrayList<ExpenseModel> expenses;
 
