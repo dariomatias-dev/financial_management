@@ -12,9 +12,9 @@ public class BudgetController extends DatabaseController<BudgetModel> {
 
   public BudgetController(DatabaseService databaseService) {
     super(
-      databaseService,
-      "Budgets",
-      new String[]{"name", "description", "category", "status", "initial_date", "end_date"}
+            databaseService,
+            "Budgets",
+            new String[]{"name", "description", "category", "status", "initial_date", "end_date"}
     );
   }
 
@@ -37,33 +37,29 @@ public class BudgetController extends DatabaseController<BudgetModel> {
   }
 
   public ArrayList<BudgetModel> getAll() {
-    try {
-      ArrayList<Object[]> results = super.findAll();
-      if (results.isEmpty()) {
-        throw new IllegalArgumentException("Nenhum orçamento encontrado.");
-      }
-
-      ArrayList<BudgetModel> budgets = new ArrayList<>();
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-      for (Object[] row : results) {
-        BudgetModel budget = new BudgetModel(
-          (String) row[0],
-          (String) row[1],
-          (String) row[2],
-          (String) row[3],
-          (String) row[4],
-          LocalDateTime.parse((String) row[5], formatter),
-          LocalDateTime.parse((String) row[6], formatter)
-        );
-
-        budgets.add(budget);
-      }
-
-      return budgets;
-    } catch (Exception e) {
-      throw new RuntimeException("Erro ao buscar os orçamentos: " + e.getMessage(), e);
+    ArrayList<Object[]> results = super.findAll();
+    if (results.isEmpty()) {
+      return new ArrayList<>();
     }
+
+    ArrayList<BudgetModel> budgets = new ArrayList<>();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    for (Object[] row : results) {
+      BudgetModel budget = new BudgetModel(
+              (String) row[0],
+              (String) row[1],
+              (String) row[2],
+              (String) row[3],
+              (String) row[4],
+              LocalDateTime.parse((String) row[5], formatter),
+              LocalDateTime.parse((String) row[6], formatter)
+      );
+
+      budgets.add(budget);
+    }
+
+    return budgets;
   }
 
   public void update(String id, CreateBudgetModel updatedBudget) {
