@@ -1,13 +1,14 @@
 package org.cafe.views.budget.components.manager_budget;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
+import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
@@ -18,10 +19,11 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param budgetController Controlador de orçamentos.
+   * @param data Dados do registro selecionado caso seja para atualizar.
    * @param onUpdateScreen Função para atualização da tela de listagem das
    * despesas.
    */
-  public ManagerBudgetView(BudgetController budgetController, Runnable onUpdateScreen) {
+  public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
     this.budgetController = budgetController;
     this.onUpdateScreen = onUpdateScreen;
 
@@ -33,6 +35,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     Date currentDate = new Date();
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     initialDateField.setText(formatter.format(currentDate));
+
+    if (data != null) {
+    }
   }
 
   /**
@@ -203,30 +208,26 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       String endDateText = endDateField.getText();
       String status = (String) statusSelect.getSelectedItem();
 
-      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty() || status.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty() || status.isEmpty()
+              || initialDateText.contains("_") || endDateText.contains("_")) {
+        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
       }
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      LocalDateTime initialDate;
-      LocalDateTime endDate;
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      LocalDate initialDate = LocalDate.parse(initialDateText, formatter);
+      LocalDate endDate = LocalDate.parse(endDateText, formatter);
 
-      try {
-        initialDate = LocalDateTime.parse(initialDateText, formatter);
-        endDate = LocalDateTime.parse(endDateText, formatter);
-      } catch (DateTimeParseException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira as datas no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
+      LocalDateTime initialDateTime = initialDate.atStartOfDay();
+      LocalDateTime endDateTime = endDate.atStartOfDay();
 
       CreateBudgetModel newBudget = new CreateBudgetModel(
               name,
               category,
               category,
               status,
-              initialDate,
-              endDate
+              initialDateTime,
+              endDateTime
       );
 
       budgetController.create(newBudget);

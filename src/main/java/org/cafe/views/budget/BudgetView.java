@@ -2,8 +2,10 @@ package org.cafe.views.budget;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.models.budget.BudgetModel;
+import org.cafe.views.budget.components.manager_budget.ManagerBudgetView;
 
 public class BudgetView extends javax.swing.JFrame {
   private final BudgetController budgetController;
@@ -15,7 +17,7 @@ public class BudgetView extends javax.swing.JFrame {
    * @param budgetController Controlador de orçamentos.
    */
   public BudgetView(
-    BudgetController budgetController
+          BudgetController budgetController
   ) {
     this.budgetController = budgetController;
 
@@ -30,7 +32,7 @@ public class BudgetView extends javax.swing.JFrame {
   private void listBudgets() {
     budgets = budgetController.getAll();
     DefaultListModel<String> model = new DefaultListModel<>();
-    expenseList.setModel(model);
+    budgetList.setModel(model);
 
     for (BudgetModel budget : budgets) {
       String displayText = String.format("Nome: %s | Categoria: %s | Status: %s", budget.getName(), budget.getCategory(), budget.getStatus());
@@ -44,6 +46,41 @@ public class BudgetView extends javax.swing.JFrame {
    * existem.
    */
   private void updateScreen() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    budgetList.setModel(model);
+    model.clear();
+    listBudgets();
+  }
+
+  private boolean verifyRecords(
+          String actionName
+  ) {
+    // Verifica se existe registros.
+    if (budgets.isEmpty()) {
+      JOptionPane.showMessageDialog(
+              null,
+              String.format("Não há registros para %s.", actionName),
+              "Aviso",
+              JOptionPane.WARNING_MESSAGE
+      );
+
+      return false;
+    }
+
+    // Verifica se um registro foi selecionado.
+    int selectedIndex = budgetList.getSelectedIndex();
+    if (selectedIndex == -1) {
+      JOptionPane.showMessageDialog(
+              null,
+              "Por favor, selecione um registro.",
+              "Aviso",
+              JOptionPane.WARNING_MESSAGE
+      );
+
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -59,7 +96,7 @@ public class BudgetView extends javax.swing.JFrame {
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
-    expenseList = new javax.swing.JList<>();
+    budgetList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -81,8 +118,8 @@ public class BudgetView extends javax.swing.JFrame {
       }
     });
 
-    expenseList.setBorder(null);
-    jScrollPane1.setViewportView(expenseList);
+    budgetList.setBorder(null);
+    jScrollPane1.setViewportView(budgetList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -183,7 +220,24 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+    if (verifyRecords("excluir")) {
+      // Confirmar remoção de registro.
+      int confirm = JOptionPane.showConfirmDialog(
+              null,
+              "Você realmente deseja excluir este registro?",
+              "Confirmar Exclusão",
+              JOptionPane.YES_NO_OPTION,
+              JOptionPane.WARNING_MESSAGE
+      );
 
+      // Se o usuário confirmar, exclui o registro.
+      if (confirm == JOptionPane.YES_OPTION) {
+        BudgetModel selectedExpense = budgets.get(budgetList.getSelectedIndex());
+        budgetController.removeById(selectedExpense.getId());
+
+        updateScreen();
+      }
+    }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
@@ -191,7 +245,9 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_updateButtonMouseClicked
 
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+      ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::updateScreen);
 
+      createManagerBudgetView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   private void updateButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButton1MouseClicked
@@ -209,9 +265,9 @@ public class BudgetView extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
+  private javax.swing.JList<String> budgetList;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
-  private javax.swing.JList<String> expenseList;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton updateButton;
