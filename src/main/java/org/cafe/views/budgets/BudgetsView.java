@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
+import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.views.budget.BudgetView;
 import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
@@ -56,37 +57,6 @@ public class BudgetsView extends javax.swing.JFrame {
     budgetList.setModel(model);
     model.clear();
     listBudgets();
-  }
-
-  private boolean verifyRecords(
-          String actionName
-  ) {
-    // Verifica se existe registros.
-    if (budgets.isEmpty()) {
-      JOptionPane.showMessageDialog(
-              null,
-              String.format("Não há registros para %s.", actionName),
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    // Verifica se um registro foi selecionado.
-    int selectedIndex = budgetList.getSelectedIndex();
-    if (selectedIndex == -1) {
-      JOptionPane.showMessageDialog(
-              null,
-              "Por favor, selecione um registro.",
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    return true;
   }
 
   /**
@@ -216,7 +186,7 @@ public class BudgetsView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (verifyRecords("excluir")) {
+    if (RecordVerificationUtil.verifyRecords(budgetList, "excluir")) {
       // Confirmar remoção de registro.
       int confirm = JOptionPane.showConfirmDialog(
               null,
@@ -237,7 +207,7 @@ public class BudgetsView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (verifyRecords("atualizar")) {
+    if (RecordVerificationUtil.verifyRecords(budgetList, "atualizar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
       ManagerBudgetView updateManagerBudgetView = new ManagerBudgetView(budgetController, selectedBudget, this::updateScreen);
 
@@ -252,7 +222,7 @@ public class BudgetsView extends javax.swing.JFrame {
   }//GEN-LAST:event_addButtonMouseClicked
 
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
-    if (verifyRecords("acessar")) {
+    if (RecordVerificationUtil.verifyRecords(budgetList, "acessar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
       BudgetView budgetView = new BudgetView(budgetItemController, selectedBudget);
 

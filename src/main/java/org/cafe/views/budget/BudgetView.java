@@ -7,6 +7,7 @@ import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
 public class BudgetView extends javax.swing.JFrame {
@@ -56,37 +57,6 @@ public class BudgetView extends javax.swing.JFrame {
     budgetItemList.setModel(model);
     model.clear();
     listBudgetItems();
-  }
-
-  private boolean verifyRecords(
-          String actionName
-  ) {
-    // Verifica se existe registros.
-    if (budgetItems.isEmpty()) {
-      JOptionPane.showMessageDialog(
-              null,
-              String.format("Não há registros para %s.", actionName),
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    // Verifica se um registro foi selecionado.
-    int selectedIndex = budgetItemList.getSelectedIndex();
-    if (selectedIndex == -1) {
-      JOptionPane.showMessageDialog(
-              null,
-              "Por favor, selecione um registro.",
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    return true;
   }
 
   /**
@@ -209,7 +179,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (verifyRecords("excluir")) {
+    if (RecordVerificationUtil.verifyRecords(budgetItemList, "excluir")) {
       // Confirmar remoção de registro.
       int confirm = JOptionPane.showConfirmDialog(
               null,
@@ -230,7 +200,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (verifyRecords("atualizar")) {
+    if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
       BudgetItemModel selectedBudget = budgetItems.get(budgetItemList.getSelectedIndex());
       ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(budgetId, budgetItemController, selectedBudget, this::updateScreen);
 

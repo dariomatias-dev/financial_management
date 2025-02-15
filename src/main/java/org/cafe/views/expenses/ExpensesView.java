@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
@@ -153,7 +154,7 @@ public class ExpensesView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton))
-        .addContainerGap(361, Short.MAX_VALUE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -181,7 +182,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
   // Ação de excluir registro.
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-      if (verifyRecords("excluir")) {
+      if (RecordVerificationUtil.verifyRecords(expenseList, "excluir")) {
         // Confirmar remoção de registro.
         int confirm = JOptionPane.showConfirmDialog(
                 null,
@@ -208,44 +209,13 @@ public class ExpensesView extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-      if (verifyRecords("atualizar")) {
+      if (RecordVerificationUtil.verifyRecords(expenseList, "atualizar")) {
         ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
         ManagerExpenseView updateManagerRegisterView = new ManagerExpenseView(expenseController, selectedExpense, this::updateScreen);
 
         updateManagerRegisterView.setVisible(true);
       }
     }//GEN-LAST:event_updateButtonMouseClicked
-
-  private boolean verifyRecords(
-          String actionName
-  ) {
-    // Verifica se existe registros.
-    if (expenses.isEmpty()) {
-      JOptionPane.showMessageDialog(
-              null,
-              String.format("Não há registros para %s.", actionName),
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    // Verifica se um registro foi selecionado.
-    int selectedIndex = expenseList.getSelectedIndex();
-    if (selectedIndex == -1) {
-      JOptionPane.showMessageDialog(
-              null,
-              "Por favor, selecione um registro.",
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    return true;
-  }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
