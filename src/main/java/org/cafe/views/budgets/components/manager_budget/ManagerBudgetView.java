@@ -223,9 +223,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       String category = categoryField.getText();
       String initialDateText = initialDateField.getText();
       String endDateText = endDateField.getText();
-      String status = (String) statusSelect.getSelectedItem();
 
-      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty() || status.isEmpty()
+      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty()
               || initialDateText.contains("_") || endDateText.contains("_")) {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
@@ -237,6 +236,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
       LocalDateTime initialDateTime = initialDate.atStartOfDay();
       LocalDateTime endDateTime = endDate.atStartOfDay();
+
+      String status = (String) statusSelect.getSelectedItem();
 
       if (data != null) {
         BudgetModel budget = new BudgetModel(

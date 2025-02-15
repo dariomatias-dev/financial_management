@@ -1,4 +1,4 @@
- package org.cafe.views.budget;
+package org.cafe.views.budget;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -6,8 +6,10 @@ import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.CurrencyFormatter;
+import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
 public class BudgetView extends javax.swing.JFrame {
+  private final String budgetId;
   private final BudgetItemController budgetItemController;
   private ArrayList<BudgetItemModel> budgetItems;
 
@@ -15,23 +17,23 @@ public class BudgetView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param budgetItemController Controlador de itens de orçamento.
-   * @param budget Dados do registro selecionado.
-   * orçamentos.
+   * @param budget Dados do registro selecionado. orçamentos.
    */
   public BudgetView(BudgetItemController budgetItemController, BudgetModel budget) {
+    this.budgetId = budget.getId();
     this.budgetItemController = budgetItemController;
 
     initComponents();
-    
+
     screenTitle.setText(budget.getName());
 
-    listBudgetItems(budget.getId());
+    listBudgetItems();
   }
 
   /**
    * Lista todos os itens de orçamento.
    */
-  private void listBudgetItems(String budgetId) {
+  private void listBudgetItems() {
     budgetItems = budgetItemController.getAllByBudgetId(budgetId);
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetItemList.setModel(model);
@@ -42,6 +44,17 @@ public class BudgetView extends javax.swing.JFrame {
       String displayText = budgetItemName + "     -     " + formattedValue;
       model.addElement(displayText);
     }
+  }
+
+  /**
+   * Atualiza a lista de itens de orçamento para exibir somente os itens
+   * orçamento que existem.
+   */
+  private void updateScreen() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    budgetItemList.setModel(model);
+    model.clear();
+    listBudgetItems();
   }
 
   /**
@@ -172,7 +185,14 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_updateButtonMouseClicked
 
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+    ManagerBudgetItemView createManagerBudgetItemView = new ManagerBudgetItemView(
+            budgetId,
+            budgetItemController,
+            null,
+            this::updateScreen
+    );
 
+    createManagerBudgetItemView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
