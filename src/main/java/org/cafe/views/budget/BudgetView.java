@@ -2,6 +2,7 @@ package org.cafe.views.budget;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
@@ -55,6 +56,37 @@ public class BudgetView extends javax.swing.JFrame {
     budgetItemList.setModel(model);
     model.clear();
     listBudgetItems();
+  }
+
+  private boolean verifyRecords(
+          String actionName
+  ) {
+    // Verifica se existe registros.
+    if (budgetItems.isEmpty()) {
+      JOptionPane.showMessageDialog(
+              null,
+              String.format("Não há registros para %s.", actionName),
+              "Aviso",
+              JOptionPane.WARNING_MESSAGE
+      );
+
+      return false;
+    }
+
+    // Verifica se um registro foi selecionado.
+    int selectedIndex = budgetItemList.getSelectedIndex();
+    if (selectedIndex == -1) {
+      JOptionPane.showMessageDialog(
+              null,
+              "Por favor, selecione um registro.",
+              "Aviso",
+              JOptionPane.WARNING_MESSAGE
+      );
+
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -177,11 +209,33 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+    if (verifyRecords("excluir")) {
+      // Confirmar remoção de registro.
+      int confirm = JOptionPane.showConfirmDialog(
+              null,
+              "Você realmente deseja excluir este registro?",
+              "Confirmar Exclusão",
+              JOptionPane.YES_NO_OPTION,
+              JOptionPane.WARNING_MESSAGE
+      );
 
+      // Se o usuário confirmar, exclui o registro.
+      if (confirm == JOptionPane.YES_OPTION) {
+        BudgetItemModel selectedExpense = budgetItems.get(budgetItemList.getSelectedIndex());
+        budgetItemController.removeById(selectedExpense.getId());
+
+        updateScreen();
+      }
+    }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+    if (verifyRecords("atualizar")) {
+      BudgetItemModel selectedBudget = budgetItems.get(budgetItemList.getSelectedIndex());
+      ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(budgetId, budgetItemController, selectedBudget, this::updateScreen);
 
+      updateManagerBudgetItemView.setVisible(true);
+    }
   }//GEN-LAST:event_updateButtonMouseClicked
 
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
