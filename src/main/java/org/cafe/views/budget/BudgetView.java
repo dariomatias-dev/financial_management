@@ -241,13 +241,18 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+    if (verifyRecords("atualizar")) {
+      BudgetModel selectedExpense = budgets.get(budgetList.getSelectedIndex());
+      ManagerBudgetView updateManagerBudgetView = new ManagerBudgetView(budgetController, selectedExpense, this::updateScreen);
 
+      updateManagerBudgetView.setVisible(true);
+    }
   }//GEN-LAST:event_updateButtonMouseClicked
 
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-      ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::updateScreen);
+    ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::updateScreen);
 
-      createManagerBudgetView.setVisible(true);
+    createManagerBudgetView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   private void updateButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButton1MouseClicked

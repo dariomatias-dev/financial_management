@@ -62,7 +62,7 @@ public class BudgetController extends DatabaseController<BudgetModel> {
     return budgets;
   }
 
-  public void update(String id, CreateBudgetModel updatedBudget) {
+  public void update(BudgetModel updatedBudget) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     String initialDateFormatted = updatedBudget.getInitialDate().format(formatter);
@@ -77,6 +77,6 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       endDateFormatted
     };
 
-    super.setById(id, values);
+    super.setById(updatedBudget.getId(), values);
   }
 }

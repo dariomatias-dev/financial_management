@@ -3,6 +3,7 @@ package org.cafe.views.budget.components.manager_budget;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -13,6 +14,7 @@ import org.cafe.models.budget.CreateBudgetModel;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
   private final Runnable onUpdateScreen;
+  private final BudgetModel data;
   private final BudgetController budgetController;
 
   /**
@@ -25,6 +27,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    */
   public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
     this.budgetController = budgetController;
+    this.data = data;
     this.onUpdateScreen = onUpdateScreen;
 
     initComponents();
@@ -32,11 +35,25 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     new DateMaskFormatter().applyMask(initialDateField);
     new DateMaskFormatter().applyMask(endDateField);
 
-    Date currentDate = new Date();
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    initialDateField.setText(formatter.format(currentDate));
 
     if (data != null) {
+      nameField.setText(data.getName());
+      descriptionField.setText(data.getDescription());
+      categoryField.setText(data.getCategory());
+      statusSelect.setSelectedItem(data.getStatus());
+
+      Date initialDateAsDate = Date.from(data.getInitialDate().atZone(ZoneId.systemDefault()).toInstant());
+      Date endDateAsDate = Date.from(data.getEndDate().atZone(ZoneId.systemDefault()).toInstant());
+
+      initialDateField.setText(formatter.format(initialDateAsDate));
+      endDateField.setText(formatter.format(endDateAsDate));
+
+      screenTitle.setText("Atualizar Orçamento");
+      actionButton.setText("Atualizar");
+    } else {
+      Date currentDate = new Date();
+      initialDateField.setText(formatter.format(currentDate));
     }
   }
 
@@ -53,12 +70,12 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     screenTitle = new javax.swing.JLabel();
     nameLabel = new javax.swing.JLabel();
     nameField = new javax.swing.JTextField();
-    valueField = new javax.swing.JTextField();
-    valueLabell = new javax.swing.JLabel();
+    descriptionField = new javax.swing.JTextField();
+    descriptionLabel = new javax.swing.JLabel();
     categoryField = new javax.swing.JTextField();
     categoryLabel = new javax.swing.JLabel();
     actionButton = new javax.swing.JButton();
-    calcelButton = new javax.swing.JButton();
+    cancelButton = new javax.swing.JButton();
     statusLabel = new javax.swing.JLabel();
     initialDateLabel = new javax.swing.JLabel();
     endDateLabel = new javax.swing.JLabel();
@@ -78,9 +95,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     nameLabel.setForeground(new java.awt.Color(0, 0, 0));
     nameLabel.setText("Nome:");
 
-    valueLabell.setBackground(new java.awt.Color(0, 0, 0));
-    valueLabell.setForeground(new java.awt.Color(0, 0, 0));
-    valueLabell.setText("Descrição:");
+    descriptionLabel.setBackground(new java.awt.Color(0, 0, 0));
+    descriptionLabel.setForeground(new java.awt.Color(0, 0, 0));
+    descriptionLabel.setText("Descrição:");
 
     categoryLabel.setBackground(new java.awt.Color(0, 0, 0));
     categoryLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -93,10 +110,10 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       }
     });
 
-    calcelButton.setText("Cancelar");
-    calcelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    cancelButton.setText("Cancelar");
+    cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
-        calcelButtonMouseClicked(evt);
+        cancelButtonMouseClicked(evt);
       }
     });
 
@@ -126,12 +143,12 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(nameField)
-          .addComponent(valueField)
+          .addComponent(descriptionField)
           .addComponent(categoryField)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(nameLabel)
-              .addComponent(valueLabell)
+              .addComponent(descriptionLabel)
               .addComponent(categoryLabel)
               .addComponent(statusLabel)
               .addComponent(initialDateLabel)
@@ -140,7 +157,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(calcelButton)
+            .addComponent(cancelButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(actionButton))
           .addComponent(endDateField)
@@ -157,9 +174,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(valueLabell)
+        .addComponent(descriptionLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(categoryLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -179,7 +196,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addGap(18, 18, 18)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(actionButton)
-          .addComponent(calcelButton))
+          .addComponent(cancelButton))
         .addContainerGap(18, Short.MAX_VALUE))
     );
 
@@ -197,9 +214,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-    private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
       this.dispose();
-    }//GEN-LAST:event_calcelButtonMouseClicked
+    }//GEN-LAST:event_cancelButtonMouseClicked
 
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
       String name = nameField.getText();
@@ -221,16 +238,30 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       LocalDateTime initialDateTime = initialDate.atStartOfDay();
       LocalDateTime endDateTime = endDate.atStartOfDay();
 
-      CreateBudgetModel newBudget = new CreateBudgetModel(
-              name,
-              category,
-              category,
-              status,
-              initialDateTime,
-              endDateTime
-      );
+      if (data != null) {
+        BudgetModel budget = new BudgetModel(
+                data.getId(),
+                name,
+                category,
+                category,
+                status,
+                initialDateTime,
+                endDateTime
+        );
 
-      budgetController.create(newBudget);
+        budgetController.update(budget);
+      } else {
+        CreateBudgetModel newBudget = new CreateBudgetModel(
+                name,
+                category,
+                category,
+                status,
+                initialDateTime,
+                endDateTime
+        );
+
+        budgetController.create(newBudget);
+      }
 
       onUpdateScreen.run();
 
@@ -240,9 +271,11 @@ public class ManagerBudgetView extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton actionButton;
   private javax.swing.JPanel background;
-  private javax.swing.JButton calcelButton;
+  private javax.swing.JButton cancelButton;
   private javax.swing.JTextField categoryField;
   private javax.swing.JLabel categoryLabel;
+  private javax.swing.JTextField descriptionField;
+  private javax.swing.JLabel descriptionLabel;
   private javax.swing.JFormattedTextField endDateField;
   private javax.swing.JLabel endDateLabel;
   private javax.swing.JFormattedTextField initialDateField;
@@ -252,7 +285,5 @@ public class ManagerBudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel screenTitle;
   private javax.swing.JLabel statusLabel;
   private javax.swing.JComboBox<String> statusSelect;
-  private javax.swing.JTextField valueField;
-  private javax.swing.JLabel valueLabell;
   // End of variables declaration//GEN-END:variables
 }

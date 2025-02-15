@@ -52,12 +52,12 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="nameField" max="32767" attributes="0"/>
-                      <Component id="valueField" alignment="0" max="32767" attributes="0"/>
+                      <Component id="descriptionField" alignment="0" max="32767" attributes="0"/>
                       <Component id="categoryField" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="nameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="valueLabell" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="descriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="categoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="statusLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="initialDateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -68,7 +68,7 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="calcelButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="actionButton" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -89,9 +89,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="nameField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="valueLabell" min="-2" max="-2" attributes="0"/>
+                  <Component id="descriptionLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="valueField" min="-2" max="-2" attributes="0"/>
+                  <Component id="descriptionField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -111,7 +111,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="actionButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="calcelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="18" max="32767" attributes="0"/>
               </Group>
@@ -143,9 +143,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="nameField">
         </Component>
-        <Component class="javax.swing.JTextField" name="valueField">
+        <Component class="javax.swing.JTextField" name="descriptionField">
         </Component>
-        <Component class="javax.swing.JLabel" name="valueLabell">
+        <Component class="javax.swing.JLabel" name="descriptionLabel">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
@@ -177,12 +177,12 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="actionButtonMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="calcelButton">
+        <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="calcelButtonMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cancelButtonMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="statusLabel">
