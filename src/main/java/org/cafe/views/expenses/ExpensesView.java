@@ -5,7 +5,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
-import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
@@ -36,7 +36,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
     for (ExpenseModel expense : expenses) {
       String expenseName = expense.getName();
-      String formattedValue = CurrencyFormatter.format(expense.getValue());
+      String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
       String displayText = expenseName + "     -     " + formattedValue;
       model.addElement(displayText);
     }

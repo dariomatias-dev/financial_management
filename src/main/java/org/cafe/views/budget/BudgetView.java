@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
-import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
@@ -42,7 +42,7 @@ public class BudgetView extends javax.swing.JFrame {
 
     for (BudgetItemModel budgetItem : budgetItems) {
       String budgetItemName = budgetItem.getName();
-      String formattedValue = CurrencyFormatter.format(budgetItem.getValue());
+      String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
       String displayText = budgetItemName + "     -     " + formattedValue;
       model.addElement(displayText);
     }
