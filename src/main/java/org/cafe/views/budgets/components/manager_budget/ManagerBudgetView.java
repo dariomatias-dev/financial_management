@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.cafe.core.formatters.DateMaskFormatter;
@@ -231,8 +232,22 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       }
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-      LocalDate initialDate = LocalDate.parse(initialDateText, formatter);
-      LocalDate endDate = LocalDate.parse(endDateText, formatter);
+
+      LocalDate initialDate;
+      LocalDate endDate;
+
+      try {
+        initialDate = LocalDate.parse(initialDateText, formatter);
+        endDate = LocalDate.parse(endDateText, formatter);
+      } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, insira as datas no formato correto (dia/mês/ano).", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      if (initialDate.isAfter(endDate)) {
+        JOptionPane.showMessageDialog(this, "A data de início não pode ser posterior à data de término.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
       LocalDateTime initialDateTime = initialDate.atStartOfDay();
       LocalDateTime endDateTime = endDate.atStartOfDay();
