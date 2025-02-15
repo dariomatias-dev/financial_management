@@ -25,6 +25,9 @@ public class DatabaseManager {
       if (connection != null) {
         System.out.println("Connected Successfully.");
 
+        Statement stmt = connection.createStatement();
+        stmt.execute("PRAGMA foreign_keys = ON;");
+
         createTasksTable();
       } else {
         System.out.println("Connection Failure.");
@@ -81,12 +84,25 @@ public class DatabaseManager {
       );
     """;
 
+    String createBudgetItemsTable = """
+      CREATE TABLE IF NOT EXISTS BudgetItems (
+          id VARCHAR(36) PRIMARY KEY,
+          budget_id VARCHAR(36) NOT NULL,
+          name TEXT NOT NULL,
+          description TEXT,
+          value REAL NOT NULL,
+          period TEXT NOT NULL,
+          FOREIGN KEY (budget_id) REFERENCES Budgets(id) ON DELETE CASCADE
+      );
+    """;
+
     try {
       Statement statement = connection.createStatement();
       statement.execute(createUserAccountTable);
       statement.execute(createExpensesTable);
       statement.execute(createRevenuesTable);
       statement.execute(createBudgetsTable);
+      statement.execute(createBudgetItemsTable);
     } catch (SQLException e) {
       throw new RuntimeException("Error creating tables: " + e.getMessage(), e);
     }
