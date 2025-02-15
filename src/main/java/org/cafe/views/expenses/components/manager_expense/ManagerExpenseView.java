@@ -1,4 +1,4 @@
-package org.cafe.views.expense.components.manager_expense;
+package org.cafe.views.expenses.components.manager_expense;
 
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;

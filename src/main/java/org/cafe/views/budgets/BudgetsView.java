@@ -1,13 +1,13 @@
-package org.cafe.views.budget;
+package org.cafe.views.budgets;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.models.budget.BudgetModel;
-import org.cafe.views.budget.components.manager_budget.ManagerBudgetView;
+import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
-public class BudgetView extends javax.swing.JFrame {
+public class BudgetsView extends javax.swing.JFrame {
   private final BudgetController budgetController;
   private ArrayList<BudgetModel> budgets;
 
@@ -16,7 +16,7 @@ public class BudgetView extends javax.swing.JFrame {
    *
    * @param budgetController Controlador de orçamentos.
    */
-  public BudgetView(
+  public BudgetsView(
           BudgetController budgetController
   ) {
     this.budgetController = budgetController;

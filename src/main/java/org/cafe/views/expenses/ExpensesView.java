@@ -1,4 +1,4 @@
-package org.cafe.views.expense;
+package org.cafe.views.expenses;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -6,9 +6,9 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.CurrencyFormatter;
-import org.cafe.views.expense.components.manager_expense.ManagerExpenseView;
+import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
-public class ExpenseView extends javax.swing.JFrame {
+public class ExpensesView extends javax.swing.JFrame {
 
   private final ExpenseController expenseController;
   private ArrayList<ExpenseModel> expenses;
@@ -18,7 +18,7 @@ public class ExpenseView extends javax.swing.JFrame {
    *
    * @param expenseController Controlador de despesas.
    */
-  public ExpenseView(ExpenseController expenseController) {
+  public ExpensesView(ExpenseController expenseController) {
     this.expenseController = expenseController;
 
     initComponents();

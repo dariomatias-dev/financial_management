@@ -1,4 +1,4 @@
-package org.cafe.views.budget.components.manager_budget;
+package org.cafe.views.budgets.components.manager_budget;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
