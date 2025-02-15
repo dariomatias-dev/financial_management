@@ -21,9 +21,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param budgetController Controlador de orçamentos.
-   * @param data Dados do registro selecionado caso seja para atualizar.
-   * @param onUpdateScreen Função para atualização da tela de listagem das
-   * despesas.
+   * @param data Dados do registro selecionado.
+   * @param onUpdateScreen Função para atualização da tela de listagem dos
+   * orçamentos.
    */
   public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
     this.budgetController = budgetController;

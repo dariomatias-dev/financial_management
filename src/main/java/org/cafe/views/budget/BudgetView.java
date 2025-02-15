@@ -1,87 +1,20 @@
-package org.cafe.views.budgets;
+package org.cafe.views.budget;
 
-import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.models.budget.BudgetModel;
-import org.cafe.views.budget.BudgetView;
-import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
-public class BudgetsView extends javax.swing.JFrame {
-  private final BudgetController budgetController;
-  private ArrayList<BudgetModel> budgets;
+public class BudgetView extends javax.swing.JFrame {
 
   /**
    * Construtor.
    *
    * @param budgetController Controlador de orçamentos.
+   * @param data Dados do registro selecionado.
+   * @param onUpdateScreen Função para atualização da tela de listagem dos
+   * orçamentos.
    */
-  public BudgetsView(
-          BudgetController budgetController
-  ) {
-    this.budgetController = budgetController;
-
+  public BudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
     initComponents();
-
-    listBudgets();
-  }
-
-  /**
-   * Lista todos os orçamentos.
-   */
-  private void listBudgets() {
-    budgets = budgetController.getAll();
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetList.setModel(model);
-
-    for (BudgetModel budget : budgets) {
-      String displayText = String.format("Nome: %s | Categoria: %s | Status: %s", budget.getName(), budget.getCategory(), budget.getStatus());
-
-      model.addElement(displayText);
-    }
-  }
-
-  /**
-   * Atualiza a lista de orçamentos para exibir somente os orçamentos que
-   * existem.
-   */
-  private void updateScreen() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetList.setModel(model);
-    model.clear();
-    listBudgets();
-  }
-
-  private boolean verifyRecords(
-          String actionName
-  ) {
-    // Verifica se existe registros.
-    if (budgets.isEmpty()) {
-      JOptionPane.showMessageDialog(
-              null,
-              String.format("Não há registros para %s.", actionName),
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    // Verifica se um registro foi selecionado.
-    int selectedIndex = budgetList.getSelectedIndex();
-    if (selectedIndex == -1) {
-      JOptionPane.showMessageDialog(
-              null,
-              "Por favor, selecione um registro.",
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
-
-      return false;
-    }
-
-    return true;
   }
 
   /**
@@ -101,7 +34,6 @@ public class BudgetsView extends javax.swing.JFrame {
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
-    accessButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,7 +41,7 @@ public class BudgetsView extends javax.swing.JFrame {
 
     screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
-    screenTitle.setText("Orçamentos");
+    screenTitle.setText("Orçamento");
 
     exitButton.setForeground(new java.awt.Color(255, 0, 51));
     exitButton.setText("Sair");
@@ -144,13 +76,6 @@ public class BudgetsView extends javax.swing.JFrame {
       }
     });
 
-    accessButton.setText("Acessar");
-    accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        accessButtonMouseClicked(evt);
-      }
-    });
-
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -160,8 +85,6 @@ public class BudgetsView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(accessButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
@@ -169,10 +92,10 @@ public class BudgetsView extends javax.swing.JFrame {
             .addComponent(exitButton)
             .addGap(34, 34, 34)
             .addComponent(screenTitle)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(addButton)))
         .addContainerGap())
-      .addComponent(jScrollPane1)
+      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,20 +110,23 @@ public class BudgetsView extends javax.swing.JFrame {
         .addGap(18, 18, 18)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
-          .addComponent(updateButton)
-          .addComponent(accessButton))
-        .addContainerGap(267, Short.MAX_VALUE))
+          .addComponent(updateButton))
+        .addContainerGap(145, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(0, 0, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(0, 0, Short.MAX_VALUE))
     );
 
     pack();
@@ -211,52 +137,18 @@ public class BudgetsView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (verifyRecords("excluir")) {
-      // Confirmar remoção de registro.
-      int confirm = JOptionPane.showConfirmDialog(
-              null,
-              "Você realmente deseja excluir este registro?",
-              "Confirmar Exclusão",
-              JOptionPane.YES_NO_OPTION,
-              JOptionPane.WARNING_MESSAGE
-      );
 
-      // Se o usuário confirmar, exclui o registro.
-      if (confirm == JOptionPane.YES_OPTION) {
-        BudgetModel selectedExpense = budgets.get(budgetList.getSelectedIndex());
-        budgetController.removeById(selectedExpense.getId());
-
-        updateScreen();
-      }
-    }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (verifyRecords("atualizar")) {
-      BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
-      ManagerBudgetView updateManagerBudgetView = new ManagerBudgetView(budgetController, selectedBudget, this::updateScreen);
 
-      updateManagerBudgetView.setVisible(true);
-    }
   }//GEN-LAST:event_updateButtonMouseClicked
 
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::updateScreen);
 
-    createManagerBudgetView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
-  private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
-    if (verifyRecords("acessar")) {
-      BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
-      BudgetView budgetView = new BudgetView(budgetController, selectedBudget, this::updateScreen);
-
-      budgetView.setVisible(true);
-    }
-  }//GEN-LAST:event_accessButtonMouseClicked
-
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton accessButton;
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
   private javax.swing.JList<String> budgetList;
