@@ -52,7 +52,7 @@ public class BudgetView extends javax.swing.JFrame {
 
   private void initializeSearchField() {
     labelInvisible.setFocusable(true);
-    
+
     new SearchFieldHandlerUtil(searchField).initialize();
   }
 
@@ -109,7 +109,7 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado quando um novo orçamento é criado.
+   * Método chamado quando um item de orçamento é criado.
    */
   private void onBudgetItemCreated() {
     updateScreen();
@@ -118,7 +118,7 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado quando um novo orçamento é criado.
+   * Método chamado quando um item de orçamento é atualizado.
    */
   private void onBudgetItemUpdated(
           BudgetItemModel budgetItem,
@@ -350,7 +350,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
-   * Abre a tela de atualização de item de orçamento para o item selecionado.
+   * Abre a tela de atualização de item de orçamento do item selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
@@ -369,7 +369,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
-   * Remove o item selecionado do orçamento.
+   * Remove o item selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemList, "excluir")) {
@@ -394,6 +394,9 @@ public class BudgetView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
+  /**
+   * Ação de sair da tela.
+   */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked

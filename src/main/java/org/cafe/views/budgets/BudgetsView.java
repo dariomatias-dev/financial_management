@@ -231,10 +231,16 @@ public class BudgetsView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Ação de sair da tela.
+   */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  /**
+   * Remove o orçamento selecionado.
+   */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetList, "excluir")) {
       // Confirmar remoção de registro.
@@ -256,6 +262,9 @@ public class BudgetsView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
+  /**
+   * Abre a tela de atualização de orçamento do orçamento selecionado.
+   */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetList, "atualizar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
@@ -271,12 +280,18 @@ public class BudgetsView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_updateButtonMouseClicked
 
+  /**
+   * Abre a tela de criação de orçamento.
+   */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
     ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::onBudgetCreated);
 
     createManagerBudgetView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
+  /**
+   * Abre a tela de orçamento do orçamento selecionado.
+   */
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetList, "acessar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
@@ -293,6 +308,10 @@ public class BudgetsView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_accessButtonMouseClicked
 
+  /**
+   * Filtra os orçamento com base no nome e na descrição, baseado no texto
+   * inserido na pesquisa.
+   */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     String query = searchField.getText();
 
