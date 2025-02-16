@@ -1,7 +1,5 @@
 package org.cafe.views.budget;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -14,6 +12,7 @@ import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
+import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
 public class BudgetView extends javax.swing.JFrame {
@@ -53,23 +52,8 @@ public class BudgetView extends javax.swing.JFrame {
 
   private void initializeSearchField() {
     labelInvisible.setFocusable(true);
-
-    searchField.setText("Pesquisar...");
-    searchField.addFocusListener(new FocusListener() {
-      @Override
-      public void focusGained(FocusEvent e) {
-        if (searchField.getText().equals("Pesquisar...")) {
-          searchField.setText("");
-        }
-      }
-
-      @Override
-      public void focusLost(FocusEvent e) {
-        if (searchField.getText().isEmpty()) {
-          searchField.setText("Pesquisar...");
-        }
-      }
-    });
+    
+    new SearchFieldHandlerUtil(searchField).initialize();
   }
 
   /**
