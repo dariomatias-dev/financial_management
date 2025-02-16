@@ -1,5 +1,6 @@
 package org.cafe.views.budget.components.manager_budget_item;
 
+import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget_item.BudgetItemModel;
@@ -9,7 +10,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
   private final String budgetId;
   private final BudgetItemController budgetItemController;
   private final BudgetItemModel data;
-  private final Runnable onUpdateScreen;
+  private final Consumer<BudgetItemModel> onUpdateScreen;
 
   /**
    * Construtor.
@@ -20,7 +21,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
    * @param onUpdateScreen Função para atualização da tela de listagem das
    * despesas.
    */
-  public ManagerBudgetItemView(String budgetId, BudgetItemController budgetItemController, BudgetItemModel data, Runnable onUpdateScreen) {
+  public ManagerBudgetItemView(String budgetId, BudgetItemController budgetItemController, BudgetItemModel data, Consumer<BudgetItemModel> onUpdateScreen) {
     this.budgetId = budgetId;
     this.budgetItemController = budgetItemController;
     this.data = data;
@@ -192,8 +193,10 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
 
     String periodicity = (String) periodicitySelect.getSelectedItem();
 
+    BudgetItemModel budgetItem;
+
     if (data != null) {
-      BudgetItemModel budgetItem = new BudgetItemModel(
+      budgetItem = new BudgetItemModel(
               data.getId(),
               budgetId,
               name,
@@ -204,7 +207,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
 
       budgetItemController.update(budgetItem);
     } else {
-      CreateBudgetItemModel budgetItem = new CreateBudgetItemModel(
+      CreateBudgetItemModel createBudgetItem = new CreateBudgetItemModel(
               budgetId,
               name,
               description,
@@ -212,10 +215,19 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               periodicity
       );
 
-      budgetItemController.create(budgetItem);
+      String budgetItemId = budgetItemController.create(createBudgetItem);
+
+      budgetItem = new BudgetItemModel(
+              budgetItemId,
+              budgetId,
+              name,
+              description,
+              value,
+              periodicity
+      );
     }
 
-    onUpdateScreen.run();
+    onUpdateScreen.accept(budgetItem);
 
     this.dispose();
   }//GEN-LAST:event_actionButtonMouseClicked

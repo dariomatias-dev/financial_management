@@ -15,7 +15,7 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
     );
   }
 
-  public void create(CreateBudgetItemModel createBudgetItemModel) {
+  public String create(CreateBudgetItemModel createBudgetItemModel) {
     Object[] values = {
       createBudgetItemModel.getBudgetId(),
       createBudgetItemModel.getName(),
@@ -24,7 +24,7 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
       createBudgetItemModel.getPeriod()
     };
 
-    super.insert(values);
+    return super.insert(values);
   }
 
   public ArrayList<BudgetItemModel> getAll() {
