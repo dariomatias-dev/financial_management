@@ -1,5 +1,6 @@
 package org.cafe.views.budget;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import javax.swing.DefaultListModel;
@@ -36,7 +37,15 @@ public class BudgetView extends javax.swing.JFrame {
 
     initComponents();
 
-    screenTitle.setText(budget.getName());
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    nameText.setText("Nome: " + budget.getName());
+    categoryText.setText("Categoria: " + budget.getCategory());
+    descriptionText.setText("Descrição: " + budget.getDescription());
+    statusText.setText("Status: " + budget.getStatus());
+    valueText.setText("Valor: R$ " + budget.getValue());
+    initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(formatter));
+    endDateText.setText("Data Final: " + budget.getEndDate().format(formatter));
 
     listBudgetItems();
   }
@@ -45,8 +54,6 @@ public class BudgetView extends javax.swing.JFrame {
    * Lista todos os itens de orçamento.
    */
   private void listBudgetItems() {
-    valueBudget.setText("Orçamento: " + budget.getValue());
-
     budgetItems = budgetItemController.getAllByBudgetId(budget.getId());
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetItemList.setModel(model);
@@ -96,7 +103,7 @@ public class BudgetView extends javax.swing.JFrame {
   private void calculateBudgetValue() {
     budget = new BudgetCalculator().calculate(budget, budgetController, budgetItems);
 
-    valueBudget.setText("Orçamento: " + budget.getValue());
+    valueText.setText("Valor: R$ " + budget.getValue());
 
     onUpdateBudget.accept(budget);
   }
@@ -118,7 +125,14 @@ public class BudgetView extends javax.swing.JFrame {
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
-    valueBudget = new javax.swing.JLabel();
+    descriptionText = new javax.swing.JLabel();
+    categoryText = new javax.swing.JLabel();
+    statusText = new javax.swing.JLabel();
+    valueText = new javax.swing.JLabel();
+    initialDateText = new javax.swing.JLabel();
+    endDateText = new javax.swing.JLabel();
+    itemsText = new javax.swing.JLabel();
+    nameText = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,6 +175,22 @@ public class BudgetView extends javax.swing.JFrame {
       }
     });
 
+    descriptionText.setText("Descrição");
+
+    categoryText.setText("Categoria");
+
+    statusText.setText("Status");
+
+    valueText.setText("Valor");
+
+    initialDateText.setText("Data Inicial");
+
+    endDateText.setText("Data Final");
+
+    itemsText.setText("Itens:");
+
+    nameText.setText("Nome");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -168,20 +198,30 @@ public class BudgetView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addComponent(valueBudget)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(addButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(exitButton)
-            .addGap(34, 34, 34)
-            .addComponent(screenTitle)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(addButton)))
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addGap(34, 34, 34)
+                .addComponent(screenTitle))
+              .addComponent(descriptionText)
+              .addComponent(categoryText)
+              .addComponent(statusText)
+              .addComponent(valueText)
+              .addComponent(initialDateText)
+              .addComponent(endDateText)
+              .addComponent(itemsText)
+              .addComponent(nameText))
+            .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
-      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,40 +229,75 @@ public class BudgetView extends javax.swing.JFrame {
         .addGap(19, 19, 19)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(screenTitle)
-          .addComponent(exitButton)
-          .addComponent(addButton))
+          .addComponent(exitButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(nameText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(descriptionText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(categoryText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(statusText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(valueText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(initialDateText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(endDateText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(itemsText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(deleteButton)
-            .addComponent(updateButton))
-          .addComponent(valueBudget))
-        .addContainerGap(145, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(deleteButton)
+          .addComponent(updateButton)
+          .addComponent(addButton))
+        .addGap(18, 18, 18))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(layout.createSequentialGroup()
-        .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(0, 0, Short.MAX_VALUE))
+      .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(layout.createSequentialGroup()
-        .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(0, 0, Short.MAX_VALUE))
+      .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
-    this.dispose();
-  }//GEN-LAST:event_exitButtonMouseClicked
+  private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+    ManagerBudgetItemView createManagerBudgetItemView = new ManagerBudgetItemView(
+            budget.getId(),
+            budgetItemController,
+            null,
+            (value) -> {
+              onBudgetItemCreated();
+            }
+    );
+
+    createManagerBudgetItemView.setVisible(true);
+  }//GEN-LAST:event_addButtonMouseClicked
+
+  private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+    if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
+      BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemList.getSelectedIndex());
+      ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(
+              budget.getId(),
+              budgetItemController,
+              selectedBudgetItem,
+              (value) -> {
+                onBudgetItemUpdated(selectedBudgetItem, value);
+              }
+      );
+
+      updateManagerBudgetItemView.setVisible(true);
+    }
+  }//GEN-LAST:event_updateButtonMouseClicked
 
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemList, "excluir")) {
@@ -247,44 +322,26 @@ public class BudgetView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_deleteButtonMouseClicked
 
-  private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
-      BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemList.getSelectedIndex());
-      ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(
-              budget.getId(),
-              budgetItemController,
-              selectedBudgetItem,
-              (value) -> {
-                onBudgetItemUpdated(selectedBudgetItem, value);
-              }
-      );
-
-      updateManagerBudgetItemView.setVisible(true);
-    }
-  }//GEN-LAST:event_updateButtonMouseClicked
-
-  private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerBudgetItemView createManagerBudgetItemView = new ManagerBudgetItemView(
-            budget.getId(),
-            budgetItemController,
-            null,
-            (value) -> {
-              onBudgetItemCreated();
-            }
-    );
-
-    createManagerBudgetItemView.setVisible(true);
-  }//GEN-LAST:event_addButtonMouseClicked
+  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
+    this.dispose();
+  }//GEN-LAST:event_exitButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
   private javax.swing.JList<String> budgetItemList;
+  private javax.swing.JLabel categoryText;
   private javax.swing.JButton deleteButton;
+  private javax.swing.JLabel descriptionText;
+  private javax.swing.JLabel endDateText;
   private javax.swing.JLabel exitButton;
+  private javax.swing.JLabel initialDateText;
+  private javax.swing.JLabel itemsText;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JLabel nameText;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JLabel statusText;
   private javax.swing.JButton updateButton;
-  private javax.swing.JLabel valueBudget;
+  private javax.swing.JLabel valueText;
   // End of variables declaration//GEN-END:variables
 }
