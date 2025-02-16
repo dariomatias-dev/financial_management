@@ -33,11 +33,11 @@ public class BudgetView extends javax.swing.JFrame {
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
     this.onUpdateBudget = onUpdateBudget;
-    
+
     initComponents();
-    
+
     screenTitle.setText(budget.getName());
-    
+
     listBudgetItems();
   }
 
@@ -46,11 +46,11 @@ public class BudgetView extends javax.swing.JFrame {
    */
   private void listBudgetItems() {
     valueBudget.setText("Orçamento: " + budget.getValue());
-    
+
     budgetItems = budgetItemController.getAllByBudgetId(budget.getId());
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetItemList.setModel(model);
-    
+
     for (BudgetItemModel budgetItem : budgetItems) {
       String budgetItemName = budgetItem.getName();
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
@@ -75,7 +75,7 @@ public class BudgetView extends javax.swing.JFrame {
    */
   private void onBudgetItemCreated() {
     updateScreen();
-    
+
     calculateBudgetValue();
   }
 
@@ -87,18 +87,17 @@ public class BudgetView extends javax.swing.JFrame {
           BudgetItemModel value
   ) {
     updateScreen();
-    
+
     if (budgetItem.getValue() != value.getValue() || !budgetItem.getPeriod().equals(value.getPeriod())) {
       calculateBudgetValue();
     }
   }
-  
+
   private void calculateBudgetValue() {
-    System.out.println("test");
     budget = new BudgetCalculator().calculate(budget, budgetController, budgetItems);
-    
+
     valueBudget.setText("Orçamento: " + budget.getValue());
-    
+
     onUpdateBudget.accept(budget);
   }
 
@@ -240,9 +239,9 @@ public class BudgetView extends javax.swing.JFrame {
       if (confirm == JOptionPane.YES_OPTION) {
         BudgetItemModel selectedExpense = budgetItems.get(budgetItemList.getSelectedIndex());
         budgetItemController.removeById(selectedExpense.getId());
-        
+
         updateScreen();
-        
+
         calculateBudgetValue();
       }
     }
@@ -259,7 +258,7 @@ public class BudgetView extends javax.swing.JFrame {
                 onBudgetItemUpdated(selectedBudgetItem, value);
               }
       );
-      
+
       updateManagerBudgetItemView.setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
@@ -273,7 +272,7 @@ public class BudgetView extends javax.swing.JFrame {
               onBudgetItemCreated();
             }
     );
-    
+
     createManagerBudgetItemView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
