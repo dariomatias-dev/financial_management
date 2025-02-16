@@ -66,11 +66,15 @@ public class BudgetsView extends javax.swing.JFrame {
           String budgetId
   ) {
     BudgetModel selectedBudget = budgetController.getById(budgetId);
-    BudgetView budgetView = new BudgetView(budgetItemController, selectedBudget);
+    BudgetView budgetView = new BudgetView(budgetController, budgetItemController, selectedBudget, null);
 
     budgetView.setVisible(true);
 
     updateScreen();
+  }
+
+  private void onUpdateBudget(int index, BudgetModel value) {
+    budgets.set(index, value);
   }
 
   /**
@@ -244,7 +248,14 @@ public class BudgetsView extends javax.swing.JFrame {
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetList, "acessar")) {
       BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
-      BudgetView budgetView = new BudgetView(budgetItemController, selectedBudget);
+      BudgetView budgetView = new BudgetView(
+              budgetController,
+              budgetItemController,
+              selectedBudget,
+              (value) -> {
+                onUpdateBudget(budgetList.getSelectedIndex(), value);
+              }
+      );
 
       budgetView.setVisible(true);
     }
