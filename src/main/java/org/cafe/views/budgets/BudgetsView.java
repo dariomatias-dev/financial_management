@@ -7,6 +7,7 @@ import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.RecordVerificationUtil;
+import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.views.budget.BudgetView;
 import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
@@ -30,6 +31,8 @@ public class BudgetsView extends javax.swing.JFrame {
 
     initComponents();
 
+    new SearchFieldHandlerUtil(searchField).initialize();
+
     listBudgets();
   }
 
@@ -41,7 +44,19 @@ public class BudgetsView extends javax.swing.JFrame {
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetList.setModel(model);
 
-    for (BudgetModel budget : budgets) {
+    showBudgets(budgets);
+  }
+
+  /**
+   * Mostra os itens repassados.
+   */
+  private void showBudgets(
+          ArrayList<BudgetModel> value
+  ) {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    budgetList.setModel(model);
+
+    for (BudgetModel budget : value) {
       String displayText = String.format("Nome: %s | Categoria: %s | Status: %s", budget.getName(), budget.getCategory(), budget.getStatus());
 
       model.addElement(displayText);
@@ -95,6 +110,8 @@ public class BudgetsView extends javax.swing.JFrame {
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
     accessButton = new javax.swing.JButton();
+    searchField = new javax.swing.JTextField();
+    searchButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,28 +161,39 @@ public class BudgetsView extends javax.swing.JFrame {
       }
     });
 
+    searchButton.setText("S");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addComponent(jScrollPane1)
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(accessButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(updateButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(exitButton)
             .addGap(34, 34, 34)
             .addComponent(screenTitle)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
-            .addComponent(addButton)))
+            .addComponent(addButton))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(accessButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(updateButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(deleteButton)))
         .addContainerGap())
-      .addComponent(jScrollPane1)
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,14 +203,18 @@ public class BudgetsView extends javax.swing.JFrame {
           .addComponent(screenTitle)
           .addComponent(exitButton)
           .addComponent(addButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(searchButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton)
           .addComponent(accessButton))
-        .addContainerGap(267, Short.MAX_VALUE))
+        .addContainerGap(244, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,6 +293,24 @@ public class BudgetsView extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_accessButtonMouseClicked
 
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    String query = searchField.getText();
+
+    if (query.equals("Pesquisar...")) {
+      showBudgets(budgets);
+    } else {
+      ArrayList<BudgetModel> results = new ArrayList<>();
+
+      for (BudgetModel budget : budgets) {
+        if (budget.getName().contains(query) || budget.getDescription().contains(query)) {
+          results.add(budget);
+        }
+      }
+
+      showBudgets(results);
+    }
+  }//GEN-LAST:event_searchButtonMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton accessButton;
   private javax.swing.JButton addButton;
@@ -270,6 +320,8 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JButton searchButton;
+  private javax.swing.JTextField searchField;
   private javax.swing.JButton updateButton;
   // End of variables declaration//GEN-END:variables
 }
