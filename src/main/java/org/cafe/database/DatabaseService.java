@@ -24,15 +24,19 @@ public class DatabaseService {
    *
    * @param query Consulta de INSERT a ser executada.
    * @param params Valores do registro.
+   * @return Retorna o ID do registro criado.
    */
-  public void create(String query, Object... params) {
+  public String create(String query, Object... params) {
     Object[] newParams = new Object[params.length + 1];
-    newParams[0] = UUID.randomUUID(); // Gera um UUID único para o item.
+    String uuid = UUID.randomUUID().toString();
+    newParams[0] = uuid; // Gera um UUID único para o item.
     System.arraycopy(params, 0, newParams, 1, params.length);
 
     try (PreparedStatement statement = databaseManager.connection.prepareStatement(query)) {
       setParameters(statement, newParams);
       statement.executeUpdate();
+      
+      return uuid;
     } catch (SQLException e) {
       throw new RuntimeException("Erro ao executar INSERT.", e);
     }

@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
@@ -14,7 +15,7 @@ import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
-  private final Runnable onUpdateScreen;
+  private final Consumer<String> onUpdateScreen;
   private final BudgetModel data;
   private final BudgetController budgetController;
 
@@ -26,7 +27,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * @param onUpdateScreen Função para atualização da tela de listagem dos
    * orçamentos.
    */
-  public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Runnable onUpdateScreen) {
+  public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Consumer<String> onUpdateScreen) {
     this.budgetController = budgetController;
     this.data = data;
     this.onUpdateScreen = onUpdateScreen;
@@ -254,6 +255,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
       String status = (String) statusSelect.getSelectedItem();
 
+      String budgetId;
+
       if (data != null) {
         BudgetModel budget = new BudgetModel(
                 data.getId(),
@@ -261,25 +264,28 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                 category,
                 category,
                 status,
+                data.getValue(),
                 initialDateTime,
                 endDateTime
         );
 
         budgetController.update(budget);
+        budgetId = data.getId();
       } else {
         CreateBudgetModel newBudget = new CreateBudgetModel(
                 name,
                 category,
                 category,
                 status,
+                0.0,
                 initialDateTime,
                 endDateTime
         );
 
-        budgetController.create(newBudget);
+        budgetId = budgetController.create(newBudget);
       }
 
-      onUpdateScreen.run();
+      onUpdateScreen.accept(budgetId);
 
       this.dispose();
     }//GEN-LAST:event_actionButtonMouseClicked

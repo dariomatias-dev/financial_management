@@ -11,10 +11,11 @@ public class BudgetModel extends CreateBudgetModel {
     String description,
     String category,
     String status,
+    double value,
     LocalDateTime initialDate,
     LocalDateTime endDate
   ) {
-    super(name, description, category, status, initialDate, endDate);
+    super(name, description, category, status, value, initialDate, endDate);
     this.id = id;
   }
 

@@ -29,9 +29,10 @@ public abstract class DatabaseController<T> {
    * Insere um novo registro na tabela.
    *
    * @param values Valores a serem inseridos nas colunas da tabela.
+   * @return Retorna o ID do registro criado.
    */
-  public void insert(Object... values) {
-    databaseService.create(buildInsertQuery(), values);
+  public String insert(Object... values) {
+    return databaseService.create(buildInsertQuery(), values);
   }
 
   /**

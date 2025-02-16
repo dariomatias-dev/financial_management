@@ -7,21 +7,24 @@ public class CreateBudgetModel {
   private String description;
   private String category;
   private String status;
+  private double value;
   private LocalDateTime initialDate;
   private LocalDateTime endDate;
 
   public CreateBudgetModel(
-    String name,
-    String description,
-    String category,
-    String status,
-    LocalDateTime initialDate,
-    LocalDateTime endDate
+          String name,
+          String description,
+          String category,
+          String status,
+          double value,
+          LocalDateTime initialDate,
+          LocalDateTime endDate
   ) {
     this.name = name;
     this.description = description;
     this.category = category;
     this.status = status;
+    this.value = value;
     this.initialDate = initialDate;
     this.endDate = endDate;
   }
@@ -64,6 +67,14 @@ public class CreateBudgetModel {
 
   public void setInitialDate(LocalDateTime initialDate) {
     this.initialDate = initialDate;
+  }
+
+  public double getValue() {
+    return value;
+  }
+
+  public void setValue(double value) {
+    this.value = value;
   }
 
   public LocalDateTime getEndDate() {

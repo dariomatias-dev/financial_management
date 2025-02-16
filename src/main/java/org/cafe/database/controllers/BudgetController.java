@@ -14,11 +14,15 @@ public class BudgetController extends DatabaseController<BudgetModel> {
     super(
             databaseService,
             "Budgets",
-            new String[]{"name", "description", "category", "status", "initial_date", "end_date"}
+            new String[]{"name", "description", "category", "status", "value", "initial_date", "end_date"}
     );
   }
 
-  public void create(CreateBudgetModel createBudgetModel) {
+  /**
+   * @param createBudgetModel Dados de criação de um orçamento.
+   * @return Retorna o ID do registro criado.
+   */
+  public String create(CreateBudgetModel createBudgetModel) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     String initialDateFormatted = createBudgetModel.getInitialDate().format(formatter);
@@ -29,11 +33,37 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       createBudgetModel.getDescription(),
       createBudgetModel.getCategory(),
       createBudgetModel.getStatus(),
+      createBudgetModel.getValue(),
       initialDateFormatted,
       endDateFormatted
     };
 
-    super.insert(values);
+    return super.insert(values);
+  }
+
+  public BudgetModel getById(String id) {
+    ArrayList<Object[]> results = super.findById(id);
+
+    if (results == null || results.isEmpty()) {
+      return null;
+    }
+
+    Object[] result = results.getFirst();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    BudgetModel budget = new BudgetModel(
+            (String) result[0],
+            (String) result[1],
+            (String) result[2],
+            (String) result[3],
+            (String) result[4],
+            (double) result[5],
+            LocalDateTime.parse((String) result[6], formatter),
+            LocalDateTime.parse((String) result[7], formatter)
+    );
+
+    return budget;
   }
 
   public ArrayList<BudgetModel> getAll() {
@@ -52,8 +82,9 @@ public class BudgetController extends DatabaseController<BudgetModel> {
               (String) row[2],
               (String) row[3],
               (String) row[4],
-              LocalDateTime.parse((String) row[5], formatter),
-              LocalDateTime.parse((String) row[6], formatter)
+              (double) row[5],
+              LocalDateTime.parse((String) row[6], formatter),
+              LocalDateTime.parse((String) row[7], formatter)
       );
 
       budgets.add(budget);
@@ -73,6 +104,7 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       updatedBudget.getDescription(),
       updatedBudget.getCategory(),
       updatedBudget.getStatus(),
+      updatedBudget.getValue(),
       initialDateFormatted,
       endDateFormatted
     };
