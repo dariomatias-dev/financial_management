@@ -1,5 +1,7 @@
 package org.cafe.views.budget;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -34,11 +36,30 @@ public class BudgetView extends javax.swing.JFrame {
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
     this.onUpdateBudget = onUpdateBudget;
-
+    
     initComponents();
-
+    
+    labelInvisible.setFocusable(true);
+    
+    searchField.setText("Pesquisar...");
+    searchField.addFocusListener(new FocusListener() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        if (searchField.getText().equals("Pesquisar...")) {
+          searchField.setText("");
+        }
+      }
+      
+      @Override
+      public void focusLost(FocusEvent e) {
+        if (searchField.getText().isEmpty()) {
+          searchField.setText("Pesquisar...");
+        }
+      }
+    });
+    
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+    
     nameText.setText("Nome: " + budget.getName());
     categoryText.setText("Categoria: " + budget.getCategory());
     descriptionText.setText("Descrição: " + budget.getDescription());
@@ -46,7 +67,7 @@ public class BudgetView extends javax.swing.JFrame {
     valueText.setText("Valor: R$ " + budget.getValue());
     initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(formatter));
     endDateText.setText("Data Final: " + budget.getEndDate().format(formatter));
-
+    
     listBudgetItems();
   }
 
@@ -55,10 +76,17 @@ public class BudgetView extends javax.swing.JFrame {
    */
   private void listBudgetItems() {
     budgetItems = budgetItemController.getAllByBudgetId(budget.getId());
+    
+    showBudgetItems(budgetItems);
+  }
+  
+  private void showBudgetItems(
+          ArrayList<BudgetItemModel> value
+  ) {
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetItemList.setModel(model);
-
-    for (BudgetItemModel budgetItem : budgetItems) {
+    
+    for (BudgetItemModel budgetItem : value) {
       String budgetItemName = budgetItem.getName();
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
       String displayText = budgetItemName + "     -     " + formattedValue;
@@ -82,7 +110,7 @@ public class BudgetView extends javax.swing.JFrame {
    */
   private void onBudgetItemCreated() {
     updateScreen();
-
+    
     calculateBudgetValue();
   }
 
@@ -94,17 +122,17 @@ public class BudgetView extends javax.swing.JFrame {
           BudgetItemModel value
   ) {
     updateScreen();
-
+    
     if (budgetItem.getValue() != value.getValue() || !budgetItem.getPeriod().equals(value.getPeriod())) {
       calculateBudgetValue();
     }
   }
-
+  
   private void calculateBudgetValue() {
     budget = new BudgetCalculator().calculate(budget, budgetController, budgetItems);
-
+    
     valueText.setText("Valor: R$ " + budget.getValue());
-
+    
     onUpdateBudget.accept(budget);
   }
 
@@ -117,6 +145,7 @@ public class BudgetView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    jDialog1 = new javax.swing.JDialog();
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
@@ -133,6 +162,20 @@ public class BudgetView extends javax.swing.JFrame {
     endDateText = new javax.swing.JLabel();
     itemsText = new javax.swing.JLabel();
     nameText = new javax.swing.JLabel();
+    searchField = new javax.swing.JTextField();
+    searchButton = new javax.swing.JButton();
+    labelInvisible = new javax.swing.JLabel();
+
+    javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+    jDialog1.getContentPane().setLayout(jDialog1Layout);
+    jDialog1Layout.setHorizontalGroup(
+      jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 400, Short.MAX_VALUE)
+    );
+    jDialog1Layout.setVerticalGroup(
+      jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 300, Short.MAX_VALUE)
+    );
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -191,6 +234,13 @@ public class BudgetView extends javax.swing.JFrame {
 
     nameText.setText("Nome");
 
+    searchButton.setText("S");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -198,29 +248,34 @@ public class BudgetView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-          .addGroup(backgroundLayout.createSequentialGroup()
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(addButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addGap(34, 34, 34)
-                .addComponent(screenTitle))
               .addComponent(descriptionText)
               .addComponent(categoryText)
               .addComponent(statusText)
               .addComponent(valueText)
               .addComponent(initialDateText)
               .addComponent(endDateText)
+              .addComponent(nameText)
               .addComponent(itemsText)
-              .addComponent(nameText))
-            .addGap(0, 0, Short.MAX_VALUE)))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addGap(34, 34, 34)
+                .addComponent(screenTitle)))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelInvisible)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -229,7 +284,8 @@ public class BudgetView extends javax.swing.JFrame {
         .addGap(19, 19, 19)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(screenTitle)
-          .addComponent(exitButton))
+          .addComponent(exitButton)
+          .addComponent(labelInvisible))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(nameText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,6 +302,10 @@ public class BudgetView extends javax.swing.JFrame {
         .addComponent(endDateText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(itemsText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(searchButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -279,7 +339,7 @@ public class BudgetView extends javax.swing.JFrame {
               onBudgetItemCreated();
             }
     );
-
+    
     createManagerBudgetItemView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
@@ -294,7 +354,7 @@ public class BudgetView extends javax.swing.JFrame {
                 onBudgetItemUpdated(selectedBudgetItem, value);
               }
       );
-
+      
       updateManagerBudgetItemView.setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
@@ -314,9 +374,9 @@ public class BudgetView extends javax.swing.JFrame {
       if (confirm == JOptionPane.YES_OPTION) {
         BudgetItemModel selectedExpense = budgetItems.get(budgetItemList.getSelectedIndex());
         budgetItemController.removeById(selectedExpense.getId());
-
+        
         updateScreen();
-
+        
         calculateBudgetValue();
       }
     }
@@ -325,6 +385,24 @@ public class BudgetView extends javax.swing.JFrame {
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
+
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    String query = searchField.getText();
+    
+    if (query.equals("Pesquisar...")) {
+      showBudgetItems(budgetItems);
+    } else {
+      ArrayList<BudgetItemModel> results = new ArrayList<>();
+      
+      for (BudgetItemModel budgetItem : budgetItems) {
+        if (budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query)) {
+          results.add(budgetItem);
+        }
+      }
+      
+      showBudgetItems(results);
+    }
+  }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
@@ -337,9 +415,13 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JLabel initialDateText;
   private javax.swing.JLabel itemsText;
+  private javax.swing.JDialog jDialog1;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JLabel labelInvisible;
   private javax.swing.JLabel nameText;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JButton searchButton;
+  private javax.swing.JTextField searchField;
   private javax.swing.JLabel statusText;
   private javax.swing.JButton updateButton;
   private javax.swing.JLabel valueText;
