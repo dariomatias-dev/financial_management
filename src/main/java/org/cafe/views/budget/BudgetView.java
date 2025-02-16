@@ -31,16 +31,29 @@ public class BudgetView extends javax.swing.JFrame {
    * @param budget Dados do registro selecionado. orçamentos.
    * @param onUpdateBudget Função para atualização do orçamento.
    */
-  public BudgetView(BudgetController budgetController, BudgetItemController budgetItemController, BudgetModel budget, Consumer<BudgetModel> onUpdateBudget) {
+  public BudgetView(
+          BudgetController budgetController,
+          BudgetItemController budgetItemController,
+          BudgetModel budget,
+          Consumer<BudgetModel> onUpdateBudget
+  ) {
     this.budget = budget;
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
     this.onUpdateBudget = onUpdateBudget;
-    
+
     initComponents();
-    
+
+    initializeSearchField();
+
+    showInfos();
+
+    listBudgetItems();
+  }
+
+  private void initializeSearchField() {
     labelInvisible.setFocusable(true);
-    
+
     searchField.setText("Pesquisar...");
     searchField.addFocusListener(new FocusListener() {
       @Override
@@ -49,7 +62,7 @@ public class BudgetView extends javax.swing.JFrame {
           searchField.setText("");
         }
       }
-      
+
       @Override
       public void focusLost(FocusEvent e) {
         if (searchField.getText().isEmpty()) {
@@ -57,9 +70,14 @@ public class BudgetView extends javax.swing.JFrame {
         }
       }
     });
-    
+  }
+
+  /**
+   * Mostra as informações do orçamento.
+   */
+  private void showInfos() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    
+
     nameText.setText("Nome: " + budget.getName());
     categoryText.setText("Categoria: " + budget.getCategory());
     descriptionText.setText("Descrição: " + budget.getDescription());
@@ -67,25 +85,26 @@ public class BudgetView extends javax.swing.JFrame {
     valueText.setText("Valor: R$ " + budget.getValue());
     initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(formatter));
     endDateText.setText("Data Final: " + budget.getEndDate().format(formatter));
-    
-    listBudgetItems();
   }
 
   /**
-   * Lista todos os itens de orçamento.
+   * Lista todos os itens do orçamento.
    */
   private void listBudgetItems() {
     budgetItems = budgetItemController.getAllByBudgetId(budget.getId());
-    
+
     showBudgetItems(budgetItems);
   }
-  
+
+  /**
+   * Mostra os itens repassados.
+   */
   private void showBudgetItems(
           ArrayList<BudgetItemModel> value
   ) {
     DefaultListModel<String> model = new DefaultListModel<>();
     budgetItemList.setModel(model);
-    
+
     for (BudgetItemModel budgetItem : value) {
       String budgetItemName = budgetItem.getName();
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
@@ -110,7 +129,7 @@ public class BudgetView extends javax.swing.JFrame {
    */
   private void onBudgetItemCreated() {
     updateScreen();
-    
+
     calculateBudgetValue();
   }
 
@@ -122,17 +141,17 @@ public class BudgetView extends javax.swing.JFrame {
           BudgetItemModel value
   ) {
     updateScreen();
-    
+
     if (budgetItem.getValue() != value.getValue() || !budgetItem.getPeriod().equals(value.getPeriod())) {
       calculateBudgetValue();
     }
   }
-  
+
   private void calculateBudgetValue() {
     budget = new BudgetCalculator().calculate(budget, budgetController, budgetItems);
-    
+
     valueText.setText("Valor: R$ " + budget.getValue());
-    
+
     onUpdateBudget.accept(budget);
   }
 
@@ -330,6 +349,9 @@ public class BudgetView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Abre a tela de criação de item de orçamento.
+   */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
     ManagerBudgetItemView createManagerBudgetItemView = new ManagerBudgetItemView(
             budget.getId(),
@@ -339,10 +361,13 @@ public class BudgetView extends javax.swing.JFrame {
               onBudgetItemCreated();
             }
     );
-    
+
     createManagerBudgetItemView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
+  /**
+   * Abre a tela de atualização de item de orçamento para o item selecionado.
+   */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
       BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemList.getSelectedIndex());
@@ -354,11 +379,14 @@ public class BudgetView extends javax.swing.JFrame {
                 onBudgetItemUpdated(selectedBudgetItem, value);
               }
       );
-      
+
       updateManagerBudgetItemView.setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
 
+  /**
+   * Remove o item selecionado do orçamento.
+   */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemList, "excluir")) {
       // Confirmar remoção de registro.
@@ -374,9 +402,9 @@ public class BudgetView extends javax.swing.JFrame {
       if (confirm == JOptionPane.YES_OPTION) {
         BudgetItemModel selectedExpense = budgetItems.get(budgetItemList.getSelectedIndex());
         budgetItemController.removeById(selectedExpense.getId());
-        
+
         updateScreen();
-        
+
         calculateBudgetValue();
       }
     }
@@ -386,20 +414,24 @@ public class BudgetView extends javax.swing.JFrame {
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  /**
+   * Filtra os itens do orçamento com base no nome e na descrição, baseado no
+   * texto inserido na pesquisa.
+   */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     String query = searchField.getText();
-    
+
     if (query.equals("Pesquisar...")) {
       showBudgetItems(budgetItems);
     } else {
       ArrayList<BudgetItemModel> results = new ArrayList<>();
-      
+
       for (BudgetItemModel budgetItem : budgetItems) {
         if (budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query)) {
           results.add(budgetItem);
         }
       }
-      
+
       showBudgetItems(results);
     }
   }//GEN-LAST:event_searchButtonMouseClicked
