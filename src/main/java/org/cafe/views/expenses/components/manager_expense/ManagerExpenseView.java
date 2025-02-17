@@ -6,7 +6,6 @@ import org.cafe.models.expense.CreateExpenseModel;
 import org.cafe.models.expense.ExpenseModel;
 
 public class ManagerExpenseView extends javax.swing.JFrame {
-
   private final Runnable onUpdateScreen;
   private final ExpenseController expenseController;
   private final ExpenseModel data;
@@ -28,8 +27,9 @@ public class ManagerExpenseView extends javax.swing.JFrame {
 
     if (data != null) {
       nameField.setText(data.getName());
-      valueField.setText(String.valueOf(data.getValue()));
       descriptionField.setText(data.getDescription());
+      valueField.setText(String.valueOf(data.getValue()));
+      periodLabel.setText(data.getPeriod());
 
       screenTitle.setText("Atualizar Despesa");
       actionButton.setText("Atualizar");
@@ -55,6 +55,8 @@ public class ManagerExpenseView extends javax.swing.JFrame {
     descriptionLabel = new javax.swing.JLabel();
     actionButton = new javax.swing.JButton();
     calcelButton = new javax.swing.JButton();
+    periodSelect = new javax.swing.JComboBox<>();
+    periodLabel = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,6 +92,12 @@ public class ManagerExpenseView extends javax.swing.JFrame {
       }
     });
 
+    periodSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diário", "Semanal", "Mensal" }));
+
+    periodLabel.setBackground(new java.awt.Color(0, 0, 0));
+    periodLabel.setForeground(new java.awt.Color(0, 0, 0));
+    periodLabel.setText("Periodicidade :");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -101,7 +109,10 @@ public class ManagerExpenseView extends javax.swing.JFrame {
           .addComponent(valueField)
           .addComponent(descriptionField)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(periodLabel)
+              .addComponent(periodSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(calcelButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(actionButton))
@@ -121,24 +132,31 @@ public class ManagerExpenseView extends javax.swing.JFrame {
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(backgroundLayout.createSequentialGroup()
         .addGap(19, 19, 19)
-        .addComponent(screenTitle)
-        .addGap(30, 30, 30)
-        .addComponent(nameLabel)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(valueLabell)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(descriptionLabel)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(29, 29, 29)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(periodLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(periodSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(screenTitle)
+            .addGap(30, 30, 30)
+            .addComponent(nameLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueLabell)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(descriptionLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(52, 52, 52)))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(actionButton)
           .addComponent(calcelButton))
-        .addContainerGap(32, Short.MAX_VALUE))
+        .addGap(51, 51, 51))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,11 +195,13 @@ public class ManagerExpenseView extends javax.swing.JFrame {
         return;
       }
 
+      String period = (String) periodSelect.getSelectedItem();
+
       if (data != null) {
-        ExpenseModel expense = new ExpenseModel(data.getId(), name, value, "", description);
+        ExpenseModel expense = new ExpenseModel(data.getId(), name, value, period, description);
         expenseController.update(expense);
       } else {
-        CreateExpenseModel expense = new CreateExpenseModel(name, value, "", description);
+        CreateExpenseModel expense = new CreateExpenseModel(name, value, period, description);
         expenseController.create(expense);
       }
 
@@ -198,6 +218,8 @@ public class ManagerExpenseView extends javax.swing.JFrame {
   private javax.swing.JLabel descriptionLabel;
   private javax.swing.JTextField nameField;
   private javax.swing.JLabel nameLabel;
+  private javax.swing.JLabel periodLabel;
+  private javax.swing.JComboBox<String> periodSelect;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JTextField valueField;
   private javax.swing.JLabel valueLabell;

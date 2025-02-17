@@ -418,8 +418,8 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
-   * Filtra os itens do orçamento com base no nome e na descrição, baseado no
-   * texto inserido na pesquisa.
+   * Filtra os itens do orçamento de acordo com o nome e a descrição,
+   * considerando o texto inserido na pesquisa, e no período selecionado.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     String query = searchField.getText().trim();
