@@ -1,9 +1,12 @@
 package org.cafe.views.budgets;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
@@ -16,6 +19,9 @@ public class BudgetsView extends javax.swing.JFrame {
   private final BudgetController budgetController;
   private final BudgetItemController budgetItemController;
   private ArrayList<BudgetModel> budgets;
+
+  private static final String DEFAULT_DATE = "__/__/____";
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   /**
    * Construtor.
@@ -35,6 +41,9 @@ public class BudgetsView extends javax.swing.JFrame {
     new SearchFieldHandlerUtil(searchField).initialize();
 
     listBudgets();
+
+    new DateMaskFormatter().applyMask(initialDateFilterField);
+    new DateMaskFormatter().applyMask(endDateFilterField);
   }
 
   /**
@@ -136,7 +145,10 @@ public class BudgetsView extends javax.swing.JFrame {
     valueMinFilterField = new javax.swing.JTextField();
     valueMaxFilterLabel = new javax.swing.JLabel();
     valueMaxFilterField = new javax.swing.JTextField();
-    valueFilterLabel = new javax.swing.JLabel();
+    initialDateFilterLabel = new javax.swing.JLabel();
+    endDateFilterLabel = new javax.swing.JLabel();
+    initialDateFilterField = new javax.swing.JFormattedTextField();
+    endDateFilterField = new javax.swing.JFormattedTextField();
 
     statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
@@ -191,11 +203,6 @@ public class BudgetsView extends javax.swing.JFrame {
         accessButtonMouseClicked(evt);
       }
     });
-    accessButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        accessButtonActionPerformed(evt);
-      }
-    });
 
     searchButton.setText("Filtrar");
     searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -205,22 +212,22 @@ public class BudgetsView extends javax.swing.JFrame {
     });
 
     statusFilterSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Rascunho", "Finalizado", "Negado", "Aprovado" }));
-
-    statusFilterLabel.setBackground(new java.awt.Color(0, 0, 0));
-    statusFilterLabel.setForeground(new java.awt.Color(0, 0, 0));
-    statusFilterLabel.setText("Status:");
-
-    valueMinFilterLabel.setText("Mínimo:");
-
-    valueMaxFilterLabel.setText("Máximo:");
-
-    valueMaxFilterField.addActionListener(new java.awt.event.ActionListener() {
+    statusFilterSelect.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        valueMaxFilterFieldActionPerformed(evt);
+        statusFilterSelectActionPerformed(evt);
       }
     });
 
-    valueFilterLabel.setText("Valor:");
+    statusFilterLabel.setForeground(new java.awt.Color(0, 0, 0));
+    statusFilterLabel.setText("Status:");
+
+    valueMinFilterLabel.setText("Valor Mínimo:");
+
+    valueMaxFilterLabel.setText("Valor Máximo:");
+
+    initialDateFilterLabel.setText("Data Inicial:");
+
+    endDateFilterLabel.setText("Data Final:");
 
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
@@ -229,14 +236,7 @@ public class BudgetsView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(valueMinFilterLabel)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-            .addComponent(valueMaxFilterLabel)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(jScrollPane1)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(searchField)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,11 +256,29 @@ public class BudgetsView extends javax.swing.JFrame {
                 .addComponent(exitButton)
                 .addGap(34, 34, 34)
                 .addComponent(screenTitle))
-              .addComponent(statusFilterLabel)
-              .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(valueFilterLabel))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(statusFilterLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGap(0, 0, Short.MAX_VALUE))
-          .addComponent(jScrollPane1))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(valueMinFilterLabel)
+              .addComponent(initialDateFilterLabel))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+              .addComponent(initialDateFilterField, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+              .addComponent(valueMinFilterField))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addComponent(valueMaxFilterLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addComponent(endDateFilterLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -274,12 +292,10 @@ public class BudgetsView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(searchButton))
-        .addGap(1, 1, 1)
-        .addComponent(statusFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(valueFilterLabel)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(statusFilterLabel)
+          .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,7 +303,13 @@ public class BudgetsView extends javax.swing.JFrame {
           .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(initialDateFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(endDateFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(initialDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
@@ -397,26 +419,30 @@ public class BudgetsView extends javax.swing.JFrame {
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
     String statusFilter = (String) statusFilterSelect.getSelectedItem();
+    String initialDateFilterText = initialDateFilterField.getText().trim();
+    String endDateFilterText = endDateFilterField.getText().trim();
 
-    if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")) {
+    if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")
+            && initialDateFilterText.equals(DEFAULT_DATE) && endDateFilterText.equals(DEFAULT_DATE)) {
       showBudgets(budgets);
       return;
     }
 
     double valueMinFilter = Double.MIN_VALUE;
     double valueMaxFilter = Double.MAX_VALUE;
-    boolean applyValueFilter = false;
+    boolean applyValueMinFilter = false;
+    boolean applyValueMaxFilter = false;
 
     try {
       if (!valueMinFilterText.isEmpty()) {
         valueMinFilter = Double.parseDouble(valueMinFilterText);
-        applyValueFilter = true;
+        applyValueMinFilter = true;
       }
       if (!valueMaxFilterText.isEmpty()) {
         valueMaxFilter = Double.parseDouble(valueMaxFilterText);
-        applyValueFilter = true;
+        applyValueMaxFilter = true;
       }
-      if (applyValueFilter && valueMinFilter > valueMaxFilter) {
+      if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {
         JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
       }
@@ -425,14 +451,44 @@ public class BudgetsView extends javax.swing.JFrame {
       return;
     }
 
+    LocalDate initialDateFilter = null;
+    LocalDate endDateFilter = null;
+
+    try {
+      if (!initialDateFilterText.equals(DEFAULT_DATE)) {
+        initialDateFilter = LocalDate.parse(initialDateFilterText, DATE_FORMATTER);
+      }
+      if (!endDateFilterText.equals(DEFAULT_DATE)) {
+        endDateFilter = LocalDate.parse(endDateFilterText, DATE_FORMATTER);
+      }
+    } catch (DateTimeParseException e) {
+      JOptionPane.showMessageDialog(this, "Por favor, insira datas válidas no formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
     ArrayList<BudgetModel> results = new ArrayList<>();
 
     for (BudgetModel budget : budgets) {
       boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
       boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
-      boolean matchesValue = !applyValueFilter || (budget.getValue() >= valueMinFilter && budget.getValue() <= valueMaxFilter);
 
-      if (matchesQuery && matchesValue && matchesStatus) {
+      boolean matchesValue = true;
+      if (applyValueMinFilter) {
+        matchesValue = budget.getValue() >= valueMinFilter;
+      }
+      if (applyValueMaxFilter && matchesValue) {
+        matchesValue = budget.getValue() <= valueMaxFilter;
+      }
+
+      boolean matchesDate = true;
+      if (initialDateFilter != null && budget.getInitialDate() != null) {
+        matchesDate = !budget.getInitialDate().toLocalDate().isBefore(initialDateFilter);
+      }
+      if (matchesDate && endDateFilter != null && budget.getEndDate() != null) {
+        matchesDate = !budget.getEndDate().toLocalDate().isAfter(endDateFilter);
+      }
+
+      if (matchesQuery && matchesStatus && matchesValue && matchesDate) {
         results.add(budget);
       }
     }
@@ -440,13 +496,9 @@ public class BudgetsView extends javax.swing.JFrame {
     showBudgets(results);
   }//GEN-LAST:event_searchButtonMouseClicked
 
-  private void accessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accessButtonActionPerformed
+  private void statusFilterSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFilterSelectActionPerformed
     // TODO add your handling code here:
-  }//GEN-LAST:event_accessButtonActionPerformed
-
-  private void valueMaxFilterFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valueMaxFilterFieldActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_valueMaxFilterFieldActionPerformed
+  }//GEN-LAST:event_statusFilterSelectActionPerformed
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton accessButton;
@@ -454,7 +506,11 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JPanel background;
   private javax.swing.JList<String> budgetList;
   private javax.swing.JButton deleteButton;
+  private javax.swing.JFormattedTextField endDateFilterField;
+  private javax.swing.JLabel endDateFilterLabel;
   private javax.swing.JLabel exitButton;
+  private javax.swing.JFormattedTextField initialDateFilterField;
+  private javax.swing.JLabel initialDateFilterLabel;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton searchButton;
@@ -464,7 +520,6 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JLabel statusLabel;
   private javax.swing.JComboBox<String> statusSelect;
   private javax.swing.JButton updateButton;
-  private javax.swing.JLabel valueFilterLabel;
   private javax.swing.JTextField valueMaxFilterField;
   private javax.swing.JLabel valueMaxFilterLabel;
   private javax.swing.JTextField valueMinFilterField;
