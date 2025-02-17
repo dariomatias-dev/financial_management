@@ -175,12 +175,14 @@ public class ManagerRevenueView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
       }
-
+      String period = (String) periodicitySelect.getSelectedItem();
+      String type = (String) revenueTypeSelect.getSelectedItem();
+      
       if (data != null) {
-        RevenueModel revenue = new RevenueModel(data.getId(), name, value, "", description, "");
+        RevenueModel revenue = new RevenueModel(data.getId(), name, value, period, description, type);
         revenueController.update(revenue);
       } else {
-        CreateRevenueModel revenue = new CreateRevenueModel(name, value, "", description, "");
+        CreateRevenueModel revenue = new CreateRevenueModel(name, value, period, description, type);
         revenueController.create(revenue);
       }
 
@@ -189,16 +191,20 @@ public class ManagerRevenueView extends javax.swing.JFrame {
       this.dispose();
     }//GEN-LAST:event_actionButtonMouseClicked
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton actionButton;
-  private javax.swing.JPanel background;
-  private javax.swing.JButton calcelButton;
-  private javax.swing.JTextField descriptionField;
-  private javax.swing.JLabel descriptionLabel;
-  private javax.swing.JTextField nameField;
-  private javax.swing.JLabel nameLabel;
-  private javax.swing.JLabel screenTitle;
-  private javax.swing.JTextField valueField;
-  private javax.swing.JLabel valueLabell;
-  // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify                     
+    private javax.swing.JButton actionButton;
+    private javax.swing.JPanel background;
+    private javax.swing.JButton calcelButton;
+    private javax.swing.JTextField descriptionField;
+    private javax.swing.JLabel descriptionLabel;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JLabel periodicityLabel;
+    private javax.swing.JComboBox<String> periodicitySelect;
+    private javax.swing.JLabel revenueTypeLabel;
+    private javax.swing.JComboBox<String> revenueTypeSelect;
+    private javax.swing.JLabel screenTitle;
+    private javax.swing.JTextField valueField;
+    private javax.swing.JLabel valueLabell;
+    // End of variables declaration          
 }
