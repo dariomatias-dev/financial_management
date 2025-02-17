@@ -101,6 +101,8 @@ public class BudgetsView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    statusSelect = new javax.swing.JComboBox<>();
+    statusLabel = new javax.swing.JLabel();
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
@@ -112,6 +114,19 @@ public class BudgetsView extends javax.swing.JFrame {
     accessButton = new javax.swing.JButton();
     searchField = new javax.swing.JTextField();
     searchButton = new javax.swing.JButton();
+    statusFilterSelect = new javax.swing.JComboBox<>();
+    statusFilterLabel = new javax.swing.JLabel();
+    valueMinFilterLabel = new javax.swing.JLabel();
+    valueMinFilterField = new javax.swing.JTextField();
+    valueMaxFilterLabel = new javax.swing.JLabel();
+    valueMaxFilterField = new javax.swing.JTextField();
+    valueFilterLabel = new javax.swing.JLabel();
+
+    statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
+
+    statusLabel.setBackground(new java.awt.Color(0, 0, 0));
+    statusLabel.setForeground(new java.awt.Color(0, 0, 0));
+    statusLabel.setText("Status:");
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,21 +176,33 @@ public class BudgetsView extends javax.swing.JFrame {
       }
     });
 
-    searchButton.setText("S");
+    searchButton.setText("Filtrar");
     searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         searchButtonMouseClicked(evt);
       }
     });
 
+    statusFilterSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Rascunho", "Finalizado", "Negado", "Aprovado" }));
+
+    statusFilterLabel.setBackground(new java.awt.Color(0, 0, 0));
+    statusFilterLabel.setForeground(new java.awt.Color(0, 0, 0));
+    statusFilterLabel.setText("Status:");
+
+    valueMinFilterLabel.setText("Mínimo:");
+
+    valueMaxFilterLabel.setText("Máximo");
+
+    valueFilterLabel.setText("Valor:");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(jScrollPane1)
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jScrollPane1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(exitButton)
             .addGap(34, 34, 34)
@@ -192,7 +219,21 @@ public class BudgetsView extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton)))
+            .addComponent(deleteButton))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(valueMinFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(valueMaxFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(statusFilterLabel)
+              .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(valueFilterLabel))
+            .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -207,14 +248,26 @@ public class BudgetsView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(searchButton))
+        .addGap(1, 1, 1)
+        .addComponent(statusFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(valueFilterLabel)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton)
           .addComponent(accessButton))
-        .addContainerGap(244, Short.MAX_VALUE))
+        .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -313,21 +366,51 @@ public class BudgetsView extends javax.swing.JFrame {
    * inserido na pesquisa.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    String query = searchField.getText();
+    String query = searchField.getText().trim();
+    String valueMinFilterText = valueMinFilterField.getText().trim();
+    String valueMaxFilterText = valueMaxFilterField.getText().trim();
+    String statusFilter = (String) statusFilterSelect.getSelectedItem();
 
-    if (query.equals("Pesquisar...")) {
+    if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")) {
       showBudgets(budgets);
-    } else {
-      ArrayList<BudgetModel> results = new ArrayList<>();
-
-      for (BudgetModel budget : budgets) {
-        if (budget.getName().contains(query) || budget.getDescription().contains(query)) {
-          results.add(budget);
-        }
-      }
-
-      showBudgets(results);
+      return;
     }
+
+    double valueMinFilter = Double.MIN_VALUE;
+    double valueMaxFilter = Double.MAX_VALUE;
+    boolean applyValueFilter = false;
+
+    try {
+      if (!valueMinFilterText.isEmpty()) {
+        valueMinFilter = Double.parseDouble(valueMinFilterText);
+        applyValueFilter = true;
+      }
+      if (!valueMaxFilterText.isEmpty()) {
+        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
+        applyValueFilter = true;
+      }
+      if (applyValueFilter && valueMinFilter > valueMaxFilter) {
+        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+    } catch (NumberFormatException e) {
+      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    ArrayList<BudgetModel> results = new ArrayList<>();
+
+    for (BudgetModel budget : budgets) {
+      boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
+      boolean matchesValue = !applyValueFilter || (budget.getValue() >= valueMinFilter && budget.getValue() <= valueMaxFilter);
+      boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
+
+      if (matchesQuery && matchesValue && matchesStatus) {
+        results.add(budget);
+      }
+    }
+
+    showBudgets(results);
   }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -341,6 +424,15 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton searchButton;
   private javax.swing.JTextField searchField;
+  private javax.swing.JLabel statusFilterLabel;
+  private javax.swing.JComboBox<String> statusFilterSelect;
+  private javax.swing.JLabel statusLabel;
+  private javax.swing.JComboBox<String> statusSelect;
   private javax.swing.JButton updateButton;
+  private javax.swing.JLabel valueFilterLabel;
+  private javax.swing.JTextField valueMaxFilterField;
+  private javax.swing.JLabel valueMaxFilterLabel;
+  private javax.swing.JTextField valueMinFilterField;
+  private javax.swing.JLabel valueMinFilterLabel;
   // End of variables declaration//GEN-END:variables
 }

@@ -294,7 +294,7 @@ public class ExpensesView extends javax.swing.JFrame {
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
-    if (query.isEmpty() && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
+    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       showBudgetItems(expenses);
       return;
     }
@@ -321,7 +321,7 @@ public class ExpensesView extends javax.swing.JFrame {
     ArrayList<ExpenseModel> results = new ArrayList<>();
 
     for (ExpenseModel expense : expenses) {
-      boolean matchesQuery = query.isEmpty() || expense.getName().contains(query) || expense.getDescription().contains(query);
+      boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
       boolean matchesValue = expense.getValue() >= valueMinFilter && expense.getValue() <= valueMaxFilter;
 
