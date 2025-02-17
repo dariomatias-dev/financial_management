@@ -31,13 +31,22 @@ public class ExpensesView extends javax.swing.JFrame {
    */
   private void listExpenses() {
     expenses = expenseController.getAll();
+
+    showBudgetItems(expenses);
+  }
+
+  /**
+   * Mostra os itens repassados.
+   */
+  private void showBudgetItems(
+          ArrayList<ExpenseModel> value
+  ) {
     DefaultListModel<String> model = new DefaultListModel<>();
     expenseList.setModel(model);
 
-    for (ExpenseModel expense : expenses) {
-      String expenseName = expense.getName();
+    for (ExpenseModel expense : value) {
       String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
-      String displayText = expenseName + "     -     " + formattedValue;
+      String displayText = expense.getName() + "  |  " + formattedValue + "  |  " + expense.getPeriod();
       model.addElement(displayText);
     }
   }
@@ -70,6 +79,10 @@ public class ExpensesView extends javax.swing.JFrame {
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
+    searchField = new javax.swing.JTextField();
+    searchButton = new javax.swing.JButton();
+    jLabel1 = new javax.swing.JLabel();
+    periodFilterField = new javax.swing.JComboBox<>();
 
     jMenu1.setText("jMenu1");
 
@@ -119,6 +132,17 @@ public class ExpensesView extends javax.swing.JFrame {
       }
     });
 
+    searchButton.setText("Filtrar");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
+    jLabel1.setText("Período:");
+
+    periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -126,19 +150,28 @@ public class ExpensesView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(updateButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton))
+          .addComponent(jScrollPane1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(exitButton)
             .addGap(34, 34, 34)
             .addComponent(screenTitle)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
-            .addComponent(addButton)))
+            .addComponent(addButton))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(jLabel1)
+            .addGap(18, 18, 18)
+            .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(updateButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(deleteButton)))
         .addContainerGap())
-      .addComponent(jScrollPane1)
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,9 +181,17 @@ public class ExpensesView extends javax.swing.JFrame {
           .addComponent(screenTitle)
           .addComponent(exitButton)
           .addComponent(addButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(searchButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel1)
+          .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton))
@@ -217,15 +258,42 @@ public class ExpensesView extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_updateButtonMouseClicked
 
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    String query = searchField.getText().trim();
+    String periodFilter = (String) periodFilterField.getSelectedItem();
+
+    if (query.equals("Pesquisar...") && periodFilter.equals("Todos")) {
+      showBudgetItems(expenses);
+    } else {
+      ArrayList<ExpenseModel> results = new ArrayList<>();
+
+      for (ExpenseModel expense : expenses) {
+        boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
+
+        boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
+
+        if (matchesQuery && matchesPeriod) {
+          results.add(expense);
+        }
+      }
+
+      showBudgetItems(results);
+    }
+  }//GEN-LAST:event_searchButtonMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
   private javax.swing.JList<String> expenseList;
+  private javax.swing.JLabel jLabel1;
   private javax.swing.JMenu jMenu1;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JButton searchButton;
+  private javax.swing.JTextField searchField;
   private javax.swing.JButton updateButton;
   // End of variables declaration//GEN-END:variables
 }
