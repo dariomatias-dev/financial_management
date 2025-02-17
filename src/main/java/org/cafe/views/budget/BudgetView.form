@@ -133,7 +133,7 @@
                   <Component id="initialDateText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="endDateText" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="itemsText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -153,7 +153,7 @@
                       <Component id="updateButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -274,7 +274,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="searchButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="S"/>
+            <Property name="text" type="java.lang.String" value="Filtrar"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="searchButtonMouseClicked"/>

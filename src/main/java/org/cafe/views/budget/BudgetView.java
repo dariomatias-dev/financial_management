@@ -238,7 +238,7 @@ public class BudgetView extends javax.swing.JFrame {
 
     nameText.setText("Nome");
 
-    searchButton.setText("S");
+    searchButton.setText("Filtrar");
     searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         searchButtonMouseClicked(evt);
@@ -315,7 +315,7 @@ public class BudgetView extends javax.swing.JFrame {
         .addComponent(initialDateText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(endDateText)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(itemsText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -332,7 +332,7 @@ public class BudgetView extends javax.swing.JFrame {
           .addComponent(deleteButton)
           .addComponent(updateButton)
           .addComponent(addButton))
-        .addGap(18, 18, 18))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -74,15 +74,20 @@ public class ExpensesView extends javax.swing.JFrame {
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    expenseListPanel = new javax.swing.JScrollPane();
     expenseList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
     searchField = new javax.swing.JTextField();
     searchButton = new javax.swing.JButton();
-    jLabel1 = new javax.swing.JLabel();
+    periodLabel = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
+    valueFilterLabel = new javax.swing.JLabel();
+    valueMinFilterLabel = new javax.swing.JLabel();
+    valueMaxFilterLabel = new javax.swing.JLabel();
+    valueMinFilterField = new javax.swing.JTextField();
+    valueMaxFilterField = new javax.swing.JTextField();
 
     jMenu1.setText("jMenu1");
 
@@ -108,7 +113,7 @@ public class ExpensesView extends javax.swing.JFrame {
     });
 
     expenseList.setBorder(null);
-    jScrollPane1.setViewportView(expenseList);
+    expenseListPanel.setViewportView(expenseList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -139,9 +144,15 @@ public class ExpensesView extends javax.swing.JFrame {
       }
     });
 
-    jLabel1.setText("Período:");
+    periodLabel.setText("Período:");
 
     periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
+
+    valueFilterLabel.setText("Valor:");
+
+    valueMinFilterLabel.setText("Mínimo:");
+
+    valueMaxFilterLabel.setText("Máximo");
 
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
@@ -150,7 +161,6 @@ public class ExpensesView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(exitButton)
             .addGap(34, 34, 34)
@@ -162,15 +172,27 @@ public class ExpensesView extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(searchButton))
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(jLabel1)
-            .addGap(18, 18, 18)
-            .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(valueMinFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(valueMaxFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(expenseListPanel)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton)))
+            .addComponent(deleteButton))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(valueFilterLabel)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(periodLabel)
+                .addGap(18, 18, 18)
+                .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -185,17 +207,25 @@ public class ExpensesView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(searchButton))
+        .addGap(1, 1, 1)
+        .addComponent(valueFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel1)
+          .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(periodLabel)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(expenseListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton))
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap(21, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,24 +291,46 @@ public class ExpensesView extends javax.swing.JFrame {
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
+    String valueMinFilterText = valueMinFilterField.getText().trim();
+    String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos")) {
+    if (query.isEmpty() && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       showBudgetItems(expenses);
-    } else {
-      ArrayList<ExpenseModel> results = new ArrayList<>();
-
-      for (ExpenseModel expense : expenses) {
-        boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
-
-        boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
-
-        if (matchesQuery && matchesPeriod) {
-          results.add(expense);
-        }
-      }
-
-      showBudgetItems(results);
+      return;
     }
+
+    double valueMinFilter = Double.MIN_VALUE;
+    double valueMaxFilter = Double.MAX_VALUE;
+
+    try {
+      if (!valueMinFilterText.isEmpty()) {
+        valueMinFilter = Double.parseDouble(valueMinFilterText);
+      }
+      if (!valueMaxFilterText.isEmpty()) {
+        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
+      }
+      if (valueMinFilter > valueMaxFilter) {
+        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+    } catch (NumberFormatException e) {
+      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    ArrayList<ExpenseModel> results = new ArrayList<>();
+
+    for (ExpenseModel expense : expenses) {
+      boolean matchesQuery = query.isEmpty() || expense.getName().contains(query) || expense.getDescription().contains(query);
+      boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
+      boolean matchesValue = expense.getValue() >= valueMinFilter && expense.getValue() <= valueMaxFilter;
+
+      if (matchesQuery && matchesPeriod && matchesValue) {
+        results.add(expense);
+      }
+    }
+
+    showBudgetItems(results);
   }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -287,13 +339,18 @@ public class ExpensesView extends javax.swing.JFrame {
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
   private javax.swing.JList<String> expenseList;
-  private javax.swing.JLabel jLabel1;
+  private javax.swing.JScrollPane expenseListPanel;
   private javax.swing.JMenu jMenu1;
-  private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JComboBox<String> periodFilterField;
+  private javax.swing.JLabel periodLabel;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton searchButton;
   private javax.swing.JTextField searchField;
   private javax.swing.JButton updateButton;
+  private javax.swing.JLabel valueFilterLabel;
+  private javax.swing.JTextField valueMaxFilterField;
+  private javax.swing.JLabel valueMaxFilterLabel;
+  private javax.swing.JTextField valueMinFilterField;
+  private javax.swing.JLabel valueMinFilterLabel;
   // End of variables declaration//GEN-END:variables
 }
