@@ -6,13 +6,12 @@ public class RevenueModel extends CreateRevenueModel {
   public RevenueModel(
     String id,
     String name,
-    double grossValue,
-    double netValue,
+    double value,
     String period,
     String description,
     String revenueType
   ) {
-    super(name, grossValue, netValue, period, description, revenueType);
+    super(name, value, period, description, revenueType);
     this.id = id;
   }
 
