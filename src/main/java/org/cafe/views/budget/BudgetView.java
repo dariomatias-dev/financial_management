@@ -169,6 +169,10 @@ public class BudgetView extends javax.swing.JFrame {
     labelInvisible = new javax.swing.JLabel();
     jLabel1 = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
+    valueMinFilterLabel = new javax.swing.JLabel();
+    valueMinFilterField = new javax.swing.JTextField();
+    valueMaxFilterLabel = new javax.swing.JLabel();
+    valueMaxFilterField = new javax.swing.JTextField();
 
     javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
     jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -248,6 +252,15 @@ public class BudgetView extends javax.swing.JFrame {
     jLabel1.setText("Período:");
 
     periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
+    periodFilterField.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        periodFilterFieldActionPerformed(evt);
+      }
+    });
+
+    valueMinFilterLabel.setText("Valor Mínimo:");
+
+    valueMaxFilterLabel.setText("Valor Máximo:");
 
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
@@ -256,7 +269,7 @@ public class BudgetView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(descriptionText)
@@ -285,12 +298,20 @@ public class BudgetView extends javax.swing.JFrame {
             .addComponent(searchButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(itemsText)
-            .addGap(335, 455, Short.MAX_VALUE))
+            .addGap(335, 548, Short.MAX_VALUE))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(jLabel1)
-            .addGap(18, 18, 18)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(valueMinFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
+            .addComponent(valueMaxFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -321,6 +342,12 @@ public class BudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(searchButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel1)
@@ -424,18 +451,50 @@ public class BudgetView extends javax.swing.JFrame {
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
+    String valueMinFilterText = valueMinFilterField.getText().trim();
+    String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos")) {
+    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       showBudgetItems(budgetItems);
     } else {
+      double valueMinFilter = Double.MIN_VALUE;
+      double valueMaxFilter = Double.MAX_VALUE;
+      boolean applyValueMinFilter = false;
+      boolean applyValueMaxFilter = false;
+
+      try {
+        if (!valueMinFilterText.isEmpty()) {
+          valueMinFilter = Double.parseDouble(valueMinFilterText);
+          applyValueMinFilter = true;
+        }
+        if (!valueMaxFilterText.isEmpty()) {
+          valueMaxFilter = Double.parseDouble(valueMaxFilterText);
+          applyValueMaxFilter = true;
+        }
+        if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {
+          JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
       ArrayList<BudgetItemModel> results = new ArrayList<>();
 
       for (BudgetItemModel budgetItem : budgetItems) {
         boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
-
         boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
 
-        if (matchesQuery && matchesPeriod) {
+        boolean matchesValue = true;
+        if (applyValueMinFilter) {
+          matchesValue = budgetItem.getValue() >= valueMinFilter;
+        }
+        if (applyValueMaxFilter && matchesValue) {
+          matchesValue = budgetItem.getValue() <= valueMaxFilter;
+        }
+
+        if (matchesQuery && matchesPeriod && matchesValue) {
           results.add(budgetItem);
         }
       }
@@ -443,6 +502,10 @@ public class BudgetView extends javax.swing.JFrame {
       showBudgetItems(results);
     }
   }//GEN-LAST:event_searchButtonMouseClicked
+
+  private void periodFilterFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodFilterFieldActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_periodFilterFieldActionPerformed
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
@@ -466,6 +529,10 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JTextField searchField;
   private javax.swing.JLabel statusText;
   private javax.swing.JButton updateButton;
+  private javax.swing.JTextField valueMaxFilterField;
+  private javax.swing.JLabel valueMaxFilterLabel;
+  private javax.swing.JTextField valueMinFilterField;
+  private javax.swing.JLabel valueMinFilterLabel;
   private javax.swing.JLabel valueText;
   // End of variables declaration//GEN-END:variables
 }

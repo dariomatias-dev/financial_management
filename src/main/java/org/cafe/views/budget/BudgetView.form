@@ -63,7 +63,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="483" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="576" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="descriptionText" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -97,13 +97,22 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="itemsText" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="335" pref="455" max="32767" attributes="0"/>
+                          <EmptySpace min="335" pref="548" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="periodFilterField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="valueMinFilterLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="valueMinFilterField" min="-2" pref="197" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="valueMaxFilterLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="valueMaxFilterField" min="-2" pref="197" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -139,6 +148,13 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="valueMinFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="valueMaxFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="valueMinFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="valueMaxFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -298,9 +314,26 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="periodFilterFieldActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="valueMinFilterLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Valor M&#xed;nimo:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="valueMinFilterField">
+        </Component>
+        <Component class="javax.swing.JLabel" name="valueMaxFilterLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Valor M&#xe1;ximo:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="valueMaxFilterField">
         </Component>
       </SubComponents>
     </Container>
