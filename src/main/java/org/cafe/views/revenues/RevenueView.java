@@ -15,7 +15,7 @@ public class RevenueView extends javax.swing.JFrame {
   /**
    * Construtor.
    *
-   * @param revenueController Controlador de despesas.
+   * @param revenueController Controlador de receitas.
    */
   public RevenueView(RevenueController revenueController) {
     this.revenueController = revenueController;
@@ -42,7 +42,7 @@ public class RevenueView extends javax.swing.JFrame {
   }
 
   /**
-   * Atualiza a lista de despesas para exibir somente as despesas que existem.
+   * Atualiza a lista de receitas para exibir somente as receitas que existem.
    */
   private void updateScreen() {
     DefaultListModel<String> model = new DefaultListModel<>();
