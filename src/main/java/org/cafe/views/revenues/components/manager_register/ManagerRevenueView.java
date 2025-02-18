@@ -13,10 +13,10 @@ public class ManagerRevenueView extends javax.swing.JFrame {
   /**
    * Construtor.
    *
-   * @param revenueController Controlador de despesas.
+   * @param revenueController Controlador de receitas.
    * @param data Dados do registro selecionado caso seja para atualizar.
    * @param onUpdateScreen Função para atualização da tela de listagem das
-   * despesas.
+   * receitas.
    */
   public ManagerRevenueView(RevenueController revenueController, RevenueModel data, Runnable onUpdateScreen) {
     this.revenueController = revenueController;
