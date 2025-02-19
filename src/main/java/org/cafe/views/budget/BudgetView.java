@@ -19,7 +19,8 @@ public class BudgetView extends javax.swing.JFrame {
   private BudgetModel budget;
   private final BudgetController budgetController;
   private final BudgetItemController budgetItemController;
-  private ArrayList<BudgetItemModel> budgetItems;
+  private ArrayList<BudgetItemModel> allBudgetItems;
+  private ArrayList<BudgetItemModel> displayedBudgetItems;
   private final Consumer<BudgetModel> onUpdateBudget;
 
   /**
@@ -48,6 +49,8 @@ public class BudgetView extends javax.swing.JFrame {
     showInfos();
 
     listBudgetItems();
+
+    showBudgetItems();
   }
 
   private void initializeSearchField() {
@@ -73,42 +76,40 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   /**
-   * Lista todos os itens do orçamento.
+   * Obtém todos os itens do orçamento.
    */
   private void listBudgetItems() {
-    budgetItems = budgetItemController.getAllByBudgetId(budget.getId());
-
-    showBudgetItems(budgetItems);
+    allBudgetItems = budgetItemController.getAllByBudgetId(budget.getId());
+    displayedBudgetItems = allBudgetItems;
   }
 
   /**
-   * Mostra os itens repassados.
+   * Exibi os dados dos itens de orçamento repassados.
    */
-  private void showBudgetItems(
-          ArrayList<BudgetItemModel> value
-  ) {
+  private void showBudgetItems() {
     DefaultTableModel tableModel = (DefaultTableModel) budgetItemsTable.getModel();
+    tableModel.setRowCount(0);
 
-    for (BudgetItemModel budgetItem : value) {
+    for (BudgetItemModel budgetItem : displayedBudgetItems) {
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
       Object[] rowData = new Object[4];
+
       rowData[0] = budgetItem.getName();
       rowData[1] = budgetItem.getDescription();
       rowData[2] = formattedValue;
       rowData[3] = budgetItem.getPeriod();
+
       tableModel.addRow(rowData);
     }
   }
 
   /**
-   * Atualiza a lista de itens de orçamento para exibir somente os itens
-   * orçamento que existem.
+   * Atualiza a lista de itens de orçamento.
    */
   private void updateScreen() {
-    DefaultTableModel tableModel = (DefaultTableModel) budgetItemsTable.getModel();
-    tableModel.setRowCount(0);
     listBudgetItems();
 
+    search();
   }
 
   /**
@@ -134,8 +135,15 @@ public class BudgetView extends javax.swing.JFrame {
     }
   }
 
+  /**
+   * Cálcula o valor total dos itens do orçamento.
+   */
   private void calculateBudgetValue() {
-    budget = new BudgetCalculator().calculate(budget, budgetController, budgetItems);
+    budget = new BudgetCalculator().calculate(budget, budgetController, allBudgetItems);
+
+    if (budget.getTotalSpent() > budget.getTotalBudgetValue()) {
+      JOptionPane.showMessageDialog(null, "Aviso: O valor dos itens do orçamento ultrapassou o orçamento total!", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
 
     totalSpentText.setText("Valor: R$ " + budget.getTotalSpent());
 
@@ -151,7 +159,6 @@ public class BudgetView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    jDialog1 = new javax.swing.JDialog();
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
@@ -169,27 +176,16 @@ public class BudgetView extends javax.swing.JFrame {
     searchField = new javax.swing.JTextField();
     searchButton = new javax.swing.JButton();
     labelInvisible = new javax.swing.JLabel();
-    jLabel1 = new javax.swing.JLabel();
+    periodFilterLabel = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
     valueMinFilterLabel = new javax.swing.JLabel();
     valueMinFilterField = new javax.swing.JTextField();
     valueMaxFilterLabel = new javax.swing.JLabel();
     valueMaxFilterField = new javax.swing.JTextField();
     totalSpentText = new javax.swing.JLabel();
-    jSeparator1 = new javax.swing.JSeparator();
+    separator = new javax.swing.JSeparator();
     jScrollPane2 = new javax.swing.JScrollPane();
     budgetItemsTable = new javax.swing.JTable();
-
-    javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-    jDialog1.getContentPane().setLayout(jDialog1Layout);
-    jDialog1Layout.setHorizontalGroup(
-      jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
-    );
-    jDialog1Layout.setVerticalGroup(
-      jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
-    );
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,14 +248,9 @@ public class BudgetView extends javax.swing.JFrame {
       }
     });
 
-    jLabel1.setText("Período:");
+    periodFilterLabel.setText("Período:");
 
     periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
-    periodFilterField.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        periodFilterFieldActionPerformed(evt);
-      }
-    });
 
     valueMinFilterLabel.setText("Valor Mínimo:");
 
@@ -267,7 +258,7 @@ public class BudgetView extends javax.swing.JFrame {
 
     totalSpentText.setText("Total dos Itens:");
 
-    jSeparator1.setForeground(new java.awt.Color(60, 63, 65));
+    separator.setForeground(new java.awt.Color(60, 63, 65));
 
     budgetItemsTable.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
@@ -313,7 +304,7 @@ public class BudgetView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(jScrollPane2)
-          .addComponent(jSeparator1)
+          .addComponent(separator)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(descriptionText)
@@ -353,7 +344,7 @@ public class BudgetView extends javax.swing.JFrame {
               .addComponent(endDateText)
               .addComponent(itemsText)
               .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(jLabel1)
+                .addComponent(periodFilterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGap(0, 0, Short.MAX_VALUE)))
@@ -384,7 +375,7 @@ public class BudgetView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(endDateText)
         .addGap(24, 24, 24)
-        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(itemsText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -399,7 +390,7 @@ public class BudgetView extends javax.swing.JFrame {
           .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel1)
+          .addComponent(periodFilterLabel)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addGap(3, 3, 3)
         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -442,11 +433,11 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
-   * Abre a tela de atualização de item de orçamento do item selecionado.
+   * Abre a tela de atualização do item de orçamento selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "atualizar")) {
-      BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemsTable.getSelectedRow());
+      BudgetItemModel selectedBudgetItem = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
       ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(
               budget.getId(),
               budgetItemController,
@@ -461,7 +452,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
-   * Remove o item selecionado.
+   * Remove o item de orçamento selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "excluir")) {
@@ -476,7 +467,7 @@ public class BudgetView extends javax.swing.JFrame {
 
       // Se o usuário confirmar, exclui o registro.
       if (confirm == JOptionPane.YES_OPTION) {
-        BudgetItemModel selectedExpense = budgetItems.get(budgetItemsTable.getSelectedRow());
+        BudgetItemModel selectedExpense = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
         budgetItemController.removeById(selectedExpense.getId());
 
         updateScreen();
@@ -487,24 +478,24 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
-   * Ação de sair da tela.
+   * Método chamado para sair da tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
-   * Filtra os itens do orçamento de acordo com o nome e a descrição,
-   * considerando o texto inserido na pesquisa, e no período selecionado.
+   * Método de pesquisa/filtragem dos itens do orçamento.
    */
-  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+  private void search() {
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
-      showBudgetItems(budgetItems);
+      displayedBudgetItems = allBudgetItems;
+      showBudgetItems();
     } else {
       double valueMinFilter = Double.MIN_VALUE;
       double valueMaxFilter = Double.MAX_VALUE;
@@ -531,7 +522,7 @@ public class BudgetView extends javax.swing.JFrame {
 
       ArrayList<BudgetItemModel> results = new ArrayList<>();
 
-      for (BudgetItemModel budgetItem : budgetItems) {
+      for (BudgetItemModel budgetItem : allBudgetItems) {
         boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
         boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
 
@@ -548,13 +539,19 @@ public class BudgetView extends javax.swing.JFrame {
         }
       }
 
-      showBudgetItems(results);
-    }
-  }//GEN-LAST:event_searchButtonMouseClicked
+      displayedBudgetItems = results;
 
-  private void periodFilterFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_periodFilterFieldActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_periodFilterFieldActionPerformed
+      showBudgetItems();
+    }
+  }
+
+  /**
+   * Método chamado para filtrar os itens do orçamento de acordo com as
+   * filtragens definidas.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
+  }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
@@ -567,16 +564,15 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JLabel initialDateText;
   private javax.swing.JLabel itemsText;
-  private javax.swing.JDialog jDialog1;
-  private javax.swing.JLabel jLabel1;
   private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JSeparator jSeparator1;
   private javax.swing.JLabel labelInvisible;
   private javax.swing.JLabel nameText;
   private javax.swing.JComboBox<String> periodFilterField;
+  private javax.swing.JLabel periodFilterLabel;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton searchButton;
   private javax.swing.JTextField searchField;
+  private javax.swing.JSeparator separator;
   private javax.swing.JLabel statusText;
   private javax.swing.JLabel totalBudgetValueText;
   private javax.swing.JLabel totalSpentText;
