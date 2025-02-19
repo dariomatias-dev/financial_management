@@ -226,7 +226,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               periodicity
       );
     }
-
+    
     onUpdateScreen.accept(budgetItem);
 
     this.dispose();

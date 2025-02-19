@@ -33,14 +33,14 @@ public class ExpenseController extends DatabaseController<ExpenseModel> {
       throw new IllegalArgumentException("Despesa com o ID fornecido não encontrada.");
     }
 
-    Object[] row = results.getFirst();
+    Object[] result = results.get(0);
 
     return new ExpenseModel(
-            (String) row[0],
-            (String) row[1],
-            (double) row[2],
-            (String) row[3],
-            (String) row[4]
+            (String) result[0],
+            (String) result[1],
+            (double) result[2],
+            (String) result[3],
+            (String) result[4]
     );
   }
 

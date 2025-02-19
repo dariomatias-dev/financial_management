@@ -42,8 +42,9 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
-      categoryField.setText(data.getCategory());
+      descriptionField.setText(data.getDescription());
       statusSelect.setSelectedItem(data.getStatus());
+      totalBudgetField.setText(String.valueOf(data.getTotalBudgetValue()));
 
       Date initialDateAsDate = Date.from(data.getInitialDate().atZone(ZoneId.systemDefault()).toInstant());
       Date endDateAsDate = Date.from(data.getEndDate().atZone(ZoneId.systemDefault()).toInstant());
@@ -74,7 +75,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     nameField = new javax.swing.JTextField();
     descriptionField = new javax.swing.JTextField();
     descriptionLabel = new javax.swing.JLabel();
-    categoryField = new javax.swing.JTextField();
+    totalBudgetField = new javax.swing.JTextField();
     categoryLabel = new javax.swing.JLabel();
     actionButton = new javax.swing.JButton();
     cancelButton = new javax.swing.JButton();
@@ -84,6 +85,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     statusSelect = new javax.swing.JComboBox<>();
     endDateField = new javax.swing.JFormattedTextField();
     initialDateField = new javax.swing.JFormattedTextField();
+    totalBudgetLabel = new javax.swing.JLabel();
+    categoryField = new javax.swing.JTextField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,12 +136,16 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
     statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
+    totalBudgetLabel.setBackground(new java.awt.Color(0, 0, 0));
+    totalBudgetLabel.setForeground(new java.awt.Color(0, 0, 0));
+    totalBudgetLabel.setText("Valor");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-        .addContainerGap(140, Short.MAX_VALUE)
+        .addContainerGap(166, Short.MAX_VALUE)
         .addComponent(screenTitle)
         .addGap(120, 120, 120))
       .addGroup(backgroundLayout.createSequentialGroup()
@@ -146,24 +153,26 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(nameField)
           .addComponent(descriptionField)
-          .addComponent(categoryField)
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(nameLabel)
-              .addComponent(descriptionLabel)
-              .addComponent(categoryLabel)
-              .addComponent(statusLabel)
-              .addComponent(initialDateLabel)
-              .addComponent(endDateLabel)
-              .addComponent(statusSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(0, 0, Short.MAX_VALUE))
+          .addComponent(totalBudgetField)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(cancelButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(actionButton))
           .addComponent(endDateField)
-          .addComponent(initialDateField))
+          .addComponent(initialDateField)
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(nameLabel)
+              .addComponent(descriptionLabel)
+              .addComponent(categoryLabel)
+              .addComponent(statusLabel)
+              .addComponent(statusSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(totalBudgetLabel)
+              .addComponent(initialDateLabel)
+              .addComponent(endDateLabel))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addComponent(categoryField, javax.swing.GroupLayout.Alignment.TRAILING))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -183,11 +192,15 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addComponent(categoryLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(categoryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(statusLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(statusSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(totalBudgetLabel)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(totalBudgetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(initialDateLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(initialDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,7 +212,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(actionButton)
           .addComponent(cancelButton))
-        .addContainerGap(18, Short.MAX_VALUE))
+        .addGap(35, 35, 35))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -225,10 +238,23 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       String category = categoryField.getText();
       String initialDateText = initialDateField.getText();
       String endDateText = endDateField.getText();
+      String valueText = totalBudgetField.getText();
 
       if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty()
-              || initialDateText.contains("_") || endDateText.contains("_")) {
+              || initialDateText.contains("_") || endDateText.contains("_") || valueText.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      double budgetValue;
+      try {
+        budgetValue = Double.parseDouble(valueText);
+        if (budgetValue <= 0) {
+          JOptionPane.showMessageDialog(this, "O valor do orçamento deve ser maior que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, insira um valor válido para o orçamento.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
       }
 
@@ -264,7 +290,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                 category,
                 category,
                 status,
-                data.getValue(),
+                budgetValue,
+                data.getTotalSpent(),
                 initialDateTime,
                 endDateTime
         );
@@ -277,6 +304,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                 category,
                 category,
                 status,
+                budgetValue,
                 0.0,
                 initialDateTime,
                 endDateTime
@@ -288,6 +316,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       onUpdateScreen.accept(budgetId);
 
       this.dispose();
+
     }//GEN-LAST:event_actionButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -307,5 +336,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel screenTitle;
   private javax.swing.JLabel statusLabel;
   private javax.swing.JComboBox<String> statusSelect;
+  private javax.swing.JTextField totalBudgetField;
+  private javax.swing.JLabel totalBudgetLabel;
   // End of variables declaration//GEN-END:variables
 }

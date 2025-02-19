@@ -20,20 +20,21 @@ public class BudgetCalculator {
       double itemTotal = numberOfPeriods * item.getValue();
       totalBudget += itemTotal;
     }
-    
+
     BudgetModel newBudget = new BudgetModel(
-                    budget.getId(),
-                    budget.getName(),
-                    budget.getDescription(),
-                    budget.getCategory(),
-                    budget.getStatus(),
-                    totalBudget,
-                    budget.getInitialDate(),
-                    budget.getEndDate()
-            );
+            budget.getId(),
+            budget.getName(),
+            budget.getDescription(),
+            budget.getCategory(),
+            budget.getStatus(),
+            budget.getTotalBudgetValue(),
+            totalBudget,
+            budget.getInitialDate(),
+            budget.getEndDate()
+    );
 
     budgetController.update(newBudget);
-    
+
     return newBudget;
   }
 

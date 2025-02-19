@@ -12,14 +12,14 @@ import org.cafe.models.user_accaount.UserAccountModel;
 public class UserAccountController extends DatabaseController<UserAccountModel> {
   public UserAccountController(DatabaseService databaseService) {
     super(
-      databaseService,
-      "UserAccount",
-      new String[]{ "name", "telephone", "email", "cpf", "data_birth", "password" }
+            databaseService,
+            "UserAccount",
+            new String[]{"name", "telephone", "email", "cpf", "data_birth", "password"}
     );
   }
 
   public void create(
-    UserAccountModel userAccount
+          UserAccountModel userAccount
   ) throws InvalidPropertiesFormatException {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String dateFormatted = simpleDateFormat.format(userAccount.getDataBirth());
@@ -30,8 +30,7 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
       userAccount.getEmail(),
       userAccount.getCpf(),
       dateFormatted,
-      userAccount.getPassword(),
-    };
+      userAccount.getPassword(),};
 
     super.insert(values);
   }
@@ -43,19 +42,19 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
         throw new IllegalArgumentException("Usuario não encontrada.");
       }
 
-      Object[] row = results.getFirst();
+      Object[] result = results.get(0);
 
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-      Date dataBirth = simpleDateFormat.parse(((String) row[5]));
+      Date dataBirth = simpleDateFormat.parse(((String) result[5]));
 
       return new UserAccountModel(
-        (String) row[0],
-        (String) row[1],
-        (double) row[2],
-        (String) row[3],
-        (double) row[4],
-        dataBirth,
-        (String) row[6]
+              (String) result[0],
+              (String) result[1],
+              (double) result[2],
+              (String) result[3],
+              (double) result[4],
+              dataBirth,
+              (String) result[6]
       );
     } catch (ParseException e) {
       throw new RuntimeException(e);
@@ -63,8 +62,8 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
   }
 
   public void update(
-    String id,
-    UserAccountModel updatedAccount
+          String id,
+          UserAccountModel updatedAccount
   ) {
     Object[] values = {
       updatedAccount.getName(),
@@ -72,8 +71,7 @@ public class UserAccountController extends DatabaseController<UserAccountModel> 
       updatedAccount.getEmail(),
       updatedAccount.getCpf(),
       updatedAccount.getDataBirth(),
-      updatedAccount.getPassword(),
-    };
+      updatedAccount.getPassword(),};
 
     super.setById(id, values);
   }

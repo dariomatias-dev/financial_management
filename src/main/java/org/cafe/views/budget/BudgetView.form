@@ -69,9 +69,6 @@
                               <Component id="descriptionText" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="categoryText" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="statusText" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="valueText" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="initialDateText" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="endDateText" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="nameText" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="exitButton" min="-2" max="-2" attributes="0"/>
@@ -95,16 +92,6 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="searchButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="itemsText" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="335" pref="548" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="periodFilterField" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="valueMinFilterLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -113,6 +100,21 @@
                           <Component id="valueMaxFilterLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="valueMaxFilterField" min="-2" pref="197" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="itemsText" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="periodFilterField" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="totalSpentText" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="totalBudgetValueText" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="initialDateText" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="endDateText" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -137,12 +139,14 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="statusText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="valueText" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalSpentText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="initialDateText" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalBudgetValueText" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="initialDateText" min="-2" pref="16" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="endDateText" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="itemsText" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -169,7 +173,7 @@
                       <Component id="updateButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="39" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -261,9 +265,9 @@
             <Property name="text" type="java.lang.String" value="Status"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="valueText">
+        <Component class="javax.swing.JLabel" name="totalBudgetValueText">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Valor"/>
+            <Property name="text" type="java.lang.String" value="Valor do Or&#xe7;amento"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="initialDateText">
@@ -334,6 +338,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="valueMaxFilterField">
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalSpentText">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Total dos Itens:"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

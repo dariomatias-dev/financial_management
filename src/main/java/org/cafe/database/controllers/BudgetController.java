@@ -9,12 +9,11 @@ import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
 
 public class BudgetController extends DatabaseController<BudgetModel> {
-
   public BudgetController(DatabaseService databaseService) {
     super(
             databaseService,
             "Budgets",
-            new String[]{"name", "description", "category", "status", "value", "initial_date", "end_date"}
+            new String[]{"name", "description", "category", "status", "total_budget_value", "total_spent", "initial_date", "end_date"}
     );
   }
 
@@ -33,7 +32,8 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       createBudgetModel.getDescription(),
       createBudgetModel.getCategory(),
       createBudgetModel.getStatus(),
-      createBudgetModel.getValue(),
+      createBudgetModel.getTotalBudgetValue(),
+      createBudgetModel.getTotalSpent(),
       initialDateFormatted,
       endDateFormatted
     };
@@ -48,7 +48,7 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       return null;
     }
 
-    Object[] result = results.getFirst();
+    Object[] result = results.get(0);
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -59,8 +59,9 @@ public class BudgetController extends DatabaseController<BudgetModel> {
             (String) result[3],
             (String) result[4],
             (double) result[5],
-            LocalDateTime.parse((String) result[6], formatter),
-            LocalDateTime.parse((String) result[7], formatter)
+            (double) result[6],
+            LocalDateTime.parse((String) result[7], formatter),
+            LocalDateTime.parse((String) result[8], formatter)
     );
 
     return budget;
@@ -83,8 +84,9 @@ public class BudgetController extends DatabaseController<BudgetModel> {
               (String) row[3],
               (String) row[4],
               (double) row[5],
-              LocalDateTime.parse((String) row[6], formatter),
-              LocalDateTime.parse((String) row[7], formatter)
+              (double) row[6],
+              LocalDateTime.parse((String) row[7], formatter),
+              LocalDateTime.parse((String) row[8], formatter)
       );
 
       budgets.add(budget);
@@ -104,7 +106,8 @@ public class BudgetController extends DatabaseController<BudgetModel> {
       updatedBudget.getDescription(),
       updatedBudget.getCategory(),
       updatedBudget.getStatus(),
-      updatedBudget.getValue(),
+      updatedBudget.getTotalBudgetValue(),
+      updatedBudget.getTotalSpent(),
       initialDateFormatted,
       endDateFormatted
     };

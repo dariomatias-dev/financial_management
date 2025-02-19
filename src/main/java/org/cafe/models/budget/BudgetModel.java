@@ -6,16 +6,17 @@ public class BudgetModel extends CreateBudgetModel {
   private String id;
 
   public BudgetModel(
-    String id,
-    String name,
-    String description,
-    String category,
-    String status,
-    double value,
-    LocalDateTime initialDate,
-    LocalDateTime endDate
+          String id,
+          String name,
+          String description,
+          String category,
+          String status,
+          double totalBudgetValue,
+          double totalSpent,
+          LocalDateTime initialDate,
+          LocalDateTime endDate
   ) {
-    super(name, description, category, status, value, initialDate, endDate);
+    super(name, description, category, status, totalBudgetValue, totalSpent, initialDate, endDate);
     this.id = id;
   }
 

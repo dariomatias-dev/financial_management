@@ -7,7 +7,8 @@ public class CreateBudgetModel {
   private String description;
   private String category;
   private String status;
-  private double value;
+  private double totalBudgetValue;
+  private double totalSpent;
   private LocalDateTime initialDate;
   private LocalDateTime endDate;
 
@@ -16,7 +17,8 @@ public class CreateBudgetModel {
           String description,
           String category,
           String status,
-          double value,
+          double totalBudgetValue,
+          double totalSpent,
           LocalDateTime initialDate,
           LocalDateTime endDate
   ) {
@@ -24,7 +26,8 @@ public class CreateBudgetModel {
     this.description = description;
     this.category = category;
     this.status = status;
-    this.value = value;
+    this.totalBudgetValue = totalBudgetValue;
+    this.totalSpent = totalSpent;
     this.initialDate = initialDate;
     this.endDate = endDate;
   }
@@ -69,12 +72,20 @@ public class CreateBudgetModel {
     this.initialDate = initialDate;
   }
 
-  public double getValue() {
-    return value;
+  public double getTotalBudgetValue() {
+    return totalBudgetValue;
   }
 
-  public void setValue(double value) {
-    this.value = value;
+  public void setTotalBudgetValue(double totalBudgetValue) {
+    this.totalBudgetValue = totalBudgetValue;
+  }
+
+  public double getTotalSpent() {
+    return totalSpent;
+  }
+
+  public void setTotalSpent(double totalSpent) {
+    this.totalSpent = totalSpent;
   }
 
   public LocalDateTime getEndDate() {

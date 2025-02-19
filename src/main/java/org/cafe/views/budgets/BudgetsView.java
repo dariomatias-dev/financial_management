@@ -72,7 +72,7 @@ public class BudgetsView extends javax.swing.JFrame {
       String initialDateFormatted = budget.getInitialDate().format(formatter);
       String endDateFormatted = budget.getEndDate().format(formatter);
 
-      String valueFormatted = String.format("%.2f", budget.getValue());
+      String valueFormatted = String.format("%.2f", budget.getTotalBudgetValue());
 
       String displayText = String.format(
               "Nome: %s | Categoria: %s | Status: %s | Data Inicial: %s | Data Final: %s | Valor: R$ %s",
@@ -106,7 +106,14 @@ public class BudgetsView extends javax.swing.JFrame {
           String budgetId
   ) {
     BudgetModel selectedBudget = budgetController.getById(budgetId);
-    BudgetView budgetView = new BudgetView(budgetController, budgetItemController, selectedBudget, null);
+    BudgetView budgetView = new BudgetView(
+            budgetController,
+            budgetItemController,
+            selectedBudget,
+            (value) -> {
+              updateScreen();
+            }
+    );
 
     budgetView.setVisible(true);
 
@@ -474,10 +481,10 @@ public class BudgetsView extends javax.swing.JFrame {
 
       boolean matchesValue = true;
       if (applyValueMinFilter) {
-        matchesValue = budget.getValue() >= valueMinFilter;
+        matchesValue = budget.getTotalBudgetValue() >= valueMinFilter;
       }
       if (applyValueMaxFilter && matchesValue) {
-        matchesValue = budget.getValue() <= valueMaxFilter;
+        matchesValue = budget.getTotalBudgetValue() <= valueMaxFilter;
       }
 
       boolean matchesDate = true;

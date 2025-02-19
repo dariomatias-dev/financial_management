@@ -79,7 +79,8 @@ public class DatabaseManager {
           description TEXT NOT NULL,
           category TEXT NOT NULL,
           status TEXT NOT NULL,
-          value REAL NOT NULL,
+          total_budget_value REAL NOT NULL,
+          total_spent REAL NOT NULL,
           initial_date TEXT NOT NULL,
           end_date TEXT NOT NULL
       );
