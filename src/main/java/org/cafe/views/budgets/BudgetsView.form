@@ -101,22 +101,18 @@
                               <Component id="valueMinFilterField" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="valueMaxFilterLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="valueMaxFilterField" min="-2" pref="270" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="endDateFilterLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="endDateFilterField" min="-2" pref="270" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="endDateFilterField" alignment="1" min="-2" pref="270" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                                   <Component id="screenTitle" min="-2" max="-2" attributes="0"/>
@@ -131,6 +127,13 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="373" max="32767" attributes="0"/>
+                      <Component id="endDateFilterLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="293" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,8 +152,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="statusFilterLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="statusFilterSelect" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="statusFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -162,7 +165,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="initialDateFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                      <Component id="endDateFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="initialDateFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="endDateFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -176,6 +178,13 @@
                       <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
+                      <Component id="endDateFilterLabel1" min="-2" pref="16" max="-2" attributes="0"/>
+                      <EmptySpace pref="364" max="32767" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -260,20 +269,9 @@
               </StringArray>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="statusFilterSelectActionPerformed"/>
-          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="statusFilterLabel">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Status:"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="valueMinFilterLabel">
           <Properties>
@@ -294,9 +292,9 @@
             <Property name="text" type="java.lang.String" value="Data Inicial:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="endDateFilterLabel">
+        <Component class="javax.swing.JLabel" name="statusFilterLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data Final:"/>
+            <Property name="text" type="java.lang.String" value="Status:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="initialDateFilterField">
@@ -363,6 +361,11 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="endDateFilterLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Data Final:"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

@@ -42,7 +42,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
-      descriptionField.setText(data.getDescription());
+      categoryField.setText(data.getCategory());
       statusSelect.setSelectedItem(data.getStatus());
       totalBudgetField.setText(String.valueOf(data.getTotalBudgetValue()));
 

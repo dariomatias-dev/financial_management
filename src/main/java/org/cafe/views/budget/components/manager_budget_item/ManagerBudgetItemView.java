@@ -35,7 +35,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
       valueField.setText(String.valueOf(data.getValue()));
       periodicitySelect.setSelectedItem(data.getPeriod());
 
-      screenTitle.setText("Atualizar Despesa");
+      screenTitle.setText("Atualizar Item de Orçamento");
       actionButton.setText("Atualizar");
     }
   }
