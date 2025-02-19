@@ -3,8 +3,8 @@ package org.cafe.views.budget;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
@@ -87,13 +87,16 @@ public class BudgetView extends javax.swing.JFrame {
   private void showBudgetItems(
           ArrayList<BudgetItemModel> value
   ) {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetItemList.setModel(model);
+    DefaultTableModel tableModel = (DefaultTableModel) budgetItemsTable.getModel();
 
     for (BudgetItemModel budgetItem : value) {
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
-      String displayText = budgetItem.getName() + "  |  " + formattedValue + "  |  " + budgetItem.getPeriod();
-      model.addElement(displayText);
+      Object[] rowData = new Object[4];
+      rowData[0] = budgetItem.getName();
+      rowData[1] = budgetItem.getDescription();
+      rowData[2] = formattedValue;
+      rowData[3] = budgetItem.getPeriod();
+      tableModel.addRow(rowData);
     }
   }
 
@@ -102,10 +105,10 @@ public class BudgetView extends javax.swing.JFrame {
    * orçamento que existem.
    */
   private void updateScreen() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetItemList.setModel(model);
-    model.clear();
+    DefaultTableModel tableModel = (DefaultTableModel) budgetItemsTable.getModel();
+    tableModel.setRowCount(0);
     listBudgetItems();
+
   }
 
   /**
@@ -152,8 +155,6 @@ public class BudgetView extends javax.swing.JFrame {
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
-    jScrollPane1 = new javax.swing.JScrollPane();
-    budgetItemList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -176,6 +177,8 @@ public class BudgetView extends javax.swing.JFrame {
     valueMaxFilterField = new javax.swing.JTextField();
     totalSpentText = new javax.swing.JLabel();
     jSeparator1 = new javax.swing.JSeparator();
+    jScrollPane2 = new javax.swing.JScrollPane();
+    budgetItemsTable = new javax.swing.JTable();
 
     javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
     jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -203,9 +206,6 @@ public class BudgetView extends javax.swing.JFrame {
         exitButtonMouseClicked(evt);
       }
     });
-
-    budgetItemList.setBorder(null);
-    jScrollPane1.setViewportView(budgetItemList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -269,6 +269,42 @@ public class BudgetView extends javax.swing.JFrame {
 
     jSeparator1.setForeground(new java.awt.Color(60, 63, 65));
 
+    budgetItemsTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+
+      },
+      new String [] {
+        "Nome", "Descrição", "Valor", "Período"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, false, false, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jScrollPane2.setViewportView(budgetItemsTable);
+    if (budgetItemsTable.getColumnModel().getColumnCount() > 0) {
+      budgetItemsTable.getColumnModel().getColumn(0).setMinWidth(120);
+      budgetItemsTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+      budgetItemsTable.getColumnModel().getColumn(0).setMaxWidth(120);
+      budgetItemsTable.getColumnModel().getColumn(2).setMinWidth(88);
+      budgetItemsTable.getColumnModel().getColumn(2).setPreferredWidth(88);
+      budgetItemsTable.getColumnModel().getColumn(2).setMaxWidth(88);
+      budgetItemsTable.getColumnModel().getColumn(3).setMinWidth(60);
+      budgetItemsTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+      budgetItemsTable.getColumnModel().getColumn(3).setMaxWidth(60);
+    }
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -276,6 +312,7 @@ public class BudgetView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jScrollPane2)
           .addComponent(jSeparator1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,7 +326,6 @@ public class BudgetView extends javax.swing.JFrame {
                 .addComponent(screenTitle)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 428, Short.MAX_VALUE)
             .addComponent(labelInvisible))
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(addButton)
@@ -365,8 +401,8 @@ public class BudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel1)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(6, 6, 6)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(3, 3, 3)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
@@ -409,8 +445,8 @@ public class BudgetView extends javax.swing.JFrame {
    * Abre a tela de atualização de item de orçamento do item selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetItemList, "atualizar")) {
-      BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemList.getSelectedIndex());
+    if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "atualizar")) {
+      BudgetItemModel selectedBudgetItem = budgetItems.get(budgetItemsTable.getSelectedRow());
       ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(
               budget.getId(),
               budgetItemController,
@@ -428,7 +464,7 @@ public class BudgetView extends javax.swing.JFrame {
    * Remove o item selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetItemList, "excluir")) {
+    if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "excluir")) {
       // Confirmar remoção de registro.
       int confirm = JOptionPane.showConfirmDialog(
               null,
@@ -440,7 +476,7 @@ public class BudgetView extends javax.swing.JFrame {
 
       // Se o usuário confirmar, exclui o registro.
       if (confirm == JOptionPane.YES_OPTION) {
-        BudgetItemModel selectedExpense = budgetItems.get(budgetItemList.getSelectedIndex());
+        BudgetItemModel selectedExpense = budgetItems.get(budgetItemsTable.getSelectedRow());
         budgetItemController.removeById(selectedExpense.getId());
 
         updateScreen();
@@ -523,7 +559,7 @@ public class BudgetView extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
-  private javax.swing.JList<String> budgetItemList;
+  private javax.swing.JTable budgetItemsTable;
   private javax.swing.JLabel categoryText;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel descriptionText;
@@ -533,7 +569,7 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel itemsText;
   private javax.swing.JDialog jDialog1;
   private javax.swing.JLabel jLabel1;
-  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JScrollPane jScrollPane2;
   private javax.swing.JSeparator jSeparator1;
   private javax.swing.JLabel labelInvisible;
   private javax.swing.JLabel nameText;

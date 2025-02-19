@@ -1,13 +1,14 @@
 package org.cafe.utils;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class RecordVerificationUtil {
-    public static boolean verifyRecords(JList<?> list, String actionName) {
+    public static boolean verifyRecords(JTable table, String actionName) {
         // Verifica se existe registros.
-        if (((DefaultListModel<?>) list.getModel()).isEmpty()) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(
                     null,
                     String.format("Não há registros para %s.", actionName),
@@ -17,12 +18,12 @@ public class RecordVerificationUtil {
             return false;
         }
 
-        // Verifica se um registro foi selecionado.
-        int selectedIndex = list.getSelectedIndex();
-        if (selectedIndex == -1) {
+        // Verifica se uma linha foi selecionada.
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Por favor, selecione um registro.",
+                    "Por favor, selecione uma linha.",
                     "Aviso",
                     JOptionPane.WARNING_MESSAGE
             );

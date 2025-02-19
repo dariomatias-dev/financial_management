@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
@@ -51,8 +51,8 @@ public class BudgetsView extends javax.swing.JFrame {
    */
   private void listBudgets() {
     budgets = budgetController.getAll();
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetList.setModel(model);
+    DefaultTableModel tableModel = (DefaultTableModel) budgetsTable.getModel();
+    tableModel.setRowCount(0);
 
     showBudgets(budgets);
   }
@@ -63,28 +63,24 @@ public class BudgetsView extends javax.swing.JFrame {
   private void showBudgets(
           ArrayList<BudgetModel> value
   ) {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetList.setModel(model);
+    DefaultTableModel tableModel = (DefaultTableModel) budgetsTable.getModel();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     for (BudgetModel budget : value) {
       String initialDateFormatted = budget.getInitialDate().format(formatter);
       String endDateFormatted = budget.getEndDate().format(formatter);
-
       String valueFormatted = String.format("%.2f", budget.getTotalBudgetValue());
 
-      String displayText = String.format(
-              "Nome: %s | Categoria: %s | Status: %s | Data Inicial: %s | Data Final: %s | Valor: R$ %s",
-              budget.getName(),
-              budget.getCategory(),
-              budget.getStatus(),
-              initialDateFormatted,
-              endDateFormatted,
-              valueFormatted
-      );
+      Object[] rowData = new Object[6];
+      rowData[0] = budget.getName();
+      rowData[1] = budget.getCategory();
+      rowData[2] = "R$ " + valueFormatted;
+      rowData[3] = budget.getStatus();
+      rowData[4] = initialDateFormatted;
+      rowData[5] = endDateFormatted;
 
-      model.addElement(displayText);
+      tableModel.addRow(rowData);
     }
   }
 
@@ -93,10 +89,10 @@ public class BudgetsView extends javax.swing.JFrame {
    * existem.
    */
   private void updateScreen() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    budgetList.setModel(model);
-    model.clear();
+    DefaultTableModel tableModel = (DefaultTableModel) budgetsTable.getModel();
+    tableModel.setRowCount(0);
     listBudgets();
+
   }
 
   /**
@@ -138,8 +134,6 @@ public class BudgetsView extends javax.swing.JFrame {
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
-    jScrollPane1 = new javax.swing.JScrollPane();
-    budgetList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -156,6 +150,8 @@ public class BudgetsView extends javax.swing.JFrame {
     endDateFilterLabel = new javax.swing.JLabel();
     initialDateFilterField = new javax.swing.JFormattedTextField();
     endDateFilterField = new javax.swing.JFormattedTextField();
+    jScrollPane2 = new javax.swing.JScrollPane();
+    budgetsTable = new javax.swing.JTable();
 
     statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
@@ -178,9 +174,6 @@ public class BudgetsView extends javax.swing.JFrame {
         exitButtonMouseClicked(evt);
       }
     });
-
-    budgetList.setBorder(null);
-    jScrollPane1.setViewportView(budgetList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -236,6 +229,48 @@ public class BudgetsView extends javax.swing.JFrame {
 
     endDateFilterLabel.setText("Data Final:");
 
+    budgetsTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+        {null, null, null, null, null, null},
+        {null, null, null, null, null, null},
+        {null, null, null, null, null, null},
+        {null, null, null, null, null, null}
+      },
+      new String [] {
+        "Nome", "Categoria", "Valor", "Status", "Data Inicial", "Data Final"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, false, false, false, false, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jScrollPane2.setViewportView(budgetsTable);
+    if (budgetsTable.getColumnModel().getColumnCount() > 0) {
+      budgetsTable.getColumnModel().getColumn(2).setMinWidth(88);
+      budgetsTable.getColumnModel().getColumn(2).setPreferredWidth(88);
+      budgetsTable.getColumnModel().getColumn(2).setMaxWidth(88);
+      budgetsTable.getColumnModel().getColumn(3).setMinWidth(88);
+      budgetsTable.getColumnModel().getColumn(3).setPreferredWidth(88);
+      budgetsTable.getColumnModel().getColumn(3).setMaxWidth(88);
+      budgetsTable.getColumnModel().getColumn(4).setMinWidth(68);
+      budgetsTable.getColumnModel().getColumn(4).setPreferredWidth(68);
+      budgetsTable.getColumnModel().getColumn(4).setMaxWidth(68);
+      budgetsTable.getColumnModel().getColumn(5).setMinWidth(68);
+      budgetsTable.getColumnModel().getColumn(5).setPreferredWidth(68);
+      budgetsTable.getColumnModel().getColumn(5).setMaxWidth(68);
+    }
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -243,7 +278,7 @@ public class BudgetsView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1)
+          .addComponent(jScrollPane2)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(searchField)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -257,17 +292,6 @@ public class BudgetsView extends javax.swing.JFrame {
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addGap(34, 34, 34)
-                .addComponent(screenTitle))
-              .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(statusFilterLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGap(0, 0, Short.MAX_VALUE))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(valueMinFilterLabel)
@@ -285,7 +309,18 @@ public class BudgetsView extends javax.swing.JFrame {
               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
                 .addComponent(endDateFilterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addGap(34, 34, 34)
+                .addComponent(screenTitle))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(statusFilterLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -316,8 +351,8 @@ public class BudgetsView extends javax.swing.JFrame {
           .addComponent(initialDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
           .addComponent(updateButton)
@@ -351,7 +386,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Remove o orçamento selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetList, "excluir")) {
+    if (RecordVerificationUtil.verifyRecords(budgetsTable, "excluir")) {
       // Confirmar remoção de registro.
       int confirm = JOptionPane.showConfirmDialog(
               null,
@@ -363,7 +398,7 @@ public class BudgetsView extends javax.swing.JFrame {
 
       // Se o usuário confirmar, exclui o registro.
       if (confirm == JOptionPane.YES_OPTION) {
-        BudgetModel selectedExpense = budgets.get(budgetList.getSelectedIndex());
+        BudgetModel selectedExpense = budgets.get(budgetsTable.getSelectedRow());
         budgetController.removeById(selectedExpense.getId());
 
         updateScreen();
@@ -375,8 +410,8 @@ public class BudgetsView extends javax.swing.JFrame {
    * Abre a tela de atualização de orçamento do orçamento selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetList, "atualizar")) {
-      BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
+    if (RecordVerificationUtil.verifyRecords(budgetsTable, "atualizar")) {
+      BudgetModel selectedBudget = budgets.get(budgetsTable.getSelectedRow());
       ManagerBudgetView updateManagerBudgetView = new ManagerBudgetView(
               budgetController,
               selectedBudget,
@@ -402,14 +437,14 @@ public class BudgetsView extends javax.swing.JFrame {
    * Abre a tela de orçamento do orçamento selecionado.
    */
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetList, "acessar")) {
-      BudgetModel selectedBudget = budgets.get(budgetList.getSelectedIndex());
+    if (RecordVerificationUtil.verifyRecords(budgetsTable, "acessar")) {
+      BudgetModel selectedBudget = budgets.get(budgetsTable.getSelectedRow());
       BudgetView budgetView = new BudgetView(
               budgetController,
               budgetItemController,
               selectedBudget,
               (value) -> {
-                onUpdateBudget(budgetList.getSelectedIndex(), value);
+                onUpdateBudget(budgetsTable.getSelectedRow(), value);
               }
       );
 
@@ -511,14 +546,14 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JButton accessButton;
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
-  private javax.swing.JList<String> budgetList;
+  private javax.swing.JTable budgetsTable;
   private javax.swing.JButton deleteButton;
   private javax.swing.JFormattedTextField endDateFilterField;
   private javax.swing.JLabel endDateFilterLabel;
   private javax.swing.JLabel exitButton;
   private javax.swing.JFormattedTextField initialDateFilterField;
   private javax.swing.JLabel initialDateFilterLabel;
-  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JScrollPane jScrollPane2;
   private javax.swing.JLabel screenTitle;
   private javax.swing.JButton searchButton;
   private javax.swing.JTextField searchField;

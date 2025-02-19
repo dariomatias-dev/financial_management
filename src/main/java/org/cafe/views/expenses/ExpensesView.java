@@ -1,8 +1,8 @@
 package org.cafe.views.expenses;
 
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.CurrencyFormatterUtil;
@@ -41,23 +41,27 @@ public class ExpensesView extends javax.swing.JFrame {
   private void showBudgetItems(
           ArrayList<ExpenseModel> value
   ) {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    expenseList.setModel(model);
+    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
 
     for (ExpenseModel expense : value) {
       String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
-      String displayText = expense.getName() + "  |  " + formattedValue + "  |  " + expense.getPeriod();
-      model.addElement(displayText);
+
+      Object[] rowData = new Object[4];
+      rowData[0] = expense.getName();
+      rowData[1] = expense.getDescription();
+      rowData[2] = formattedValue;
+      rowData[3] = expense.getPeriod();
+      tableModel.addRow(rowData);
     }
+
   }
 
   /**
    * Atualiza a lista de despesas para exibir somente as despesas que existem.
    */
   private void updateScreen() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    expenseList.setModel(model);
-    model.clear();
+    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
+    tableModel.setRowCount(0);
     listExpenses();
   }
 
@@ -74,8 +78,6 @@ public class ExpensesView extends javax.swing.JFrame {
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
-    expenseListPanel = new javax.swing.JScrollPane();
-    expenseList = new javax.swing.JList<>();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -88,6 +90,8 @@ public class ExpensesView extends javax.swing.JFrame {
     valueMaxFilterLabel = new javax.swing.JLabel();
     valueMinFilterField = new javax.swing.JTextField();
     valueMaxFilterField = new javax.swing.JTextField();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    expensesTable = new javax.swing.JTable();
 
     jMenu1.setText("jMenu1");
 
@@ -111,9 +115,6 @@ public class ExpensesView extends javax.swing.JFrame {
         exitButtonMouseClicked(evt);
       }
     });
-
-    expenseList.setBorder(null);
-    expenseListPanel.setViewportView(expenseList);
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -154,6 +155,45 @@ public class ExpensesView extends javax.swing.JFrame {
 
     valueMaxFilterLabel.setText("Máximo");
 
+    expensesTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null}
+      },
+      new String [] {
+        "Nome", "Descriçãp", "Valor", "Período"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, true, true, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jScrollPane1.setViewportView(expensesTable);
+    if (expensesTable.getColumnModel().getColumnCount() > 0) {
+      expensesTable.getColumnModel().getColumn(0).setMinWidth(120);
+      expensesTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+      expensesTable.getColumnModel().getColumn(0).setMaxWidth(120);
+      expensesTable.getColumnModel().getColumn(2).setMinWidth(88);
+      expensesTable.getColumnModel().getColumn(2).setPreferredWidth(88);
+      expensesTable.getColumnModel().getColumn(2).setMaxWidth(88);
+      expensesTable.getColumnModel().getColumn(3).setMinWidth(60);
+      expensesTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+      expensesTable.getColumnModel().getColumn(3).setMaxWidth(60);
+    }
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -161,32 +201,32 @@ public class ExpensesView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(exitButton)
-            .addGap(34, 34, 34)
-            .addComponent(screenTitle)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
-            .addComponent(addButton))
+          .addComponent(jScrollPane1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(searchField)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(searchButton))
-          .addGroup(backgroundLayout.createSequentialGroup()
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(valueMinFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
             .addComponent(valueMaxFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addComponent(expenseListPanel)
-          .addGroup(backgroundLayout.createSequentialGroup()
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(addButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addGap(34, 34, 34)
+                .addComponent(screenTitle))
               .addComponent(valueFilterLabel)
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(periodLabel)
@@ -201,8 +241,7 @@ public class ExpensesView extends javax.swing.JFrame {
         .addGap(19, 19, 19)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(screenTitle)
-          .addComponent(exitButton)
-          .addComponent(addButton))
+          .addComponent(exitButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,12 +259,13 @@ public class ExpensesView extends javax.swing.JFrame {
           .addComponent(periodLabel)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(expenseListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
-          .addComponent(updateButton))
-        .addContainerGap(21, Short.MAX_VALUE))
+          .addComponent(updateButton)
+          .addComponent(addButton))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -253,7 +293,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
   // Ação de excluir registro.
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-      if (RecordVerificationUtil.verifyRecords(expenseList, "excluir")) {
+      if (RecordVerificationUtil.verifyRecords(expensesTable, "excluir")) {
         // Confirmar remoção de registro.
         int confirm = JOptionPane.showConfirmDialog(
                 null,
@@ -265,7 +305,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
         // Se o usuário confirmar, exclui o registro.
         if (confirm == JOptionPane.YES_OPTION) {
-          ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+          ExpenseModel selectedExpense = expenses.get(expensesTable.getSelectedRow());
           expenseController.removeById(selectedExpense.getId());
 
           updateScreen();
@@ -280,8 +320,8 @@ public class ExpensesView extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-      if (RecordVerificationUtil.verifyRecords(expenseList, "atualizar")) {
-        ExpenseModel selectedExpense = expenses.get(expenseList.getSelectedIndex());
+      if (RecordVerificationUtil.verifyRecords(expensesTable, "atualizar")) {
+        ExpenseModel selectedExpense = expenses.get(expensesTable.getSelectedRow());
         ManagerExpenseView updateManagerRegisterView = new ManagerExpenseView(expenseController, selectedExpense, this::updateScreen);
 
         updateManagerRegisterView.setVisible(true);
@@ -338,9 +378,9 @@ public class ExpensesView extends javax.swing.JFrame {
   private javax.swing.JPanel background;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
-  private javax.swing.JList<String> expenseList;
-  private javax.swing.JScrollPane expenseListPanel;
+  private javax.swing.JTable expensesTable;
   private javax.swing.JMenu jMenu1;
+  private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JLabel periodLabel;
   private javax.swing.JLabel screenTitle;
