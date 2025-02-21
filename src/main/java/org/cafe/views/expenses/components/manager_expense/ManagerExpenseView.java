@@ -31,6 +31,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
       valueField.setText(String.valueOf(data.getValue()));
       periodLabel.setText(data.getPeriod());
 
+      screenTitle.setFocusable(true);
       screenTitle.setText("Atualizar Despesa");
       actionButton.setText("Atualizar");
     }

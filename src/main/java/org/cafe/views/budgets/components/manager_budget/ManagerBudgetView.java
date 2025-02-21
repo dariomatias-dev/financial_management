@@ -52,6 +52,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       initialDateField.setText(formatter.format(initialDateAsDate));
       endDateField.setText(formatter.format(endDateAsDate));
 
+      screenTitle.setFocusable(true);
       screenTitle.setText("Atualizar Orçamento");
       actionButton.setText("Atualizar");
     } else {

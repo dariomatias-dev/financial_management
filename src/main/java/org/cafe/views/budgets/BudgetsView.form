@@ -101,13 +101,17 @@
                               <Component id="valueMinFilterField" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="valueMaxFilterLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="valueMaxFilterField" min="-2" pref="270" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="endDateFilterField" alignment="1" min="-2" pref="270" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="endDateFilterLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="endDateFilterField" min="-2" pref="270" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
@@ -127,13 +131,6 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="373" max="32767" attributes="0"/>
-                      <Component id="endDateFilterLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="293" max="-2" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -167,6 +164,7 @@
                       <Component id="initialDateFilterLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="initialDateFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="endDateFilterField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="endDateFilterLabel1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="330" max="-2" attributes="0"/>
@@ -178,13 +176,6 @@
                       <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
-                      <Component id="endDateFilterLabel1" min="-2" pref="16" max="-2" attributes="0"/>
-                      <EmptySpace pref="364" max="32767" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
