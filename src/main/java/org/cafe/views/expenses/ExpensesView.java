@@ -7,11 +7,13 @@ import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
+import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
   private final ExpenseController expenseController;
-  private ArrayList<ExpenseModel> expenses;
+  private ArrayList<ExpenseModel> allExpenses;
+  private ArrayList<ExpenseModel> displayedExpenses;
 
   /**
    * Construtor.
@@ -23,27 +25,35 @@ public class ExpensesView extends javax.swing.JFrame {
 
     initComponents();
 
+    initializeSearchField();
+
     listExpenses();
   }
 
-  /**
-   * Lista todas as despesas.
-   */
-  private void listExpenses() {
-    expenses = expenseController.getAll();
+  private void initializeSearchField() {
+    screenTitle.setFocusable(true);
 
-    showBudgetItems(expenses);
+    new SearchFieldHandlerUtil(searchField).initialize();
   }
 
   /**
-   * Mostra os itens repassados.
+   * Obtém todas as despesas.
    */
-  private void showBudgetItems(
-          ArrayList<ExpenseModel> value
-  ) {
-    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
+  private void listExpenses() {
+    allExpenses = expenseController.getAll();
+    displayedExpenses = allExpenses;
 
-    for (ExpenseModel expense : value) {
+    showExpenses();
+  }
+
+  /**
+   * Mostra as informações das despesas.
+   */
+  private void showExpenses() {
+    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
+    tableModel.setRowCount(0);
+
+    for (ExpenseModel expense : displayedExpenses) {
       String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
 
       Object[] rowData = new Object[4];
@@ -53,16 +63,15 @@ public class ExpensesView extends javax.swing.JFrame {
       rowData[3] = expense.getPeriod();
       tableModel.addRow(rowData);
     }
-
   }
 
   /**
-   * Atualiza a lista de despesas para exibir somente as despesas que existem.
+   * Atualiza a lista de despesas.
    */
   private void updateScreen() {
-    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
-    tableModel.setRowCount(0);
     listExpenses();
+
+    search();
   }
 
   /**
@@ -74,7 +83,6 @@ public class ExpensesView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    jMenu1 = new javax.swing.JMenu();
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
@@ -92,8 +100,6 @@ public class ExpensesView extends javax.swing.JFrame {
     valueMaxFilterField = new javax.swing.JTextField();
     jScrollPane1 = new javax.swing.JScrollPane();
     expensesTable = new javax.swing.JTable();
-
-    jMenu1.setText("jMenu1");
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     addWindowListener(new java.awt.event.WindowAdapter() {
@@ -201,7 +207,7 @@ public class ExpensesView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(searchField)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -209,11 +215,11 @@ public class ExpensesView extends javax.swing.JFrame {
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(valueMinFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(valueMaxFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(addButton)
@@ -282,7 +288,9 @@ public class ExpensesView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  // Ação de sair da tela.
+  /**
+   * Método chamado para sair da tela.
+   */
     private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_exitButtonMouseClicked
@@ -291,7 +299,9 @@ public class ExpensesView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
-  // Ação de excluir registro.
+  /**
+   * Remove a despesa selecionada.
+   */
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
       if (RecordVerificationUtil.verifyRecords(expensesTable, "excluir")) {
         // Confirmar remoção de registro.
@@ -305,7 +315,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
         // Se o usuário confirmar, exclui o registro.
         if (confirm == JOptionPane.YES_OPTION) {
-          ExpenseModel selectedExpense = expenses.get(expensesTable.getSelectedRow());
+          ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
           expenseController.removeById(selectedExpense.getId());
 
           updateScreen();
@@ -313,29 +323,40 @@ public class ExpensesView extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_deleteButtonMouseClicked
 
+  /**
+   * Abre a tela de criação de uma despesa.
+   */
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
       ManagerExpenseView createManagerRegisterView = new ManagerExpenseView(expenseController, null, this::updateScreen);
 
       createManagerRegisterView.setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
 
+  /**
+   * Abre a tela de atualização da despesa selecionada.
+   */
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
       if (RecordVerificationUtil.verifyRecords(expensesTable, "atualizar")) {
-        ExpenseModel selectedExpense = expenses.get(expensesTable.getSelectedRow());
+        ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
         ManagerExpenseView updateManagerRegisterView = new ManagerExpenseView(expenseController, selectedExpense, this::updateScreen);
 
         updateManagerRegisterView.setVisible(true);
       }
     }//GEN-LAST:event_updateButtonMouseClicked
 
-  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+  /**
+   * Método de pesquisa/filtragem das despesas.
+   */
+  private void search() {
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
-      showBudgetItems(expenses);
+      displayedExpenses = allExpenses;
+      showExpenses();
+
       return;
     }
 
@@ -360,7 +381,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
     ArrayList<ExpenseModel> results = new ArrayList<>();
 
-    for (ExpenseModel expense : expenses) {
+    for (ExpenseModel expense : allExpenses) {
       boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
       boolean matchesValue = expense.getValue() >= valueMinFilter && expense.getValue() <= valueMaxFilter;
@@ -370,7 +391,17 @@ public class ExpensesView extends javax.swing.JFrame {
       }
     }
 
-    showBudgetItems(results);
+    displayedExpenses = results;
+
+    showExpenses();
+  }
+
+  /**
+   * Método chamado para filtrar as despesas de acordo com as filtragens
+   * definidas.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -379,7 +410,6 @@ public class ExpensesView extends javax.swing.JFrame {
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
   private javax.swing.JTable expensesTable;
-  private javax.swing.JMenu jMenu1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JLabel periodLabel;
