@@ -1,16 +1,20 @@
 package org.cafe.views.revenues;
 
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
+import java.util.Random;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.RecordVerificationUtil;
+import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
 public class RevenueView extends javax.swing.JFrame {
   private final RevenueController revenueController;
-  private ArrayList<RevenueModel> revenues;
+  private ArrayList<RevenueModel> allRevenues;
+  private ArrayList<RevenueModel> displayedRevenues;
 
   /**
    * Construtor.
@@ -22,33 +26,52 @@ public class RevenueView extends javax.swing.JFrame {
 
     initComponents();
 
+    initializeSearchField();
+
     listRevenues();
   }
 
+  private void initializeSearchField() {
+    screenTitle.setFocusable(true);
+
+    new SearchFieldHandlerUtil(searchField).initialize();
+  }
+
   /**
-   * Lista todas as despesas.
+   * Obtém todas as receitas.
    */
   private void listRevenues() {
-    revenues = revenueController.getAll();
-    DefaultListModel<String> model = new DefaultListModel<>();
-    revenueList.setModel(model);
+    allRevenues = revenueController.getAll();
+    displayedRevenues = allRevenues;
+    showRevenues();
+  }
 
-    for (RevenueModel revenue : revenues) {
-      String revenueName = revenue.getName();
+  /**
+   * Mostra as informações das receitas.
+   */
+  private void showRevenues() {
+    DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
+    tableModel.setRowCount(0);
+
+    for (RevenueModel revenue : displayedRevenues) {
       String formattedValue = CurrencyFormatterUtil.format(revenue.getValue());
-      String displayText = revenueName + "     -     " + formattedValue;
-      model.addElement(displayText);
+
+      Object[] rowData = new Object[4];
+      rowData[0] = revenue.getName();
+      rowData[1] = revenue.getDescription();
+      rowData[2] = formattedValue;
+      rowData[3] = revenue.getPeriod();
+      tableModel.addRow(rowData);
     }
   }
 
   /**
-   * Atualiza a lista de receitas para exibir somente as receitas que existem.
+   * Atualiza a lista de receitas.
    */
   private void updateScreen() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    revenueList.setModel(model);
-    model.clear();
     listRevenues();
+
+    search();
   }
 
   /**
@@ -64,11 +87,20 @@ public class RevenueView extends javax.swing.JFrame {
     background = new javax.swing.JPanel();
     screenTitle = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
-    jScrollPane1 = new javax.swing.JScrollPane();
-    revenueList = new javax.swing.JList<>();
-    deleteButton = new javax.swing.JButton();
-    updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
+    updateButton = new javax.swing.JButton();
+    deleteButton = new javax.swing.JButton();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    revenuesTable = new javax.swing.JTable();
+    periodLabel = new javax.swing.JLabel();
+    periodFilterField = new javax.swing.JComboBox<>();
+    valueMinFilterLabel = new javax.swing.JLabel();
+    valueMinFilterField = new javax.swing.JTextField();
+    valueMaxFilterLabel = new javax.swing.JLabel();
+    valueMaxFilterField = new javax.swing.JTextField();
+    valueFilterLabel = new javax.swing.JLabel();
+    searchField = new javax.swing.JTextField();
+    searchButton = new javax.swing.JButton();
 
     jMenu1.setText("jMenu1");
 
@@ -93,14 +125,10 @@ public class RevenueView extends javax.swing.JFrame {
       }
     });
 
-    revenueList.setBorder(null);
-    jScrollPane1.setViewportView(revenueList);
-
-    deleteButton.setForeground(new java.awt.Color(255, 0, 51));
-    deleteButton.setText("Excluir");
-    deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    addButton.setText("Adicionar");
+    addButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
-        deleteButtonMouseClicked(evt);
+        addButtonMouseClicked(evt);
       }
     });
 
@@ -111,10 +139,67 @@ public class RevenueView extends javax.swing.JFrame {
       }
     });
 
-    addButton.setText("Adicionar");
-    addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    deleteButton.setForeground(new java.awt.Color(255, 0, 51));
+    deleteButton.setText("Excluir");
+    deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
-        addButtonMouseClicked(evt);
+        deleteButtonMouseClicked(evt);
+      }
+    });
+
+    revenuesTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null}
+      },
+      new String [] {
+        "Nome", "Descrição", "Valor", "Período"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, true, true, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jScrollPane1.setViewportView(revenuesTable);
+    if (revenuesTable.getColumnModel().getColumnCount() > 0) {
+      revenuesTable.getColumnModel().getColumn(0).setMinWidth(120);
+      revenuesTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+      revenuesTable.getColumnModel().getColumn(0).setMaxWidth(120);
+      revenuesTable.getColumnModel().getColumn(2).setMinWidth(88);
+      revenuesTable.getColumnModel().getColumn(2).setPreferredWidth(88);
+      revenuesTable.getColumnModel().getColumn(2).setMaxWidth(88);
+      revenuesTable.getColumnModel().getColumn(3).setMinWidth(60);
+      revenuesTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+      revenuesTable.getColumnModel().getColumn(3).setMaxWidth(60);
+    }
+
+    periodLabel.setText("Período:");
+
+    periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
+
+    valueMinFilterLabel.setText("Mínimo:");
+
+    valueMaxFilterLabel.setText("Máximo");
+
+    valueFilterLabel.setText("Valor:");
+
+    searchButton.setText("Filtrar");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
       }
     });
 
@@ -125,19 +210,39 @@ public class RevenueView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jScrollPane1)
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(valueMinFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(valueMaxFilterLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(addButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(updateButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(exitButton)
-            .addGap(34, 34, 34)
-            .addComponent(screenTitle)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
-            .addComponent(addButton)))
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addGap(34, 34, 34)
+                .addComponent(screenTitle))
+              .addComponent(valueFilterLabel)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(periodLabel)
+                .addGap(18, 18, 18)
+                .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
-      .addComponent(jScrollPane1)
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,14 +250,30 @@ public class RevenueView extends javax.swing.JFrame {
         .addGap(19, 19, 19)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(screenTitle)
-          .addComponent(exitButton)
-          .addComponent(addButton))
+          .addComponent(exitButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(searchButton))
+        .addGap(1, 1, 1)
+        .addComponent(valueFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(periodLabel)
+          .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(deleteButton)
-          .addComponent(updateButton))
+          .addComponent(updateButton)
+          .addComponent(addButton))
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -170,7 +291,9 @@ public class RevenueView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  // Ação de sair da tela.
+  /**
+   * Método chamado para sair da tela.
+   */
     private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_exitButtonMouseClicked
@@ -179,73 +302,127 @@ public class RevenueView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
-  // Ação de excluir registro.
-    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-      if (verifyRecords("excluir")) {
-        // Confirmar remoção de registro.
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "Você realmente deseja excluir este registro?",
-                "Confirmar Exclusão",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
+  /**
+   * Abre a tela de criação de uma receita.
+   */
+  private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+    Random random = new Random();
 
-        // Se o usuário confirmar, exclui o registro.
-        if (confirm == JOptionPane.YES_OPTION) {
-          RevenueModel selectedRevenue = revenues.get(revenueList.getSelectedIndex());
-          revenueController.removeById(selectedRevenue.getId());
+    String[] periods = {"Diário", "Semanal", "Mensal"};
+    String period = periods[random.nextInt(periods.length)];
 
-          updateScreen();
-        }
-      }
-    }//GEN-LAST:event_deleteButtonMouseClicked
+    String id = "rev" + random.nextInt(1000);
+    String name = "Revenue #" + (random.nextInt(100) + 1);
+    double value = 100 + (1000 - 100) * random.nextDouble();
+    String description = "Revenue generated for the business";
+    String revenueType = random.nextBoolean() ? "Product" : "Service";
 
-    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-      ManagerRevenueView createRevenueRegisterView = new ManagerRevenueView(revenueController, null, this::updateScreen);
+    revenueController.create(
+            new RevenueModel(id, name, value, period, description, revenueType)
+    );
 
-      createRevenueRegisterView.setVisible(true);
-    }//GEN-LAST:event_addButtonMouseClicked
+    updateScreen();
 
-    private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-      if (verifyRecords("atualizar")) {
-        RevenueModel selectedExpense = revenues.get(revenueList.getSelectedIndex());
-        ManagerRevenueView createRevenueView = new ManagerRevenueView(revenueController, selectedExpense, this::updateScreen);
+    //    ManagerRevenueView createManagerRevenueView = new ManagerRevenueView(revenueController, null, this::updateScreen);;;
+    //
+    //    createManagerRevenueView.setVisible(true);
+  }//GEN-LAST:event_addButtonMouseClicked
 
-        createRevenueView.setVisible(true);
-      }
-    }//GEN-LAST:event_updateButtonMouseClicked
+  /**
+   * Abre a tela de atualização da receita selecionada.
+   */
+  private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+    if (RecordVerificationUtil.verifyRecords(revenuesTable, "atualizar")) {
+      RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
+      ManagerRevenueView updateManagerRegisterView = new ManagerRevenueView(revenueController, selectedRevenue, this::updateScreen);
 
-  private boolean verifyRecords(
-          String actionName
-  ) {
-    // Verifica se existe registros.
-    if (revenues.isEmpty()) {
-      JOptionPane.showMessageDialog(
+      updateManagerRegisterView.setVisible(true);
+    }
+  }//GEN-LAST:event_updateButtonMouseClicked
+
+  /**
+   * Remove a receita selecionada.
+   */
+  private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+    if (RecordVerificationUtil.verifyRecords(revenuesTable, "excluir")) {
+      // Confirmar remoção de registro.
+      int confirm = JOptionPane.showConfirmDialog(
               null,
-              String.format("Não há registros para %s.", actionName),
-              "Aviso",
+              "Você realmente deseja excluir este registro?",
+              "Confirmar Exclusão",
+              JOptionPane.YES_NO_OPTION,
               JOptionPane.WARNING_MESSAGE
       );
 
-      return false;
+      // Se o usuário confirmar, exclui o registro.
+      if (confirm == JOptionPane.YES_OPTION) {
+        RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
+        revenueController.removeById(selectedRevenue.getId());
+
+        updateScreen();
+      }
+    }
+  }//GEN-LAST:event_deleteButtonMouseClicked
+
+  /**
+   * Método de pesquisa/filtragem das despesas.
+   */
+  private void search() {
+    String query = searchField.getText().trim();
+    String periodFilter = (String) periodFilterField.getSelectedItem();
+    String valueMinFilterText = valueMinFilterField.getText().trim();
+    String valueMaxFilterText = valueMaxFilterField.getText().trim();
+
+    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
+      displayedRevenues = allRevenues;
+      showRevenues();
+
+      return;
     }
 
-    // Verifica se um registro foi selecionado.
-    int selectedIndex = revenueList.getSelectedIndex();
-    if (selectedIndex == -1) {
-      JOptionPane.showMessageDialog(
-              null,
-              "Por favor, selecione um registro.",
-              "Aviso",
-              JOptionPane.WARNING_MESSAGE
-      );
+    double valueMinFilter = Double.MIN_VALUE;
+    double valueMaxFilter = Double.MAX_VALUE;
 
-      return false;
+    try {
+      if (!valueMinFilterText.isEmpty()) {
+        valueMinFilter = Double.parseDouble(valueMinFilterText);
+      }
+      if (!valueMaxFilterText.isEmpty()) {
+        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
+      }
+      if (valueMinFilter > valueMaxFilter) {
+        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+    } catch (NumberFormatException e) {
+      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
     }
 
-    return true;
+    ArrayList<RevenueModel> results = new ArrayList<>();
+
+    for (RevenueModel revenue : allRevenues) {
+      boolean matchesQuery = query.equals("Pesquisar...") || revenue.getName().contains(query) || revenue.getDescription().contains(query);
+      boolean matchesPeriod = periodFilter.equals("Todos") || revenue.getPeriod().equals(periodFilter);
+      boolean matchesValue = revenue.getValue() >= valueMinFilter && revenue.getValue() <= valueMaxFilter;
+
+      if (matchesQuery && matchesPeriod && matchesValue) {
+        results.add(revenue);
+      }
+    }
+
+    displayedRevenues = results;
+
+    showRevenues();
   }
+
+  /**
+   * Método chamado para filtrar as despesas de acordo com as filtragens
+   * definidas.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
+  }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
@@ -254,8 +431,17 @@ public class RevenueView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JMenu jMenu1;
   private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JList<String> revenueList;
+  private javax.swing.JComboBox<String> periodFilterField;
+  private javax.swing.JLabel periodLabel;
+  private javax.swing.JTable revenuesTable;
   private javax.swing.JLabel screenTitle;
+  private javax.swing.JButton searchButton;
+  private javax.swing.JTextField searchField;
   private javax.swing.JButton updateButton;
+  private javax.swing.JLabel valueFilterLabel;
+  private javax.swing.JTextField valueMaxFilterField;
+  private javax.swing.JLabel valueMaxFilterLabel;
+  private javax.swing.JTextField valueMinFilterField;
+  private javax.swing.JLabel valueMinFilterLabel;
   // End of variables declaration//GEN-END:variables
 }

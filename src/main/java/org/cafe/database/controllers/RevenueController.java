@@ -3,29 +3,27 @@ package org.cafe.database.controllers;
 import java.util.ArrayList;
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
-import org.cafe.models.revenue.RevenueModel;
-
-import java.util.ArrayList;
 import org.cafe.models.revenue.CreateRevenueModel;
+import org.cafe.models.revenue.RevenueModel;
 
 public class RevenueController extends DatabaseController<RevenueModel> {
   public RevenueController(DatabaseService databaseService) {
     super(
-      databaseService,
-      "Revenues",
-      new String[]{ "name", "value", "period", "description", "revenue_type" }
+            databaseService,
+            "Revenues",
+            new String[]{"name", "value", "period", "description", "revenue_type"}
     );
   }
 
   public void create(
-            CreateRevenueModel RevenueModel
+          CreateRevenueModel RevenueModel
   ) {
     Object[] values = {
       RevenueModel.getName(),
       RevenueModel.getValue(),
       RevenueModel.getPeriod(),
-      RevenueModel.getRevenueType(),
-      RevenueModel.getDescription()
+      RevenueModel.getDescription(),
+      RevenueModel.getRevenueType()
 
     };
 
@@ -41,12 +39,12 @@ public class RevenueController extends DatabaseController<RevenueModel> {
     Object[] row = results.getFirst();
 
     return new RevenueModel(
-      (String) row[0],
-      (String) row[1],
-      (double) row[2],
-      (String) row[3],
-      (String) row[4],
-      (String) row[5]
+            (String) row[0],
+            (String) row[1],
+            (double) row[2],
+            (String) row[3],
+            (String) row[4],
+            (String) row[5]
     );
   }
 
@@ -55,14 +53,14 @@ public class RevenueController extends DatabaseController<RevenueModel> {
     ArrayList<RevenueModel> revenues = new ArrayList<>();
     for (Object[] row : results) {
       revenues.add(
-        new RevenueModel(
-          (String) row[0],
-          (String) row[1],
-          (double) row[2],
-          (String) row[3],
-          (String) row[4],
-          (String) row[5]
-        )
+              new RevenueModel(
+                      (String) row[0],
+                      (String) row[1],
+                      (double) row[2],
+                      (String) row[3],
+                      (String) row[4],
+                      (String) row[5]
+              )
       );
     }
 
@@ -74,8 +72,8 @@ public class RevenueController extends DatabaseController<RevenueModel> {
       updateRevenue.getName(),
       updateRevenue.getValue(),
       updateRevenue.getPeriod(),
-      updateRevenue.getRevenueType(),
       updateRevenue.getDescription(),
+      updateRevenue.getRevenueType()
     };
 
     super.setById(updateRevenue.getId(), values);

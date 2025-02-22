@@ -64,10 +64,9 @@ public class DatabaseManager {
       CREATE TABLE IF NOT EXISTS Revenues (
           id VARCHAR(36) PRIMARY KEY,
           name TEXT NOT NULL,
-          gross_value REAL NOT NULL,
-          net_value REAL NOT NULL,
+          value REAL NOT NULL,
           period TEXT NOT NULL,
-          description TEXT,
+          description TEXT NOT NULL,
           revenue_type TEXT NOT NULL
       );
     """;
