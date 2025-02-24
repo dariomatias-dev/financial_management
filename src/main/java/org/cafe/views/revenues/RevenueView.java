@@ -38,7 +38,7 @@ public class RevenueView extends javax.swing.JFrame {
   }
 
   /**
-   * Obtém todas as receitas.
+   * Lista todas as receitas.
    */
   private void listRevenues() {
     allRevenues = revenueController.getAll();
