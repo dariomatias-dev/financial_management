@@ -169,7 +169,7 @@ public class ExpensesView extends javax.swing.JFrame {
         {null, null, null, null}
       },
       new String [] {
-        "Nome", "Descriçãp", "Valor", "Período"
+        "Nome", "Descrição", "Valor", "Período"
       }
     ) {
       Class[] types = new Class [] {
@@ -207,7 +207,7 @@ public class ExpensesView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+          .addComponent(jScrollPane1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(searchField)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
