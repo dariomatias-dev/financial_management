@@ -11,6 +11,13 @@ import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.views.budgets.BudgetsView;
 import org.cafe.views.expenses.ExpensesView;
 import org.cafe.views.revenues.RevenueView;
+import java.awt.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.*;
+
 
 public class MainView extends javax.swing.JFrame {
   private final ExpenseController expenseController;
@@ -45,6 +52,7 @@ public class MainView extends javax.swing.JFrame {
     for (RevenueModel revenue : revenues) {
       revenuesAmountValue += revenue.getValue();
     }
+    graphicAdd();
     String formattedExpenseValue = CurrencyFormatterUtil.format(expensesAmountValue);
     String formattedRevenueValue = CurrencyFormatterUtil.format(revenuesAmountValue);
             
@@ -52,6 +60,44 @@ public class MainView extends javax.swing.JFrame {
     expensesAmount.setText(formattedExpenseValue);
     revenuesAmount.setText(formattedRevenueValue);
   }
+  
+  private void graphicAdd() {
+        // Criar os dados do gráfico
+        PieDataset dataset = createDataset();
+
+        
+        // Criar o gráfico
+        JFreeChart chart = ChartFactory.createPieChart(
+                "",                   
+                dataset,            
+                false,                 
+                true,                 
+                false                 
+        );
+
+        // Criar o painel do gráfico
+        ChartPanel chartPanel = new ChartPanel(chart);
+        PiePlot plot = (PiePlot) chart.getPlot();
+         plot.setOutlineVisible(false);
+        chartPanel.setPreferredSize(new Dimension(400,250));
+        chart.setBackgroundPaint(new Color(238,238,238,0)); 
+        chart.getPlot().setBackgroundPaint(new Color(238,238,238,0)); 
+
+        // Remover qualquer componente anterior e adicionar o gráfico ao painel
+        graphicPanel.removeAll();
+        graphicPanel.setLayout(new BorderLayout());
+        graphicPanel.add(chartPanel, BorderLayout.CENTER);
+        graphicPanel.revalidate();
+        graphicPanel.repaint();
+    }
+
+    private PieDataset createDataset() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Despesas", expensesAmountValue);
+        dataset.setValue("Receitas", revenuesAmountValue);
+        return dataset;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -350,6 +396,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane expenseField;
     private javax.swing.JLabel expenseTitle;
     private javax.swing.JLabel expensesAmount;
+    private javax.swing.JPanel graphicPanel;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
