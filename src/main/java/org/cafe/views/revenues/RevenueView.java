@@ -29,6 +29,8 @@ public class RevenueView extends javax.swing.JFrame {
     initializeSearchField();
 
     listRevenues();
+    
+    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
   private void initializeSearchField() {
@@ -85,8 +87,6 @@ public class RevenueView extends javax.swing.JFrame {
 
     jMenu1 = new javax.swing.JMenu();
     background = new javax.swing.JPanel();
-    screenTitle = new javax.swing.JLabel();
-    exitButton = new javax.swing.JLabel();
     addButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     deleteButton = new javax.swing.JButton();
@@ -101,6 +101,8 @@ public class RevenueView extends javax.swing.JFrame {
     valueFilterLabel = new javax.swing.JLabel();
     searchField = new javax.swing.JTextField();
     searchButton = new javax.swing.JButton();
+    exitButton = new javax.swing.JLabel();
+    screenTitle = new javax.swing.JLabel();
 
     jMenu1.setText("jMenu1");
 
@@ -112,18 +114,7 @@ public class RevenueView extends javax.swing.JFrame {
     });
 
     background.setBackground(new java.awt.Color(255, 255, 255));
-
-    screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    screenTitle.setForeground(new java.awt.Color(0, 0, 0));
-    screenTitle.setText("Receitas");
-
-    exitButton.setForeground(new java.awt.Color(255, 0, 51));
-    exitButton.setText("Sair");
-    exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        exitButtonMouseClicked(evt);
-      }
-    });
+    background.setPreferredSize(new java.awt.Dimension(598, 427));
 
     addButton.setText("Adicionar");
     addButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,6 +194,17 @@ public class RevenueView extends javax.swing.JFrame {
       }
     });
 
+    exitButton.setForeground(new java.awt.Color(255, 0, 51));
+    exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        exitButtonMouseClicked(evt);
+      }
+    });
+
+    screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    screenTitle.setForeground(new java.awt.Color(0, 0, 0));
+    screenTitle.setText("Receitas");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -232,25 +234,25 @@ public class RevenueView extends javax.swing.JFrame {
             .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addGap(34, 34, 34)
-                .addComponent(screenTitle))
               .addComponent(valueFilterLabel)
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(periodLabel)
                 .addGap(18, 18, 18)
-                .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(screenTitle)))
             .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(backgroundLayout.createSequentialGroup()
-        .addGap(19, 19, 19)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(screenTitle)
-          .addComponent(exitButton))
+        .addGap(16, 16, 16)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(screenTitle))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,18 +287,11 @@ public class RevenueView extends javax.swing.JFrame {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
-
-  /**
-   * Método chamado para sair da tela.
-   */
-    private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
-      this.dispose();
-    }//GEN-LAST:event_exitButtonMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
@@ -423,6 +418,10 @@ public class RevenueView extends javax.swing.JFrame {
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
   }//GEN-LAST:event_searchButtonMouseClicked
+
+  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
+    this.dispose();
+  }//GEN-LAST:event_exitButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;

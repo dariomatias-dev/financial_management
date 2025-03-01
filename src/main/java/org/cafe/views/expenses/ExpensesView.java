@@ -28,6 +28,8 @@ public class ExpensesView extends javax.swing.JFrame {
     initializeSearchField();
 
     listExpenses();
+    
+    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
   private void initializeSearchField() {
@@ -115,7 +117,6 @@ public class ExpensesView extends javax.swing.JFrame {
     screenTitle.setText("Despesas");
 
     exitButton.setForeground(new java.awt.Color(255, 0, 51));
-    exitButton.setText("Sair");
     exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         exitButtonMouseClicked(evt);
@@ -230,8 +231,8 @@ public class ExpensesView extends javax.swing.JFrame {
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addGap(34, 34, 34)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(screenTitle))
               .addComponent(valueFilterLabel)
               .addGroup(backgroundLayout.createSequentialGroup()
@@ -245,9 +246,9 @@ public class ExpensesView extends javax.swing.JFrame {
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(backgroundLayout.createSequentialGroup()
         .addGap(19, 19, 19)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(screenTitle)
-          .addComponent(exitButton))
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(screenTitle))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,13 +288,6 @@ public class ExpensesView extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
-
-  /**
-   * Método chamado para sair da tela.
-   */
-    private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
-      this.dispose();
-    }//GEN-LAST:event_exitButtonMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
@@ -403,6 +397,13 @@ public class ExpensesView extends javax.swing.JFrame {
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
   }//GEN-LAST:event_searchButtonMouseClicked
+
+  /**
+   * Método chamado para sair da tela.
+   */
+  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
+    this.dispose();
+  }//GEN-LAST:event_exitButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;

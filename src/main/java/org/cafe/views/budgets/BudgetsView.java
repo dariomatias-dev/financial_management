@@ -49,6 +49,8 @@ public class BudgetsView extends javax.swing.JFrame {
     new DateMaskFormatter().applyMask(endDateFilterField);
     
     screenTitle.setFocusable(true);
+    
+    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
   /**
@@ -136,8 +138,6 @@ public class BudgetsView extends javax.swing.JFrame {
     statusSelect = new javax.swing.JComboBox<>();
     statusLabel = new javax.swing.JLabel();
     background = new javax.swing.JPanel();
-    screenTitle = new javax.swing.JLabel();
-    exitButton = new javax.swing.JLabel();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
@@ -156,6 +156,8 @@ public class BudgetsView extends javax.swing.JFrame {
     jScrollPane2 = new javax.swing.JScrollPane();
     budgetsTable = new javax.swing.JTable();
     endDateFilterLabel1 = new javax.swing.JLabel();
+    exitButton = new javax.swing.JLabel();
+    screenTitle = new javax.swing.JLabel();
 
     statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
 
@@ -166,18 +168,6 @@ public class BudgetsView extends javax.swing.JFrame {
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     background.setBackground(new java.awt.Color(255, 255, 255));
-
-    screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    screenTitle.setForeground(new java.awt.Color(0, 0, 0));
-    screenTitle.setText("Orçamentos");
-
-    exitButton.setForeground(new java.awt.Color(255, 0, 51));
-    exitButton.setText("Sair");
-    exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        exitButtonMouseClicked(evt);
-      }
-    });
 
     deleteButton.setForeground(new java.awt.Color(255, 0, 51));
     deleteButton.setText("Excluir");
@@ -269,6 +259,17 @@ public class BudgetsView extends javax.swing.JFrame {
 
     endDateFilterLabel1.setText("Data Final:");
 
+    exitButton.setForeground(new java.awt.Color(255, 0, 51));
+    exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        exitButtonMouseClicked(evt);
+      }
+    });
+
+    screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    screenTitle.setForeground(new java.awt.Color(0, 0, 0));
+    screenTitle.setText("Orçamentos");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -311,23 +312,23 @@ public class BudgetsView extends javax.swing.JFrame {
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addGap(34, 34, 34)
-                .addComponent(screenTitle))
-              .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(statusFilterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(statusFilterSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(screenTitle)))
             .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(backgroundLayout.createSequentialGroup()
-        .addGap(19, 19, 19)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(screenTitle)
-          .addComponent(exitButton))
+        .addGap(16, 16, 16)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(screenTitle))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -372,13 +373,6 @@ public class BudgetsView extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
-
-  /**
-   * Método chamado para sair da tela.
-   */
-  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
-    this.dispose();
-  }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
    * Remove o orçamento selecionado.
@@ -546,6 +540,10 @@ public class BudgetsView extends javax.swing.JFrame {
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
   }//GEN-LAST:event_searchButtonMouseClicked
+
+  private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
+    this.dispose();
+  }//GEN-LAST:event_exitButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton accessButton;
