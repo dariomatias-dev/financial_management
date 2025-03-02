@@ -1,7 +1,6 @@
 package org.cafe.views.revenues;
 
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueController;
@@ -29,7 +28,7 @@ public class RevenueView extends javax.swing.JFrame {
     initializeSearchField();
 
     listRevenues();
-    
+
     exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
@@ -301,26 +300,9 @@ public class RevenueView extends javax.swing.JFrame {
    * Abre a tela de criação de uma receita.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    Random random = new Random();
+    ManagerRevenueView createManagerRevenueView = new ManagerRevenueView(revenueController, null, this::updateScreen);;;
 
-    String[] periods = {"Diário", "Semanal", "Mensal"};
-    String period = periods[random.nextInt(periods.length)];
-
-    String id = "rev" + random.nextInt(1000);
-    String name = "Revenue #" + (random.nextInt(100) + 1);
-    double value = 100 + (1000 - 100) * random.nextDouble();
-    String description = "Revenue generated for the business";
-    String revenueType = random.nextBoolean() ? "Product" : "Service";
-
-    revenueController.create(
-            new RevenueModel(id, name, value, period, description, revenueType)
-    );
-
-    updateScreen();
-
-    //    ManagerRevenueView createManagerRevenueView = new ManagerRevenueView(revenueController, null, this::updateScreen);;;
-    //
-    //    createManagerRevenueView.setVisible(true);
+    createManagerRevenueView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
