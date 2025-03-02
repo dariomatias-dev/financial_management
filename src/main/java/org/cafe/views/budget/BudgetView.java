@@ -23,6 +23,8 @@ public class BudgetView extends javax.swing.JFrame {
   private ArrayList<BudgetItemModel> displayedBudgetItems;
   private final Consumer<BudgetModel> onUpdateBudget;
 
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
   /**
    * Construtor.
    *
@@ -48,11 +50,14 @@ public class BudgetView extends javax.swing.JFrame {
 
     showInfos();
 
+    showFinancialSummaryBudget();
+
     listBudgetItems();
 
     showBudgetItems();
-    
+
     exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
+    monetaryInfoTable.setFillsViewportHeight(false);
   }
 
   private void initializeSearchField() {
@@ -71,8 +76,6 @@ public class BudgetView extends javax.swing.JFrame {
     categoryText.setText("Categoria: " + budget.getCategory());
     descriptionText.setText("Descrição: " + budget.getDescription());
     statusText.setText("Status: " + budget.getStatus());
-    totalSpentText.setText("Total dos Itens: R$ " + budget.getTotalSpent());
-    totalBudgetValueText.setText("Valor do Orçamento: R$ " + budget.getTotalBudgetValue());
     initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(formatter));
     endDateText.setText("Data Final: " + budget.getEndDate().format(formatter));
   }
@@ -147,7 +150,7 @@ public class BudgetView extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(null, "Aviso: O valor dos itens do orçamento ultrapassou o orçamento total!", "Aviso", JOptionPane.WARNING_MESSAGE);
     }
 
-    totalSpentText.setText("Valor: R$ " + budget.getTotalSpent());
+    showFinancialSummaryBudget();
 
     onUpdateBudget.accept(budget);
   }
@@ -168,7 +171,6 @@ public class BudgetView extends javax.swing.JFrame {
     descriptionText = new javax.swing.JLabel();
     categoryText = new javax.swing.JLabel();
     statusText = new javax.swing.JLabel();
-    totalBudgetValueText = new javax.swing.JLabel();
     initialDateText = new javax.swing.JLabel();
     endDateText = new javax.swing.JLabel();
     itemsText = new javax.swing.JLabel();
@@ -182,12 +184,14 @@ public class BudgetView extends javax.swing.JFrame {
     valueMinFilterField = new javax.swing.JTextField();
     valueMaxFilterLabel = new javax.swing.JLabel();
     valueMaxFilterField = new javax.swing.JTextField();
-    totalSpentText = new javax.swing.JLabel();
     separator = new javax.swing.JSeparator();
     jScrollPane2 = new javax.swing.JScrollPane();
     budgetItemsTable = new javax.swing.JTable();
     exitButton = new javax.swing.JLabel();
     screenTitle = new javax.swing.JLabel();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    monetaryInfoTable = new javax.swing.JTable();
+    jLabel1 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -221,8 +225,6 @@ public class BudgetView extends javax.swing.JFrame {
 
     statusText.setText("Status");
 
-    totalBudgetValueText.setText("Valor do Orçamento");
-
     initialDateText.setText("Data Inicial");
 
     endDateText.setText("Data Final");
@@ -245,8 +247,6 @@ public class BudgetView extends javax.swing.JFrame {
     valueMinFilterLabel.setText("Valor Mínimo:");
 
     valueMaxFilterLabel.setText("Valor Máximo:");
-
-    totalSpentText.setText("Total dos Itens:");
 
     separator.setForeground(new java.awt.Color(60, 63, 65));
 
@@ -297,62 +297,96 @@ public class BudgetView extends javax.swing.JFrame {
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
     screenTitle.setText("Orçamento");
 
+    monetaryInfoTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+
+      },
+      new String [] {
+        "Valor do Orçamento", "Valor Total dos Itens", "Valor Restante"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.String.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, false, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jScrollPane1.setViewportView(monetaryInfoTable);
+
+    jLabel1.setText("Resumo Financeiro do Orçamento:");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addComponent(separator)
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
-            .addComponent(screenTitle)
-            .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
+            .addContainerGap())
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jScrollPane2)
-              .addComponent(separator)
+              .addComponent(descriptionText)
+              .addComponent(nameText))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelInvisible)
+            .addContainerGap())
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(categoryText)
+              .addComponent(initialDateText))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(endDateText)
+              .addComponent(statusText))
+            .addGap(188, 188, 188))
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(jLabel1)
               .addGroup(backgroundLayout.createSequentialGroup()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(descriptionText)
-                  .addComponent(categoryText)
-                  .addComponent(statusText)
-                  .addComponent(nameText))
-                .addGap(525, 525, 525))
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(updateButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton))
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addComponent(searchField)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchButton))
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addComponent(valueMinFilterLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(valueMaxFilterLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-              .addGroup(backgroundLayout.createSequentialGroup()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(totalSpentText)
-                  .addComponent(totalBudgetValueText)
-                  .addComponent(initialDateText)
-                  .addComponent(endDateText)
-                  .addComponent(itemsText)
-                  .addGroup(backgroundLayout.createSequentialGroup()
-                    .addComponent(periodFilterLabel)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(labelInvisible)))
+                .addComponent(screenTitle)))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(backgroundLayout.createSequentialGroup()
+              .addComponent(addButton)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(updateButton)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(deleteButton))
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+              .addComponent(jScrollPane2)
+              .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(itemsText)
+                .addGroup(backgroundLayout.createSequentialGroup()
+                  .addComponent(periodFilterLabel)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(backgroundLayout.createSequentialGroup()
+                  .addComponent(valueMinFilterLabel)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(valueMaxFilterLabel)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+              .addComponent(searchButton)))
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -370,43 +404,43 @@ public class BudgetView extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(descriptionText)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(categoryText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(statusText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(totalSpentText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(totalBudgetValueText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(initialDateText, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(endDateText)
-            .addGap(24, 24, 24)
-            .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(itemsText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(searchButton))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(periodFilterLabel)
-              .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(3, 3, 3)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(deleteButton)
-              .addComponent(updateButton)
-              .addComponent(addButton))))
-        .addContainerGap(9, Short.MAX_VALUE))
+              .addComponent(categoryText)
+              .addComponent(statusText))))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(initialDateText, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(endDateText))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jLabel1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(itemsText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(searchButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(valueMaxFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(periodFilterLabel)
+          .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(3, 3, 3)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(deleteButton)
+          .addComponent(updateButton)
+          .addComponent(addButton))
+        .addContainerGap(12, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -545,6 +579,19 @@ public class BudgetView extends javax.swing.JFrame {
     }
   }
 
+  private void showFinancialSummaryBudget() {
+    // Cálculo dos valores
+    double totalSpent = budget.getTotalSpent();
+    double totalBudget = budget.getTotalBudgetValue();
+    double remainingValue = totalBudget - totalSpent;
+
+    DefaultTableModel monetaryModel = (DefaultTableModel) monetaryInfoTable.getModel();
+    monetaryModel.setRowCount(0);
+
+    // Adição das informações
+    monetaryModel.addRow(new Object[]{CurrencyFormatterUtil.format(totalBudget), CurrencyFormatterUtil.format(totalSpent), CurrencyFormatterUtil.format(remainingValue)});
+  }
+
   /**
    * Método chamado para filtrar os itens do orçamento de acordo com as
    * filtragens definidas.
@@ -568,8 +615,11 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JLabel initialDateText;
   private javax.swing.JLabel itemsText;
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
   private javax.swing.JLabel labelInvisible;
+  private javax.swing.JTable monetaryInfoTable;
   private javax.swing.JLabel nameText;
   private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JLabel periodFilterLabel;
@@ -578,8 +628,6 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JTextField searchField;
   private javax.swing.JSeparator separator;
   private javax.swing.JLabel statusText;
-  private javax.swing.JLabel totalBudgetValueText;
-  private javax.swing.JLabel totalSpentText;
   private javax.swing.JButton updateButton;
   private javax.swing.JTextField valueMaxFilterField;
   private javax.swing.JLabel valueMaxFilterLabel;
