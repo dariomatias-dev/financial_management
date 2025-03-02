@@ -195,10 +195,10 @@ public class ManagerRevenueView extends javax.swing.JFrame {
       String period = (String) periodSelect.getSelectedItem();
 
       if (data != null) {
-        RevenueModel revenue = new RevenueModel(data.getId(), name, value, period, description, "");
+        RevenueModel revenue = new RevenueModel(data.getId(), name, description, value, period);
         revenueController.update(revenue);
       } else {
-        CreateRevenueModel revenue = new CreateRevenueModel(name, value, period, description, "");
+        CreateRevenueModel revenue = new CreateRevenueModel(name, description, value, period);
         revenueController.create(revenue);
       }
 

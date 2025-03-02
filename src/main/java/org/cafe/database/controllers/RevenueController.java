@@ -11,7 +11,7 @@ public class RevenueController extends DatabaseController<RevenueModel> {
     super(
             databaseService,
             "Revenues",
-            new String[]{"name", "value", "period", "description", "revenue_type"}
+            new String[]{"name", "description", "value", "period"}
     );
   }
 
@@ -20,11 +20,9 @@ public class RevenueController extends DatabaseController<RevenueModel> {
   ) {
     Object[] values = {
       RevenueModel.getName(),
-      RevenueModel.getValue(),
-      RevenueModel.getPeriod(),
       RevenueModel.getDescription(),
-      RevenueModel.getRevenueType()
-
+      RevenueModel.getValue(),
+      RevenueModel.getPeriod()
     };
 
     super.insert(values);
@@ -41,10 +39,9 @@ public class RevenueController extends DatabaseController<RevenueModel> {
     return new RevenueModel(
             (String) row[0],
             (String) row[1],
-            (double) row[2],
-            (String) row[3],
-            (String) row[4],
-            (String) row[5]
+            (String) row[2],
+            (double) row[3],
+            (String) row[4]
     );
   }
 
@@ -56,10 +53,9 @@ public class RevenueController extends DatabaseController<RevenueModel> {
               new RevenueModel(
                       (String) row[0],
                       (String) row[1],
-                      (double) row[2],
-                      (String) row[3],
-                      (String) row[4],
-                      (String) row[5]
+                      (String) row[2],
+                      (double) row[3],
+                      (String) row[4]
               )
       );
     }
@@ -70,10 +66,9 @@ public class RevenueController extends DatabaseController<RevenueModel> {
   public void update(RevenueModel updateRevenue) {
     Object[] values = {
       updateRevenue.getName(),
-      updateRevenue.getValue(),
-      updateRevenue.getPeriod(),
       updateRevenue.getDescription(),
-      updateRevenue.getRevenueType()
+      updateRevenue.getValue(),
+      updateRevenue.getPeriod()
     };
 
     super.setById(updateRevenue.getId(), values);
