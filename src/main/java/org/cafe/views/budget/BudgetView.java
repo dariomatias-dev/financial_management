@@ -70,14 +70,12 @@ public class BudgetView extends javax.swing.JFrame {
    * Mostra as informações do orçamento.
    */
   private void showInfos() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     nameText.setText("Nome: " + budget.getName());
     categoryText.setText("Categoria: " + budget.getCategory());
     descriptionText.setText("Descrição: " + budget.getDescription());
     statusText.setText("Status: " + budget.getStatus());
-    initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(formatter));
-    endDateText.setText("Data Final: " + budget.getEndDate().format(formatter));
+    initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(DATE_FORMATTER));
+    endDateText.setText("Data Final: " + budget.getEndDate().format(DATE_FORMATTER));
   }
 
   /**
@@ -97,12 +95,15 @@ public class BudgetView extends javax.swing.JFrame {
 
     for (BudgetItemModel budgetItem : displayedBudgetItems) {
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
-      Object[] rowData = new Object[4];
+      Object[] rowData = new Object[5];
+
+      String createdAtFormatted = budgetItem.getCreatedAt().format(DATE_FORMATTER);
 
       rowData[0] = budgetItem.getName();
       rowData[1] = budgetItem.getDescription();
       rowData[2] = formattedValue;
       rowData[3] = budgetItem.getPeriod();
+      rowData[4] = createdAtFormatted;
 
       tableModel.addRow(rowData);
     }
@@ -255,14 +256,14 @@ public class BudgetView extends javax.swing.JFrame {
 
       },
       new String [] {
-        "Nome", "Descrição", "Valor", "Período"
+        "Nome", "Descrição", "Valor", "Período", "Criado em"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
       boolean[] canEdit = new boolean [] {
-        false, false, false, false
+        false, false, false, false, false
       };
 
       public Class getColumnClass(int columnIndex) {
@@ -284,6 +285,9 @@ public class BudgetView extends javax.swing.JFrame {
       budgetItemsTable.getColumnModel().getColumn(3).setMinWidth(60);
       budgetItemsTable.getColumnModel().getColumn(3).setPreferredWidth(60);
       budgetItemsTable.getColumnModel().getColumn(3).setMaxWidth(60);
+      budgetItemsTable.getColumnModel().getColumn(4).setMinWidth(68);
+      budgetItemsTable.getColumnModel().getColumn(4).setPreferredWidth(68);
+      budgetItemsTable.getColumnModel().getColumn(4).setMaxWidth(68);
     }
 
     exitButton.setForeground(new java.awt.Color(255, 0, 51));
@@ -333,7 +337,7 @@ public class BudgetView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
             .addContainerGap())
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,43 +355,49 @@ public class BudgetView extends javax.swing.JFrame {
               .addComponent(endDateText)
               .addComponent(statusText))
             .addGap(188, 188, 188))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+              .addComponent(jScrollPane2)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(addButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(updateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteButton))
+              .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backgroundLayout.createSequentialGroup()
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addGroup(backgroundLayout.createSequentialGroup()
+                    .addComponent(periodFilterLabel)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                  .addGroup(backgroundLayout.createSequentialGroup()
+                    .addComponent(valueMinFilterLabel)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(valueMaxFilterLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap())
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabel1)
               .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(screenTitle)))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(backgroundLayout.createSequentialGroup()
-              .addComponent(addButton)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-              .addComponent(updateButton)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-              .addComponent(deleteButton))
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-              .addComponent(jScrollPane2)
-              .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(itemsText)
-                .addGroup(backgroundLayout.createSequentialGroup()
-                  .addComponent(periodFilterLabel)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(backgroundLayout.createSequentialGroup()
-                  .addComponent(valueMinFilterLabel)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(valueMaxFilterLabel)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-              .addComponent(searchButton)))
-          .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap())
+                .addComponent(searchField)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButton))
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(jLabel1)
+                  .addGroup(backgroundLayout.createSequentialGroup()
+                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(screenTitle)))
+                .addGap(0, 0, Short.MAX_VALUE)))
+            .addContainerGap())
+          .addGroup(backgroundLayout.createSequentialGroup()
+            .addComponent(itemsText)
+            .addGap(0, 0, Short.MAX_VALUE))))
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,7 +433,7 @@ public class BudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(searchButton))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGap(6, 6, 6)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -440,7 +450,7 @@ public class BudgetView extends javax.swing.JFrame {
           .addComponent(deleteButton)
           .addComponent(updateButton)
           .addComponent(addButton))
-        .addContainerGap(12, Short.MAX_VALUE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

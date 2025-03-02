@@ -1,5 +1,7 @@
 package org.cafe.database.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
@@ -11,17 +13,22 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
     super(
             databaseService,
             "BudgetItems",
-            new String[]{"budget_id", "name", "description", "value", "period"}
+            new String[]{"budget_id", "name", "description", "value", "period", "created_at"}
     );
   }
 
+  private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
   public String create(CreateBudgetItemModel createBudgetItemModel) {
+    String createdAtFormatted = createBudgetItemModel.getCreatedAt().format(FORMATTER);
+
     Object[] values = {
       createBudgetItemModel.getBudgetId(),
       createBudgetItemModel.getName(),
       createBudgetItemModel.getDescription(),
       createBudgetItemModel.getValue(),
-      createBudgetItemModel.getPeriod()
+      createBudgetItemModel.getPeriod(),
+      createdAtFormatted
     };
 
     return super.insert(values);
@@ -42,7 +49,8 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
               (String) row[2],
               (String) row[3],
               (Double) row[4],
-              (String) row[5]
+              (String) row[5],
+              LocalDate.parse((String) row[6], FORMATTER)
       );
 
       budgetItems.add(budgetItem);
@@ -73,7 +81,8 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
               (String) row[2],
               (String) row[3],
               (Double) row[4],
-              (String) row[5]
+              (String) row[5],
+              LocalDate.parse((String) row[6], FORMATTER)
       );
 
       budgetItems.add(budgetItem);
@@ -83,12 +92,16 @@ public class BudgetItemController extends DatabaseController<BudgetItemModel> {
   }
 
   public void update(BudgetItemModel updatedBudgetItem) {
+    String createdAtFormatted = updatedBudgetItem.getCreatedAt().format(FORMATTER
+    );
+
     Object[] values = {
       updatedBudgetItem.getBudgetId(),
       updatedBudgetItem.getName(),
       updatedBudgetItem.getDescription(),
       updatedBudgetItem.getValue(),
-      updatedBudgetItem.getPeriod()
+      updatedBudgetItem.getPeriod(),
+      createdAtFormatted
     };
 
     super.setById(updatedBudgetItem.getId(), values);

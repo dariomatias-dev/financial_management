@@ -1,5 +1,7 @@
 package org.cafe.models.budget_item;
 
+import java.time.LocalDate;
+
 public class BudgetItemModel extends CreateBudgetItemModel {
   private String id;
 
@@ -9,9 +11,10 @@ public class BudgetItemModel extends CreateBudgetItemModel {
           String name,
           String description,
           double value,
-          String period
+          String period,
+          LocalDate createdAt
   ) {
-    super(budgetId, name, description, value, period);
+    super(budgetId, name, description, value, period, createdAt);
     this.id = id;
   }
 

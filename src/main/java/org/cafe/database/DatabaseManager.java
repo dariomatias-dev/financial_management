@@ -92,6 +92,7 @@ public class DatabaseManager {
           description TEXT,
           value REAL NOT NULL,
           period TEXT NOT NULL,
+          created_at TEXT NOT NULL,
           FOREIGN KEY (budget_id) REFERENCES Budgets(id) ON DELETE CASCADE
       );
     """;

@@ -1,5 +1,6 @@
 package org.cafe.views.budget.components.manager_budget_item;
 
+import java.time.LocalDate;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemController;
@@ -203,17 +204,21 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               name,
               description,
               value,
-              periodicity
+              periodicity,
+              data.getCreatedAt()
       );
 
       budgetItemController.update(budgetItem);
     } else {
+      LocalDate createdAt = LocalDate.now();
+
       CreateBudgetItemModel createBudgetItem = new CreateBudgetItemModel(
               budgetId,
               name,
               description,
               value,
-              periodicity
+              periodicity,
+              createdAt
       );
 
       String budgetItemId = budgetItemController.create(createBudgetItem);
@@ -224,7 +229,8 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               name,
               description,
               value,
-              periodicity
+              periodicity,
+              createdAt
       );
     }
 
