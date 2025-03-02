@@ -10,6 +10,7 @@ import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
+import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
@@ -28,10 +29,10 @@ public class BudgetView extends javax.swing.JFrame {
   /**
    * Construtor.
    *
-   * @param budgetController Controlador de de orçamentos.
+   * @param budgetController Controlador de orçamentos.
    * @param budgetItemController Controlador de itens de orçamento.
-   * @param budget Dados do registro selecionado. orçamentos.
-   * @param onUpdateBudget Função para atualização do orçamento.
+   * @param budget Dados do registro selecionado.
+   * @param onUpdateBudget Metódo para atualização do orçamento.
    */
   public BudgetView(
           BudgetController budgetController,
@@ -506,26 +507,17 @@ public class BudgetView extends javax.swing.JFrame {
    * Remove o item de orçamento selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "excluir")) {
-      // Confirmar remoção de registro.
-      int confirm = JOptionPane.showConfirmDialog(
-              null,
-              "Você realmente deseja excluir este registro?",
-              "Confirmar Exclusão",
-              JOptionPane.YES_NO_OPTION,
-              JOptionPane.WARNING_MESSAGE
-      );
+    ConfirmDeleteDialog.showDeleteConfirmation(
+            budgetItemsTable,
+            () -> {
+              BudgetItemModel selectedExpense = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
+              budgetItemController.removeById(selectedExpense.getId());
 
-      // Se o usuário confirmar, exclui o registro.
-      if (confirm == JOptionPane.YES_OPTION) {
-        BudgetItemModel selectedExpense = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
-        budgetItemController.removeById(selectedExpense.getId());
+              updateScreen();
 
-        updateScreen();
-
-        calculateBudgetValue();
-      }
-    }
+              calculateBudgetValue();
+            }
+    );
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**

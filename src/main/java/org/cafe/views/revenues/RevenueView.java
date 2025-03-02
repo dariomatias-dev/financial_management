@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.revenue.RevenueModel;
+import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
@@ -321,24 +322,15 @@ public class RevenueView extends javax.swing.JFrame {
    * Remove a receita selecionada.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(revenuesTable, "excluir")) {
-      // Confirmar remoção de registro.
-      int confirm = JOptionPane.showConfirmDialog(
-              null,
-              "Você realmente deseja excluir este registro?",
-              "Confirmar Exclusão",
-              JOptionPane.YES_NO_OPTION,
-              JOptionPane.WARNING_MESSAGE
-      );
+    ConfirmDeleteDialog.showDeleteConfirmation(
+            revenuesTable,
+            () -> {
+              RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
+              revenueController.removeById(selectedRevenue.getId());
 
-      // Se o usuário confirmar, exclui o registro.
-      if (confirm == JOptionPane.YES_OPTION) {
-        RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
-        revenueController.removeById(selectedRevenue.getId());
-
-        updateScreen();
-      }
-    }
+              updateScreen();
+            }
+    );
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**

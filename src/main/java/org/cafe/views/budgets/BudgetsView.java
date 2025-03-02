@@ -10,6 +10,7 @@ import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
+import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.views.budget.BudgetView;
@@ -47,9 +48,9 @@ public class BudgetsView extends javax.swing.JFrame {
 
     new DateMaskFormatter().applyMask(initialDateFilterField);
     new DateMaskFormatter().applyMask(endDateFilterField);
-    
+
     screenTitle.setFocusable(true);
-    
+
     exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
@@ -378,24 +379,15 @@ public class BudgetsView extends javax.swing.JFrame {
    * Remove o orçamento selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetsTable, "excluir")) {
-      // Confirmar remoção de registro.
-      int confirm = JOptionPane.showConfirmDialog(
-              null,
-              "Você realmente deseja excluir este registro?",
-              "Confirmar Exclusão",
-              JOptionPane.YES_NO_OPTION,
-              JOptionPane.WARNING_MESSAGE
-      );
+    ConfirmDeleteDialog.showDeleteConfirmation(
+            budgetsTable,
+            () -> {
+              BudgetModel selectedExpense = displayedBudgets.get(budgetsTable.getSelectedRow());
+              budgetController.removeById(selectedExpense.getId());
 
-      // Se o usuário confirmar, exclui o registro.
-      if (confirm == JOptionPane.YES_OPTION) {
-        BudgetModel selectedExpense = displayedBudgets.get(budgetsTable.getSelectedRow());
-        budgetController.removeById(selectedExpense.getId());
-
-        updateScreen();
-      }
-    }
+              updateScreen();
+            }
+    );
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**

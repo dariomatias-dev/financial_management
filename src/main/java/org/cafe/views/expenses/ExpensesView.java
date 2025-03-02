@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
+import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
@@ -28,7 +29,7 @@ public class ExpensesView extends javax.swing.JFrame {
     initializeSearchField();
 
     listExpenses();
-    
+
     exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
   }
 
@@ -297,24 +298,15 @@ public class ExpensesView extends javax.swing.JFrame {
    * Remove a despesa selecionada.
    */
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-      if (RecordVerificationUtil.verifyRecords(expensesTable, "excluir")) {
-        // Confirmar remoção de registro.
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "Você realmente deseja excluir este registro?",
-                "Confirmar Exclusão",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
+      ConfirmDeleteDialog.showDeleteConfirmation(
+              expensesTable,
+              () -> {
+                ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
+                expenseController.removeById(selectedExpense.getId());
 
-        // Se o usuário confirmar, exclui o registro.
-        if (confirm == JOptionPane.YES_OPTION) {
-          ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
-          expenseController.removeById(selectedExpense.getId());
-
-          updateScreen();
-        }
-      }
+                updateScreen();
+              }
+      );
     }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
