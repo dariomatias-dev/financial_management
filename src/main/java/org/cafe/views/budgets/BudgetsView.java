@@ -442,7 +442,7 @@ public class BudgetsView extends javax.swing.JFrame {
   }//GEN-LAST:event_accessButtonMouseClicked
 
   /**
-   * Método de pesquisa/filtragem dos itens do orçamento.
+   * Método de pesquisa das despesas.
    */
   private void search() {
     String query = searchField.getText().trim();
@@ -531,13 +531,16 @@ public class BudgetsView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar os orçamentos de acordo com as filtragens
-   * definidas.
+   * Método chamado para filtrar os orçamentos de acordo com os filtros
+   * definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
+  /**
+   * Método chamado para sair da tela.
+   */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked

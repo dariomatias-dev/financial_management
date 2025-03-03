@@ -472,16 +472,14 @@ public class BudgetView extends javax.swing.JFrame {
    * Abre a tela de criação de item de orçamento.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerBudgetItemView createManagerBudgetItemView = new ManagerBudgetItemView(
+    new ManagerBudgetItemView(
             budget.getId(),
             budgetItemController,
             null,
             (value) -> {
               onBudgetItemCreated();
             }
-    );
-
-    createManagerBudgetItemView.setVisible(true);
+    ).setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
@@ -490,16 +488,14 @@ public class BudgetView extends javax.swing.JFrame {
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "atualizar")) {
       BudgetItemModel selectedBudgetItem = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
-      ManagerBudgetItemView updateManagerBudgetItemView = new ManagerBudgetItemView(
+      new ManagerBudgetItemView(
               budget.getId(),
               budgetItemController,
               selectedBudgetItem,
               (value) -> {
                 onBudgetItemUpdated(selectedBudgetItem, value);
               }
-      );
-
-      updateManagerBudgetItemView.setVisible(true);
+      ).setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
 
@@ -521,7 +517,7 @@ public class BudgetView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
-   * Método de pesquisa/filtragem dos itens do orçamento.
+   * Método de pesquisa das despesas.
    */
   private void search() {
     String query = searchField.getText().trim();
@@ -595,13 +591,16 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar os itens do orçamento de acordo com as
-   * filtragens definidas.
+   * Método chamado para filtrar os itens do orçamento de acordo com os filtros
+   * definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
+  /**
+   * Método chamado para sair da tela.
+   */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked

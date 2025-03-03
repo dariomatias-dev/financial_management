@@ -332,7 +332,7 @@ public class ExpensesView extends javax.swing.JFrame {
     }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
-   * Método de pesquisa/filtragem das despesas.
+   * Método de pesquisa das despesas.
    */
   private void search() {
     String query = searchField.getText().trim();
@@ -384,8 +384,8 @@ public class ExpensesView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar as despesas de acordo com as filtragens
-   * definidas.
+   * Método chamado para filtrar as despesas de acordo com os filtros
+   * definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();
