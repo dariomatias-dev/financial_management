@@ -13,6 +13,7 @@ import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.SetBackIcon;
 import org.cafe.views.budget.BudgetView;
 import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
@@ -40,7 +41,7 @@ public class BudgetsView extends javax.swing.JFrame {
 
     initComponents();
 
-    new SearchFieldHandlerUtil(searchField).initialize();
+    initializeSearchField();
 
     listBudgets();
 
@@ -49,9 +50,13 @@ public class BudgetsView extends javax.swing.JFrame {
     new DateMaskFormatter().applyMask(initialDateFilterField);
     new DateMaskFormatter().applyMask(endDateFilterField);
 
+    new SetBackIcon().set(exitButton);
+  }
+
+  private void initializeSearchField() {
     screenTitle.setFocusable(true);
 
-    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
+    new SearchFieldHandlerUtil(searchField).initialize();
   }
 
   /**

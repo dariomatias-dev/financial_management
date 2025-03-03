@@ -9,6 +9,7 @@ import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.SetBackIcon;
 import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
 public class RevenueView extends javax.swing.JFrame {
@@ -30,7 +31,7 @@ public class RevenueView extends javax.swing.JFrame {
 
     listRevenues();
 
-    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
+    new SetBackIcon().set(exitButton);
   }
 
   private void initializeSearchField() {

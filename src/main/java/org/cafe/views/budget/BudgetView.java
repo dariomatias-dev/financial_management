@@ -14,6 +14,7 @@ import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.SetBackIcon;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
 public class BudgetView extends javax.swing.JFrame {
@@ -57,8 +58,7 @@ public class BudgetView extends javax.swing.JFrame {
 
     showBudgetItems();
 
-    exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back_icon.png")));
-    monetaryInfoTable.setFillsViewportHeight(false);
+    new SetBackIcon().set(exitButton);
   }
 
   private void initializeSearchField() {
