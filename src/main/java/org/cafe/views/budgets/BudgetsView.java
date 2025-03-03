@@ -11,6 +11,7 @@ import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.ConfirmDeleteDialog;
+import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
@@ -460,26 +461,9 @@ public class BudgetsView extends javax.swing.JFrame {
       return;
     }
 
-    double valueMinFilter = Double.MIN_VALUE;
-    double valueMaxFilter = Double.MAX_VALUE;
-    boolean applyValueMinFilter = false;
-    boolean applyValueMaxFilter = false;
+    RangeManager rangeManager = new RangeManager();
 
-    try {
-      if (!valueMinFilterText.isEmpty()) {
-        valueMinFilter = Double.parseDouble(valueMinFilterText);
-        applyValueMinFilter = true;
-      }
-      if (!valueMaxFilterText.isEmpty()) {
-        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
-        applyValueMaxFilter = true;
-      }
-      if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {
-        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
@@ -505,11 +489,11 @@ public class BudgetsView extends javax.swing.JFrame {
       boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
 
       boolean matchesValue = true;
-      if (applyValueMinFilter) {
-        matchesValue = budget.getTotalBudgetValue() >= valueMinFilter;
+      if (rangeManager.getApplyValueMinFilter()) {
+        matchesValue = budget.getTotalBudgetValue() >= rangeManager.getValueMinFilter();
       }
-      if (applyValueMaxFilter && matchesValue) {
-        matchesValue = budget.getTotalBudgetValue() <= valueMaxFilter;
+      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = budget.getTotalBudgetValue() <= rangeManager.getValueMaxFilter();
       }
 
       boolean matchesDate = true;

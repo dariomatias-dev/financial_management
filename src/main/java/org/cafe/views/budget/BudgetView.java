@@ -12,6 +12,7 @@ import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
@@ -528,53 +529,38 @@ public class BudgetView extends javax.swing.JFrame {
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedBudgetItems = allBudgetItems;
       showBudgetItems();
-    } else {
-      double valueMinFilter = Double.MIN_VALUE;
-      double valueMaxFilter = Double.MAX_VALUE;
-      boolean applyValueMinFilter = false;
-      boolean applyValueMaxFilter = false;
 
-      try {
-        if (!valueMinFilterText.isEmpty()) {
-          valueMinFilter = Double.parseDouble(valueMinFilterText);
-          applyValueMinFilter = true;
-        }
-        if (!valueMaxFilterText.isEmpty()) {
-          valueMaxFilter = Double.parseDouble(valueMaxFilterText);
-          applyValueMaxFilter = true;
-        }
-        if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {
-          JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
-          return;
-        }
-      } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-
-      ArrayList<BudgetItemModel> results = new ArrayList<>();
-
-      for (BudgetItemModel budgetItem : allBudgetItems) {
-        boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
-        boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
-
-        boolean matchesValue = true;
-        if (applyValueMinFilter) {
-          matchesValue = budgetItem.getValue() >= valueMinFilter;
-        }
-        if (applyValueMaxFilter && matchesValue) {
-          matchesValue = budgetItem.getValue() <= valueMaxFilter;
-        }
-
-        if (matchesQuery && matchesPeriod && matchesValue) {
-          results.add(budgetItem);
-        }
-      }
-
-      displayedBudgetItems = results;
-
-      showBudgetItems();
+      return;
     }
+
+    RangeManager rangeManager = new RangeManager();
+    
+    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
+      return;
+    }
+
+    ArrayList<BudgetItemModel> results = new ArrayList<>();
+
+    for (BudgetItemModel budgetItem : allBudgetItems) {
+      boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
+      boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
+
+      boolean matchesValue = true;
+      if (rangeManager.getApplyValueMinFilter()) {
+        matchesValue = budgetItem.getValue() >= rangeManager.getValueMinFilter();
+      }
+      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = budgetItem.getValue() <= rangeManager.getValueMaxFilter();
+      }
+
+      if (matchesQuery && matchesPeriod && matchesValue) {
+        results.add(budgetItem);
+      }
+    }
+
+    displayedBudgetItems = results;
+
+    showBudgetItems();
   }
 
   private void showFinancialSummaryBudget() {

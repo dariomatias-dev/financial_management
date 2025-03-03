@@ -1,12 +1,12 @@
 package org.cafe.views.expenses;
 
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
@@ -347,22 +347,9 @@ public class ExpensesView extends javax.swing.JFrame {
       return;
     }
 
-    double valueMinFilter = Double.MIN_VALUE;
-    double valueMaxFilter = Double.MAX_VALUE;
+    RangeManager rangeManager = new RangeManager();
 
-    try {
-      if (!valueMinFilterText.isEmpty()) {
-        valueMinFilter = Double.parseDouble(valueMinFilterText);
-      }
-      if (!valueMaxFilterText.isEmpty()) {
-        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
-      }
-      if (valueMinFilter > valueMaxFilter) {
-        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
@@ -371,7 +358,14 @@ public class ExpensesView extends javax.swing.JFrame {
     for (ExpenseModel expense : allExpenses) {
       boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
-      boolean matchesValue = expense.getValue() >= valueMinFilter && expense.getValue() <= valueMaxFilter;
+
+      boolean matchesValue = true;
+      if (rangeManager.getApplyValueMinFilter()) {
+        matchesValue = expense.getValue() >= rangeManager.getValueMinFilter();
+      }
+      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = expense.getValue() <= rangeManager.getValueMaxFilter();
+      }
 
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(expense);
@@ -384,8 +378,7 @@ public class ExpensesView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar as despesas de acordo com os filtros
-   * definidos.
+   * Método chamado para filtrar as despesas de acordo com os filtros definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     search();

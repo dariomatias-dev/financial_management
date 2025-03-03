@@ -1,12 +1,12 @@
 package org.cafe.views.revenues;
 
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
@@ -350,22 +350,9 @@ public class RevenueView extends javax.swing.JFrame {
       return;
     }
 
-    double valueMinFilter = Double.MIN_VALUE;
-    double valueMaxFilter = Double.MAX_VALUE;
+    RangeManager rangeManager = new RangeManager();
 
-    try {
-      if (!valueMinFilterText.isEmpty()) {
-        valueMinFilter = Double.parseDouble(valueMinFilterText);
-      }
-      if (!valueMaxFilterText.isEmpty()) {
-        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
-      }
-      if (valueMinFilter > valueMaxFilter) {
-        JOptionPane.showMessageDialog(this, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos nos campos de valor.", "Erro", JOptionPane.ERROR_MESSAGE);
+    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
@@ -374,7 +361,14 @@ public class RevenueView extends javax.swing.JFrame {
     for (RevenueModel revenue : allRevenues) {
       boolean matchesQuery = query.equals("Pesquisar...") || revenue.getName().contains(query) || revenue.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || revenue.getPeriod().equals(periodFilter);
-      boolean matchesValue = revenue.getValue() >= valueMinFilter && revenue.getValue() <= valueMaxFilter;
+
+      boolean matchesValue = true;
+      if (rangeManager.getApplyValueMinFilter()) {
+        matchesValue = revenue.getValue() >= rangeManager.getValueMinFilter();
+      }
+      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = revenue.getValue() <= rangeManager.getValueMaxFilter();
+      }
 
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(revenue);
