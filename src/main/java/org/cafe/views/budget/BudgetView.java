@@ -12,10 +12,10 @@ import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
-import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
+import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 
 public class BudgetView extends javax.swing.JFrame {
@@ -533,9 +533,9 @@ public class BudgetView extends javax.swing.JFrame {
       return;
     }
 
-    RangeManager rangeManager = new RangeManager();
+    ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
     
-    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
+    if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
@@ -546,11 +546,11 @@ public class BudgetView extends javax.swing.JFrame {
       boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
 
       boolean matchesValue = true;
-      if (rangeManager.getApplyValueMinFilter()) {
-        matchesValue = budgetItem.getValue() >= rangeManager.getValueMinFilter();
+      if (valueRangeFilter.getApplyValueMinFilter()) {
+        matchesValue = budgetItem.getValue() >= valueRangeFilter.getValueMinFilter();
       }
-      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
-        matchesValue = budgetItem.getValue() <= rangeManager.getValueMaxFilter();
+      if (valueRangeFilter.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = budgetItem.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
       if (matchesQuery && matchesPeriod && matchesValue) {

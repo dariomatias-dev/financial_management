@@ -3,7 +3,10 @@ package org.cafe.utils;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 
-public class RangeManager {
+/**
+ * Gerencia a validação e aplicação dos filtros de valor mínimo e máximo.
+ */
+public class ValueRangeFilter {
   private double valueMaxFilter = Double.MAX_VALUE;
   private double valueMinFilter = Double.MIN_VALUE;
   private boolean applyValueMinFilter = false;
@@ -39,6 +42,7 @@ public class RangeManager {
         valueMaxFilter = Double.parseDouble(valueMaxFilterText);
         applyValueMaxFilter = true;
       }
+
       if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {
         JOptionPane.showMessageDialog(parentComponent, "O valor mínimo não pode ser maior que o valor máximo.", "Erro", JOptionPane.ERROR_MESSAGE);
 

@@ -6,10 +6,10 @@ import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatterUtil;
-import org.cafe.utils.RangeManager;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
+import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
@@ -347,9 +347,9 @@ public class ExpensesView extends javax.swing.JFrame {
       return;
     }
 
-    RangeManager rangeManager = new RangeManager();
+    ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
 
-    if (!rangeManager.validate(this, valueMinFilterText, valueMaxFilterText)) {
+    if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
@@ -360,11 +360,11 @@ public class ExpensesView extends javax.swing.JFrame {
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
 
       boolean matchesValue = true;
-      if (rangeManager.getApplyValueMinFilter()) {
-        matchesValue = expense.getValue() >= rangeManager.getValueMinFilter();
+      if (valueRangeFilter.getApplyValueMinFilter()) {
+        matchesValue = expense.getValue() >= valueRangeFilter.getValueMinFilter();
       }
-      if (rangeManager.getApplyValueMaxFilter() && matchesValue) {
-        matchesValue = expense.getValue() <= rangeManager.getValueMaxFilter();
+      if (valueRangeFilter.getApplyValueMaxFilter() && matchesValue) {
+        matchesValue = expense.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
       if (matchesQuery && matchesPeriod && matchesValue) {
