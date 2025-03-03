@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
  * Gerencia a validação e aplicação dos filtros de valor mínimo e máximo.
  */
 public class ValueRangeFilter {
+  private final NumberValidator numberValidator = new NumberValidator();
+
   private double valueMaxFilter = Double.MAX_VALUE;
   private double valueMinFilter = Double.MIN_VALUE;
   private boolean applyValueMinFilter = false;
@@ -34,13 +36,13 @@ public class ValueRangeFilter {
           String valueMaxFilterText
   ) {
     try {
-      if (!valueMinFilterText.isEmpty()) {
-        valueMinFilter = Double.parseDouble(valueMinFilterText);
+      if (!valueMinFilterText.isEmpty() && numberValidator.validate(parentComponent, valueMinFilterText, "valor mínimo")) {
         applyValueMinFilter = true;
+        valueMinFilter = numberValidator.getNumber();
       }
-      if (!valueMaxFilterText.isEmpty()) {
-        valueMaxFilter = Double.parseDouble(valueMaxFilterText);
+      if (!valueMaxFilterText.isEmpty() && numberValidator.validate(parentComponent, valueMaxFilterText, "valor máximo")) {
         applyValueMaxFilter = true;
+        valueMaxFilter = numberValidator.getNumber();
       }
 
       if (applyValueMinFilter && applyValueMaxFilter && valueMinFilter > valueMaxFilter) {

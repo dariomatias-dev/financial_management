@@ -13,6 +13,7 @@ import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
+import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
   private final Consumer<String> onUpdateScreen;
@@ -230,10 +231,16 @@ public class ManagerBudgetView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Método chamado para sair da tela.
+   */
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
 
+  /**
+   * Método de criação ou atualização de um orçamento.
+   */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
       String name = nameField.getText();
       String category = categoryField.getText();
@@ -247,15 +254,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         return;
       }
 
-      double budgetValue;
-      try {
-        budgetValue = Double.parseDouble(valueText);
-        if (budgetValue <= 0) {
-          JOptionPane.showMessageDialog(this, "O valor do orçamento deve ser maior que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
-          return;
-        }
-      } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira um valor válido para o orçamento.", "Erro", JOptionPane.ERROR_MESSAGE);
+      NumberValidator numberValidator = new NumberValidator();
+      if (!numberValidator.validate(this, valueText, "orçamento")) {
         return;
       }
 
@@ -291,7 +291,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                 category,
                 category,
                 status,
-                budgetValue,
+                numberValidator.getNumber(),
                 data.getTotalSpent(),
                 initialDateTime,
                 endDateTime
@@ -305,7 +305,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                 category,
                 category,
                 status,
-                budgetValue,
+                numberValidator.getNumber(),
                 0.0,
                 initialDateTime,
                 endDateTime

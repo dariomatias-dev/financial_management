@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.models.expense.CreateExpenseModel;
 import org.cafe.models.expense.ExpenseModel;
+import org.cafe.utils.NumberValidator;
 
 public class ManagerExpenseView extends javax.swing.JFrame {
   private final Runnable onUpdateScreen;
@@ -170,10 +171,16 @@ public class ManagerExpenseView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Método chamado para sair da tela.
+   */
     private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_calcelButtonMouseClicked
 
+  /**
+   * Método de criação ou atualização de uma despesa.
+   */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
       String name = nameField.getText();
       String valueText = valueField.getText();
@@ -184,21 +191,18 @@ public class ManagerExpenseView extends javax.swing.JFrame {
         return;
       }
 
-      double value;
-      try {
-        value = Double.parseDouble(valueText);
-      } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
+      NumberValidator numberValidator = new NumberValidator();
+      if (!numberValidator.validate(this, valueText, "despesa")) {
         return;
       }
 
       String period = (String) periodSelect.getSelectedItem();
 
       if (data != null) {
-        ExpenseModel expense = new ExpenseModel(data.getId(), name, value, period, description);
+        ExpenseModel expense = new ExpenseModel(data.getId(), name, numberValidator.getNumber(), period, description);
         expenseController.update(expense);
       } else {
-        CreateExpenseModel expense = new CreateExpenseModel(name, value, period, description);
+        CreateExpenseModel expense = new CreateExpenseModel(name, numberValidator.getNumber(), period, description);
         expenseController.create(expense);
       }
 

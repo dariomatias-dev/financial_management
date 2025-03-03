@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.models.budget_item.CreateBudgetItemModel;
+import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetItemView extends javax.swing.JFrame {
   private final String budgetId;
@@ -175,6 +176,9 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Método de criação ou atualização de um item de orçamento.
+   */
   private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
     String name = nameField.getText();
     String description = descriptionField.getText();
@@ -185,11 +189,8 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
       return;
     }
 
-    double value;
-    try {
-      value = Double.parseDouble(valueText);
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
+    NumberValidator numberValidator = new NumberValidator();
+    if (!numberValidator.validate(this, valueText, "item de orçamento")) {
       return;
     }
 
@@ -203,7 +204,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               budgetId,
               name,
               description,
-              value,
+              numberValidator.getNumber(),
               periodicity,
               data.getCreatedAt()
       );
@@ -216,7 +217,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               budgetId,
               name,
               description,
-              value,
+              numberValidator.getNumber(),
               periodicity,
               createdAt
       );
@@ -228,7 +229,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               budgetId,
               name,
               description,
-              value,
+              numberValidator.getNumber(),
               periodicity,
               createdAt
       );
@@ -239,6 +240,9 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
     this.dispose();
   }//GEN-LAST:event_actionButtonMouseClicked
 
+  /**
+   * Método chamado para sair da tela.
+   */
   private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_cancelButtonMouseClicked

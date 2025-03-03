@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.revenue.CreateRevenueModel;
 import org.cafe.models.revenue.RevenueModel;
+import org.cafe.utils.NumberValidator;
 
 public class ManagerRevenueView extends javax.swing.JFrame {
   private final Runnable onUpdateScreen;
@@ -170,10 +171,16 @@ public class ManagerRevenueView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Método chamado para sair da tela.
+   */
     private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
       this.dispose();
     }//GEN-LAST:event_calcelButtonMouseClicked
 
+  /**
+   * Método de criação ou atualização de uma receita.
+   */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
       String name = nameField.getText();
       String valueText = valueField.getText();
@@ -184,21 +191,18 @@ public class ManagerRevenueView extends javax.swing.JFrame {
         return;
       }
 
-      double value;
-      try {
-        value = Double.parseDouble(valueText);
-      } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira um valor numérico válido no campo 'Valor'.", "Erro", JOptionPane.ERROR_MESSAGE);
+      NumberValidator numberValidator = new NumberValidator();
+      if (!numberValidator.validate(this, valueText, "receita")) {
         return;
       }
 
       String period = (String) periodSelect.getSelectedItem();
 
       if (data != null) {
-        RevenueModel revenue = new RevenueModel(data.getId(), name, description, value, period);
+        RevenueModel revenue = new RevenueModel(data.getId(), name, description, numberValidator.getNumber(), period);
         revenueController.update(revenue);
       } else {
-        CreateRevenueModel revenue = new CreateRevenueModel(name, description, value, period);
+        CreateRevenueModel revenue = new CreateRevenueModel(name, description, numberValidator.getNumber(), period);
         revenueController.create(revenue);
       }
 
