@@ -56,6 +56,7 @@ public class RevenueView extends javax.swing.JFrame {
     DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
     tableModel.setRowCount(0);
 
+    // Criação das linhas da tabela.
     for (RevenueModel revenue : displayedRevenues) {
       String formattedValue = CurrencyFormatterUtil.format(revenue.getValue());
 
@@ -302,9 +303,11 @@ public class RevenueView extends javax.swing.JFrame {
    * Abre a tela de criação de uma receita.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerRevenueView createManagerRevenueView = new ManagerRevenueView(revenueController, null, this::updateScreen);;;
-
-    createManagerRevenueView.setVisible(true);
+    new ManagerRevenueView(
+            revenueController,
+            null,
+            this::updateScreen
+    ).setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
@@ -313,9 +316,11 @@ public class RevenueView extends javax.swing.JFrame {
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(revenuesTable, "atualizar")) {
       RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
-      ManagerRevenueView updateManagerRegisterView = new ManagerRevenueView(revenueController, selectedRevenue, this::updateScreen);
-
-      updateManagerRegisterView.setVisible(true);
+      new ManagerRevenueView(
+              revenueController,
+              selectedRevenue,
+              this::updateScreen
+      ).setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
 
@@ -338,11 +343,13 @@ public class RevenueView extends javax.swing.JFrame {
    * Método de pesquisa das despesas.
    */
   private void search() {
+    // Obtenção dos filtros.
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
+    // Verificação da presença de filtragem.
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedRevenues = allRevenues;
       showRevenues();
@@ -350,18 +357,21 @@ public class RevenueView extends javax.swing.JFrame {
       return;
     }
 
+    // Obtenção dos filtros de valor mínimo e máximo.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-
     if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
     ArrayList<RevenueModel> results = new ArrayList<>();
 
+    // Filtragem dos orçamentos.
     for (RevenueModel revenue : allRevenues) {
+      // Filtro de texto e período.
       boolean matchesQuery = query.equals("Pesquisar...") || revenue.getName().contains(query) || revenue.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || revenue.getPeriod().equals(periodFilter);
 
+      // Filtros de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = revenue.getValue() >= valueRangeFilter.getValueMinFilter();
@@ -370,6 +380,7 @@ public class RevenueView extends javax.swing.JFrame {
         matchesValue = revenue.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
+      // Checagem das filtragens.
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(revenue);
       }

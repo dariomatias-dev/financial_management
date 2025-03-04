@@ -57,6 +57,7 @@ public class ExpensesView extends javax.swing.JFrame {
     DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
     tableModel.setRowCount(0);
 
+    // Criação das linhas da tabela.
     for (ExpenseModel expense : displayedExpenses) {
       String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
 
@@ -314,9 +315,11 @@ public class ExpensesView extends javax.swing.JFrame {
    * Abre a tela de criação de uma despesa.
    */
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-      ManagerExpenseView createManagerRegisterView = new ManagerExpenseView(expenseController, null, this::updateScreen);
-
-      createManagerRegisterView.setVisible(true);
+      new ManagerExpenseView(
+              expenseController,
+              null,
+              this::updateScreen
+      ).setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
 
   /**
@@ -325,9 +328,11 @@ public class ExpensesView extends javax.swing.JFrame {
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
       if (RecordVerificationUtil.verifyRecords(expensesTable, "atualizar")) {
         ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
-        ManagerExpenseView updateManagerRegisterView = new ManagerExpenseView(expenseController, selectedExpense, this::updateScreen);
-
-        updateManagerRegisterView.setVisible(true);
+        new ManagerExpenseView(
+                expenseController,
+                selectedExpense,
+                this::updateScreen
+        ).setVisible(true);
       }
     }//GEN-LAST:event_updateButtonMouseClicked
 
@@ -335,11 +340,13 @@ public class ExpensesView extends javax.swing.JFrame {
    * Método de pesquisa das despesas.
    */
   private void search() {
+    // Obtenção dos filtros.
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
+    // Verificação da presença de filtragem.
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedExpenses = allExpenses;
       showExpenses();
@@ -347,18 +354,21 @@ public class ExpensesView extends javax.swing.JFrame {
       return;
     }
 
+    // Obtenção dos filtros de valor mínimo e máximo.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-
     if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
     ArrayList<ExpenseModel> results = new ArrayList<>();
 
+    // Filtragem dos orçamentos.
     for (ExpenseModel expense : allExpenses) {
+      // Filtro de texto e período.
       boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
 
+      // Filtros de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = expense.getValue() >= valueRangeFilter.getValueMinFilter();
@@ -367,6 +377,7 @@ public class ExpensesView extends javax.swing.JFrame {
         matchesValue = expense.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
+      // Checagem das filtragens.
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(expense);
       }

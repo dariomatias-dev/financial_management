@@ -476,7 +476,7 @@ public class BudgetsView extends javax.swing.JFrame {
       boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
       boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
 
-      // Filtro de valor.
+      // Filtros de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = budget.getTotalBudgetValue() >= valueRangeFilter.getValueMinFilter();

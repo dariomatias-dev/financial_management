@@ -95,6 +95,7 @@ public class BudgetView extends javax.swing.JFrame {
     DefaultTableModel tableModel = (DefaultTableModel) budgetItemsTable.getModel();
     tableModel.setRowCount(0);
 
+    // Criação das linhas da tabela.
     for (BudgetItemModel budgetItem : displayedBudgetItems) {
       String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
       Object[] rowData = new Object[5];
@@ -521,11 +522,13 @@ public class BudgetView extends javax.swing.JFrame {
    * Método de pesquisa das despesas.
    */
   private void search() {
+    // Obtenção dos filtros.
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
+    // Verificação da presença de filtragem.
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedBudgetItems = allBudgetItems;
       showBudgetItems();
@@ -533,18 +536,21 @@ public class BudgetView extends javax.swing.JFrame {
       return;
     }
 
+    // Obtenção dos filtros de valor mínimo e máximo.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-    
     if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
     ArrayList<BudgetItemModel> results = new ArrayList<>();
 
+    // Filtragem dos orçamentos.
     for (BudgetItemModel budgetItem : allBudgetItems) {
+      // Filtro de texto e período.
       boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
 
+      // Filtros de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = budgetItem.getValue() >= valueRangeFilter.getValueMinFilter();
@@ -553,6 +559,7 @@ public class BudgetView extends javax.swing.JFrame {
         matchesValue = budgetItem.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
+      // Checagem das filtragens.
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(budgetItem);
       }
