@@ -7,10 +7,11 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.MaskFormatter;
+import org.cafe.utils.DateFormatter;
 
 /**
- * Classe de máscara de data "dd/MM/yyyy" para aplicação a um campo de texto
- * (JFormattedTextField).
+ * Classe de máscara de data no formato "dd/MM/yyyy" para aplicação a um campo
+ * de texto. (JFormattedTextField).
  */
 public class DateMaskFormatter {
   private MaskFormatter maskFormatter;
@@ -23,7 +24,7 @@ public class DateMaskFormatter {
       maskFormatter = new MaskFormatter("##/##/####");
       maskFormatter.setPlaceholderCharacter('_');
     } catch (ParseException e) {
-      e.printStackTrace();
+      System.err.println("Error creating MaskFormatter: " + e.getMessage());
     }
   }
 
@@ -58,6 +59,11 @@ public class DateMaskFormatter {
 
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+      if (text.equals(DateFormatter.PLACEHOLDER_DATE)) {
+        fb.replace(0, fb.getDocument().getLength(), DateFormatter.PLACEHOLDER_DATE, null);
+        return;
+      }
+
       if (canInsert(fb)) {
         super.replace(fb, offset, length, text, attrs);
         formatText(fb);
@@ -67,7 +73,7 @@ public class DateMaskFormatter {
     @Override
     public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
       super.remove(fb, offset, length);
-      fb.replace(0, fb.getDocument().getLength(), "__/__/____", null);
+      fb.replace(0, fb.getDocument().getLength(), DateFormatter.PLACEHOLDER_DATE, null);
     }
 
     private boolean canInsert(FilterBypass fb) throws BadLocationException {
