@@ -26,6 +26,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
 
     initComponents();
 
+    // Preenche os campos com os atuais dados da despesa caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
@@ -182,15 +183,19 @@ public class ManagerExpenseView extends javax.swing.JFrame {
    * Método de criação ou atualização de uma despesa.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
+      // Obtenção dos dados.
       String name = nameField.getText();
       String valueText = valueField.getText();
       String description = descriptionField.getText();
 
+      // Verificação da presença dos dados necessários.
       if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+
         return;
       }
 
+      // Validação do valor numérico.
       NumberValidator numberValidator = new NumberValidator();
       if (!numberValidator.validate(this, valueText, "despesa")) {
         return;
@@ -198,12 +203,28 @@ public class ManagerExpenseView extends javax.swing.JFrame {
 
       String period = (String) periodSelect.getSelectedItem();
 
+      // Verifica se a tela é de atualização ou criação.
       if (data != null) {
-        ExpenseModel expense = new ExpenseModel(data.getId(), name, numberValidator.getNumber(), period, description);
-        expenseController.update(expense);
+        // Atualiza os dados da despesa.
+        expenseController.update(
+                new ExpenseModel(
+                        data.getId(),
+                        name,
+                        numberValidator.getNumber(),
+                        period,
+                        description
+                )
+        );
       } else {
-        CreateExpenseModel expense = new CreateExpenseModel(name, numberValidator.getNumber(), period, description);
-        expenseController.create(expense);
+        // Cria a despesa.
+        expenseController.create(
+                new CreateExpenseModel(
+                        name,
+                        numberValidator.getNumber(),
+                        period,
+                        description
+                )
+        );
       }
 
       onUpdateScreen.run();

@@ -26,6 +26,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
 
     initComponents();
 
+    // Preenche os campos com os atuais dados da receita caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
@@ -182,15 +183,19 @@ public class ManagerRevenueView extends javax.swing.JFrame {
    * Método de criação ou atualização de uma receita.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
+      // Obtenção dos dados.
       String name = nameField.getText();
       String valueText = valueField.getText();
       String description = descriptionField.getText();
 
+      // Verificação da presença dos dados necessários.
       if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+
         return;
       }
 
+      // Validação do valor numérico.
       NumberValidator numberValidator = new NumberValidator();
       if (!numberValidator.validate(this, valueText, "receita")) {
         return;
@@ -198,12 +203,28 @@ public class ManagerRevenueView extends javax.swing.JFrame {
 
       String period = (String) periodSelect.getSelectedItem();
 
+      // Verifica se a tela é de atualização ou criação.
       if (data != null) {
-        RevenueModel revenue = new RevenueModel(data.getId(), name, description, numberValidator.getNumber(), period);
-        revenueController.update(revenue);
+        // Atualiza os dados da receita.
+        revenueController.update(
+                new RevenueModel(
+                        data.getId(),
+                        name,
+                        description,
+                        numberValidator.getNumber(),
+                        period
+                )
+        );
       } else {
-        CreateRevenueModel revenue = new CreateRevenueModel(name, description, numberValidator.getNumber(), period);
-        revenueController.create(revenue);
+        // Cria a receita.
+        revenueController.create(
+                new CreateRevenueModel(
+                        name,
+                        description,
+                        numberValidator.getNumber(),
+                        period
+                )
+        );
       }
 
       onUpdateScreen.run();

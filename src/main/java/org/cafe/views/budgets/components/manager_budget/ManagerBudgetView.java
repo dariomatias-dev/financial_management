@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
@@ -13,6 +11,7 @@ import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
+import org.cafe.utils.DateFormatter;
 import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
@@ -40,6 +39,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
+    // Preenche os campos com os atuais dados do orçamento caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
@@ -242,33 +242,34 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * Método de criação ou atualização de um orçamento.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
+      // Obtenção dos dados.
       String name = nameField.getText();
       String category = categoryField.getText();
       String initialDateText = initialDateField.getText();
       String endDateText = endDateField.getText();
       String valueText = totalBudgetField.getText();
 
+      // Verificação da presença dos dados necessários.
       if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty()
               || initialDateText.contains("_") || endDateText.contains("_") || valueText.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+
         return;
       }
 
+      // Validação do valor numérico.
       NumberValidator numberValidator = new NumberValidator();
       if (!numberValidator.validate(this, valueText, "orçamento")) {
         return;
       }
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-      LocalDate initialDate;
-      LocalDate endDate;
-
-      try {
-        initialDate = LocalDate.parse(initialDateText, formatter);
-        endDate = LocalDate.parse(endDateText, formatter);
-      } catch (DateTimeParseException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, insira as datas no formato correto (dia/mês/ano).", "Erro", JOptionPane.ERROR_MESSAGE);
+      // Obtenção das datas.
+      LocalDate initialDate = DateFormatter.parse(initialDateText);
+      if (initialDate == null) {
+        return;
+      }
+      LocalDate endDate = DateFormatter.parse(initialDateText);
+      if (endDate == null) {
         return;
       }
 
@@ -284,34 +285,38 @@ public class ManagerBudgetView extends javax.swing.JFrame {
 
       String budgetId;
 
+      // Verifica se a tela é de atualização ou criação.
       if (data != null) {
-        BudgetModel budget = new BudgetModel(
-                data.getId(),
-                name,
-                category,
-                category,
-                status,
-                numberValidator.getNumber(),
-                data.getTotalSpent(),
-                initialDateTime,
-                endDateTime
+        // Atualiza os dados do orçamento.
+        budgetController.update(
+                new BudgetModel(
+                        data.getId(),
+                        name,
+                        category,
+                        category,
+                        status,
+                        numberValidator.getNumber(),
+                        data.getTotalSpent(),
+                        initialDateTime,
+                        endDateTime
+                )
         );
 
-        budgetController.update(budget);
         budgetId = data.getId();
       } else {
-        CreateBudgetModel newBudget = new CreateBudgetModel(
-                name,
-                category,
-                category,
-                status,
-                numberValidator.getNumber(),
-                0.0,
-                initialDateTime,
-                endDateTime
+        // Cria o orçamento e obtém o ID do registro.
+        budgetId = budgetController.create(
+                new CreateBudgetModel(
+                        name,
+                        category,
+                        category,
+                        status,
+                        numberValidator.getNumber(),
+                        0.0,
+                        initialDateTime,
+                        endDateTime
+                )
         );
-
-        budgetId = budgetController.create(newBudget);
       }
 
       onUpdateScreen.accept(budgetId);

@@ -31,6 +31,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
 
     initComponents();
 
+    // Preenche os campos com os atuais dados do item de orçamento caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
       descriptionField.setText(data.getDescription());
@@ -180,15 +181,19 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
    * Método de criação ou atualização de um item de orçamento.
    */
   private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
+    // Obtenção dos dados.
     String name = nameField.getText();
     String description = descriptionField.getText();
     String valueText = valueField.getText();
 
+    // Verificação da presença dos dados necessários.
     if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
       JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+
       return;
     }
 
+    // Validação do valor numérico.
     NumberValidator numberValidator = new NumberValidator();
     if (!numberValidator.validate(this, valueText, "item de orçamento")) {
       return;
@@ -198,7 +203,9 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
 
     BudgetItemModel budgetItem;
 
+    // Verifica se a tela é de atualização ou criação.
     if (data != null) {
+      // Atualiza os dados do item de orçamento.
       budgetItem = new BudgetItemModel(
               data.getId(),
               budgetId,
@@ -213,6 +220,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
     } else {
       LocalDate createdAt = LocalDate.now();
 
+      // Cria o modelo de criação de um novo item de orçamento.
       CreateBudgetItemModel createBudgetItem = new CreateBudgetItemModel(
               budgetId,
               name,
@@ -222,8 +230,10 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               createdAt
       );
 
+      // Registra o novo item de orçamento e obtém o seu ID.
       String budgetItemId = budgetItemController.create(createBudgetItem);
 
+      // Cria o modelo de item de orçamento com o ID do registro.
       budgetItem = new BudgetItemModel(
               budgetItemId,
               budgetId,
