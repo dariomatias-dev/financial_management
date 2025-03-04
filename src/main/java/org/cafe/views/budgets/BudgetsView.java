@@ -134,15 +134,13 @@ public class BudgetsView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    statusSelect = new javax.swing.JComboBox<>();
-    statusLabel = new javax.swing.JLabel();
     background = new javax.swing.JPanel();
     deleteButton = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
     addButton = new javax.swing.JButton();
     accessButton = new javax.swing.JButton();
     searchField = new javax.swing.JTextField();
-    searchButton = new javax.swing.JButton();
+    clearFiltersButton = new javax.swing.JButton();
     statusFilterSelect = new javax.swing.JComboBox<>();
     valueMinFilterLabel = new javax.swing.JLabel();
     valueMinFilterField = new javax.swing.JTextField();
@@ -157,12 +155,7 @@ public class BudgetsView extends javax.swing.JFrame {
     endDateFilterLabel1 = new javax.swing.JLabel();
     exitButton = new javax.swing.JLabel();
     screenTitle = new javax.swing.JLabel();
-
-    statusSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rascunho", "Finalizado", "Negado", "Aprovado" }));
-
-    statusLabel.setBackground(new java.awt.Color(0, 0, 0));
-    statusLabel.setForeground(new java.awt.Color(0, 0, 0));
-    statusLabel.setText("Status:");
+    searchButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -197,10 +190,10 @@ public class BudgetsView extends javax.swing.JFrame {
       }
     });
 
-    searchButton.setText("Filtrar");
-    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    clearFiltersButton.setText("Limpar Filtros");
+    clearFiltersButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
-        searchButtonMouseClicked(evt);
+        clearFiltersButtonMouseClicked(evt);
       }
     });
 
@@ -269,6 +262,13 @@ public class BudgetsView extends javax.swing.JFrame {
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
     screenTitle.setText("Orçamentos");
 
+    searchButton.setText("Filtrar");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -277,19 +277,6 @@ public class BudgetsView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(jScrollPane2)
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addComponent(searchField)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(searchButton))
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(accessButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(addButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(updateButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(valueMinFilterLabel)
@@ -298,7 +285,7 @@ public class BudgetsView extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
               .addComponent(initialDateFilterField, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
               .addComponent(valueMinFilterField))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
                 .addComponent(valueMaxFilterLabel)
@@ -318,7 +305,22 @@ public class BudgetsView extends javax.swing.JFrame {
                 .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(screenTitle)))
-            .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(accessButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(addButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(updateButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(deleteButton))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(clearFiltersButton)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -331,6 +333,7 @@ public class BudgetsView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(clearFiltersButton)
           .addComponent(searchButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -510,9 +513,16 @@ public class BudgetsView extends javax.swing.JFrame {
    * Método chamado para filtrar os orçamentos de acordo com os filtros
    * definidos.
    */
-  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+  private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
+    searchField.setText("Pesquisar...");
+    valueMinFilterField.setText("");
+    valueMaxFilterField.setText("");
+    statusFilterSelect.setSelectedItem("Todos");
+    initialDateFilterField.setText(DateFormatter.PLACEHOLDER_DATE);
+    endDateFilterField.setText(DateFormatter.PLACEHOLDER_DATE);
+
     search();
-  }//GEN-LAST:event_searchButtonMouseClicked
+  }//GEN-LAST:event_clearFiltersButtonMouseClicked
 
   /**
    * Método chamado para sair da tela.
@@ -521,11 +531,20 @@ public class BudgetsView extends javax.swing.JFrame {
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  /**
+   * Método chamado para filtrar os orçamentos de acordo com os filtros
+   * definidos.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
+  }//GEN-LAST:event_searchButtonMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton accessButton;
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
   private javax.swing.JTable budgetsTable;
+  private javax.swing.JButton clearFiltersButton;
   private javax.swing.JButton deleteButton;
   private javax.swing.JFormattedTextField endDateFilterField;
   private javax.swing.JLabel endDateFilterLabel1;
@@ -538,8 +557,6 @@ public class BudgetsView extends javax.swing.JFrame {
   private javax.swing.JTextField searchField;
   private javax.swing.JLabel statusFilterLabel;
   private javax.swing.JComboBox<String> statusFilterSelect;
-  private javax.swing.JLabel statusLabel;
-  private javax.swing.JComboBox<String> statusSelect;
   private javax.swing.JButton updateButton;
   private javax.swing.JTextField valueMaxFilterField;
   private javax.swing.JLabel valueMaxFilterLabel;
