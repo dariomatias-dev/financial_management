@@ -1,16 +1,14 @@
 package org.cafe.views.budgets;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.ConfirmDeleteDialog;
+import org.cafe.utils.DateFormatter;
 import org.cafe.utils.RecordVerificationUtil;
 import org.cafe.utils.SearchFieldHandlerUtil;
 import org.cafe.utils.SetBackIcon;
@@ -23,9 +21,6 @@ public class BudgetsView extends javax.swing.JFrame {
   private final BudgetItemController budgetItemController;
   private ArrayList<BudgetModel> allBudgets;
   private ArrayList<BudgetModel> displayedBudgets;
-
-  private static final String DEFAULT_DATE = "__/__/____";
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   /**
    * Construtor.
@@ -75,11 +70,10 @@ public class BudgetsView extends javax.swing.JFrame {
     DefaultTableModel tableModel = (DefaultTableModel) budgetsTable.getModel();
     tableModel.setRowCount(0);
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+    // Criação das linhas da tabela.
     for (BudgetModel budget : displayedBudgets) {
-      String initialDateFormatted = budget.getInitialDate().format(formatter);
-      String endDateFormatted = budget.getEndDate().format(formatter);
+      String initialDateFormatted = DateFormatter.format(budget.getInitialDate().toLocalDate());
+      String endDateFormatted = DateFormatter.format(budget.getEndDate().toLocalDate());
       String valueFormatted = String.format("%.2f", budget.getTotalBudgetValue());
 
       Object[] rowData = new Object[6];
@@ -110,16 +104,14 @@ public class BudgetsView extends javax.swing.JFrame {
           String budgetId
   ) {
     BudgetModel selectedBudget = budgetController.getById(budgetId);
-    BudgetView budgetView = new BudgetView(
+    new BudgetView(
             budgetController,
             budgetItemController,
             selectedBudget,
             (value) -> {
               updateScreen();
             }
-    );
-
-    budgetView.setVisible(true);
+    ).setVisible(true);
 
     updateScreen();
   }
@@ -402,15 +394,13 @@ public class BudgetsView extends javax.swing.JFrame {
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetsTable, "atualizar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
-      ManagerBudgetView updateManagerBudgetView = new ManagerBudgetView(
+      new ManagerBudgetView(
               budgetController,
               selectedBudget,
               (budgetId) -> {
                 updateScreen();
               }
-      );
-
-      updateManagerBudgetView.setVisible(true);
+      ).setVisible(true);
     }
   }//GEN-LAST:event_updateButtonMouseClicked
 
@@ -429,16 +419,14 @@ public class BudgetsView extends javax.swing.JFrame {
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
     if (RecordVerificationUtil.verifyRecords(budgetsTable, "acessar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
-      BudgetView budgetView = new BudgetView(
+      new BudgetView(
               budgetController,
               budgetItemController,
               selectedBudget,
               (value) -> {
                 onUpdateBudget(budgetsTable.getSelectedRow(), value);
               }
-      );
-
-      budgetView.setVisible(true);
+      ).setVisible(true);
     }
   }//GEN-LAST:event_accessButtonMouseClicked
 
@@ -446,6 +434,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Método de pesquisa das despesas.
    */
   private void search() {
+    // Obtenção dos filtros.
     String query = searchField.getText().trim();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
@@ -453,41 +442,41 @@ public class BudgetsView extends javax.swing.JFrame {
     String initialDateFilterText = initialDateFilterField.getText().trim();
     String endDateFilterText = endDateFilterField.getText().trim();
 
+    // Verificação da presença de filtragem.
     if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")
-            && initialDateFilterText.equals(DEFAULT_DATE) && endDateFilterText.equals(DEFAULT_DATE)) {
+            && initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE) && endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
       displayedBudgets = allBudgets;
       showBudgets();
 
       return;
     }
 
+    // Obtenção dos filtros de valor mínimo e máximo.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-
     if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
       return;
     }
 
+    // Formatação da data inicial e final.
     LocalDate initialDateFilter = null;
+    if (!initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
+      initialDateFilter = DateFormatter.parse(initialDateFilterText);
+    }
+    
     LocalDate endDateFilter = null;
-
-    try {
-      if (!initialDateFilterText.equals(DEFAULT_DATE)) {
-        initialDateFilter = LocalDate.parse(initialDateFilterText, DATE_FORMATTER);
-      }
-      if (!endDateFilterText.equals(DEFAULT_DATE)) {
-        endDateFilter = LocalDate.parse(endDateFilterText, DATE_FORMATTER);
-      }
-    } catch (DateTimeParseException e) {
-      JOptionPane.showMessageDialog(this, "Por favor, insira datas válidas no formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
-      return;
+    if (!endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
+      initialDateFilter = DateFormatter.parse(endDateFilterText);
     }
 
     ArrayList<BudgetModel> results = new ArrayList<>();
 
+    // Filtragem dos orçamentos.
     for (BudgetModel budget : allBudgets) {
+      // Filtro de texto e status.
       boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
       boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
 
+      // Filtro de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = budget.getTotalBudgetValue() >= valueRangeFilter.getValueMinFilter();
@@ -496,6 +485,7 @@ public class BudgetsView extends javax.swing.JFrame {
         matchesValue = budget.getTotalBudgetValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
+      // Filtro de data.
       boolean matchesDate = true;
       if (initialDateFilter != null && budget.getInitialDate() != null) {
         matchesDate = !budget.getInitialDate().toLocalDate().isBefore(initialDateFilter);
@@ -504,11 +494,13 @@ public class BudgetsView extends javax.swing.JFrame {
         matchesDate = !budget.getEndDate().toLocalDate().isAfter(endDateFilter);
       }
 
+      // Checagem das filtragens.
       if (matchesQuery && matchesStatus && matchesValue && matchesDate) {
         results.add(budget);
       }
     }
 
+    // Processo de exibição dos orçamentos filtrados.
     displayedBudgets = results;
 
     showBudgets();

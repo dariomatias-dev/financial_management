@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 public class DateFormatter {
+  public static final String PLACEHOLDER_DATE = "__/__/____";
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   private static void messageDialog() {
