@@ -1,12 +1,11 @@
 package org.cafe.database.controllers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import org.cafe.database.DatabaseController;
 import org.cafe.database.DatabaseService;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
+import org.cafe.utils.DateFormatter;
 
 public class BudgetController extends DatabaseController<BudgetModel> {
   public BudgetController(DatabaseService databaseService) {
@@ -22,10 +21,14 @@ public class BudgetController extends DatabaseController<BudgetModel> {
    * @return Retorna o ID do registro criado.
    */
   public String create(CreateBudgetModel createBudgetModel) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    String initialDateFormatted = createBudgetModel.getInitialDate().format(formatter);
-    String endDateFormatted = createBudgetModel.getEndDate().format(formatter);
+    String initialDateFormatted = DateFormatter.formatISO(createBudgetModel.getInitialDate());
+    if (initialDateFormatted == null) {
+      return null;
+    }
+    String endDateFormatted = DateFormatter.formatISO(createBudgetModel.getEndDate());
+    if (endDateFormatted == null) {
+      return null;
+    }
 
     Object[] values = {
       createBudgetModel.getName(),
@@ -41,6 +44,20 @@ public class BudgetController extends DatabaseController<BudgetModel> {
     return super.insert(values);
   }
 
+  private BudgetModel getBudget(Object[] row) {
+    return new BudgetModel(
+            (String) row[0],
+            (String) row[1],
+            (String) row[2],
+            (String) row[3],
+            (String) row[4],
+            (double) row[5],
+            (double) row[6],
+            DateFormatter.parseISO((String) row[7]),
+            DateFormatter.parseISO((String) row[8])
+    );
+  }
+
   public BudgetModel getById(String id) {
     ArrayList<Object[]> results = super.findById(id);
 
@@ -50,21 +67,7 @@ public class BudgetController extends DatabaseController<BudgetModel> {
 
     Object[] result = results.get(0);
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    BudgetModel budget = new BudgetModel(
-            (String) result[0],
-            (String) result[1],
-            (String) result[2],
-            (String) result[3],
-            (String) result[4],
-            (double) result[5],
-            (double) result[6],
-            LocalDateTime.parse((String) result[7], formatter),
-            LocalDateTime.parse((String) result[8], formatter)
-    );
-
-    return budget;
+    return getBudget(result);
   }
 
   public ArrayList<BudgetModel> getAll() {
@@ -74,32 +77,17 @@ public class BudgetController extends DatabaseController<BudgetModel> {
     }
 
     ArrayList<BudgetModel> budgets = new ArrayList<>();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     for (Object[] row : results) {
-      BudgetModel budget = new BudgetModel(
-              (String) row[0],
-              (String) row[1],
-              (String) row[2],
-              (String) row[3],
-              (String) row[4],
-              (double) row[5],
-              (double) row[6],
-              LocalDateTime.parse((String) row[7], formatter),
-              LocalDateTime.parse((String) row[8], formatter)
-      );
-
-      budgets.add(budget);
+      budgets.add(getBudget(row));
     }
 
     return budgets;
   }
 
   public void update(BudgetModel updatedBudget) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    String initialDateFormatted = updatedBudget.getInitialDate().format(formatter);
-    String endDateFormatted = updatedBudget.getEndDate().format(formatter);
+    String initialDateFormatted = DateFormatter.formatISO(updatedBudget.getInitialDate());
+    String endDateFormatted = DateFormatter.formatISO(updatedBudget.getEndDate());
 
     Object[] values = {
       updatedBudget.getName(),

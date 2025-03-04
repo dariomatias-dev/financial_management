@@ -2,8 +2,6 @@ package org.cafe.views.budgets.components.manager_budget;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
@@ -47,11 +45,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       statusSelect.setSelectedItem(data.getStatus());
       totalBudgetField.setText(String.valueOf(data.getTotalBudgetValue()));
 
-      Date initialDateAsDate = Date.from(data.getInitialDate().atZone(ZoneId.systemDefault()).toInstant());
-      Date endDateAsDate = Date.from(data.getEndDate().atZone(ZoneId.systemDefault()).toInstant());
-
-      initialDateField.setText(formatter.format(initialDateAsDate));
-      endDateField.setText(formatter.format(endDateAsDate));
+      initialDateField.setText(formatter.format(data.getInitialDate()));
+      endDateField.setText(formatter.format(data.getEndDate()));
 
       screenTitle.setFocusable(true);
       screenTitle.setText("Atualizar Orçamento");
@@ -268,7 +263,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       if (initialDate == null) {
         return;
       }
-      LocalDate endDate = DateFormatter.parse(initialDateText);
+      LocalDate endDate = DateFormatter.parse(endDateText);
       if (endDate == null) {
         return;
       }
@@ -277,9 +272,6 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "A data de início não pode ser posterior à data de término.", "Erro", JOptionPane.ERROR_MESSAGE);
         return;
       }
-
-      LocalDateTime initialDateTime = initialDate.atStartOfDay();
-      LocalDateTime endDateTime = endDate.atStartOfDay();
 
       String status = (String) statusSelect.getSelectedItem();
 
@@ -297,8 +289,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                         status,
                         numberValidator.getNumber(),
                         data.getTotalSpent(),
-                        initialDateTime,
-                        endDateTime
+                        initialDate,
+                        endDate
                 )
         );
 
@@ -313,8 +305,8 @@ public class ManagerBudgetView extends javax.swing.JFrame {
                         status,
                         numberValidator.getNumber(),
                         0.0,
-                        initialDateTime,
-                        endDateTime
+                        initialDate,
+                        endDate
                 )
         );
       }

@@ -16,7 +16,7 @@ public class BudgetCalculator {
     double totalBudget = 0.0;
 
     for (BudgetItemModel item : budgetItems) {
-      long numberOfPeriods = calculatePeriods(item.getPeriod(), budget.getInitialDate().toLocalDate(), budget.getEndDate().toLocalDate());
+      long numberOfPeriods = calculatePeriods(item.getPeriod(), budget.getInitialDate(), budget.getEndDate());
       double itemTotal = numberOfPeriods * item.getValue();
       totalBudget += itemTotal;
     }

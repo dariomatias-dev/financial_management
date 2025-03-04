@@ -1,6 +1,6 @@
 package org.cafe.models.budget;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class CreateBudgetModel {
   private String name;
@@ -9,8 +9,8 @@ public class CreateBudgetModel {
   private String status;
   private double totalBudgetValue;
   private double totalSpent;
-  private LocalDateTime initialDate;
-  private LocalDateTime endDate;
+  private LocalDate initialDate;
+  private LocalDate endDate;
 
   public CreateBudgetModel(
           String name,
@@ -19,8 +19,8 @@ public class CreateBudgetModel {
           String status,
           double totalBudgetValue,
           double totalSpent,
-          LocalDateTime initialDate,
-          LocalDateTime endDate
+          LocalDate initialDate,
+          LocalDate endDate
   ) {
     this.name = name;
     this.description = description;
@@ -64,14 +64,6 @@ public class CreateBudgetModel {
     this.status = status;
   }
 
-  public LocalDateTime getInitialDate() {
-    return initialDate;
-  }
-
-  public void setInitialDate(LocalDateTime initialDate) {
-    this.initialDate = initialDate;
-  }
-
   public double getTotalBudgetValue() {
     return totalBudgetValue;
   }
@@ -88,11 +80,19 @@ public class CreateBudgetModel {
     this.totalSpent = totalSpent;
   }
 
-  public LocalDateTime getEndDate() {
+  public LocalDate getInitialDate() {
+    return initialDate;
+  }
+
+  public void setInitialDate(LocalDate initialDate) {
+    this.initialDate = initialDate;
+  }
+
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(LocalDateTime endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 }

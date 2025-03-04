@@ -72,8 +72,8 @@ public class BudgetsView extends javax.swing.JFrame {
 
     // Criação das linhas da tabela.
     for (BudgetModel budget : displayedBudgets) {
-      String initialDateFormatted = DateFormatter.format(budget.getInitialDate().toLocalDate());
-      String endDateFormatted = DateFormatter.format(budget.getEndDate().toLocalDate());
+      String initialDateFormatted = DateFormatter.format(budget.getInitialDate());
+      String endDateFormatted = DateFormatter.format(budget.getEndDate());
       String valueFormatted = String.format("%.2f", budget.getTotalBudgetValue());
 
       Object[] rowData = new Object[6];
@@ -462,10 +462,10 @@ public class BudgetsView extends javax.swing.JFrame {
     if (!initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
       initialDateFilter = DateFormatter.parse(initialDateFilterText);
     }
-    
+
     LocalDate endDateFilter = null;
     if (!endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
-      initialDateFilter = DateFormatter.parse(endDateFilterText);
+      endDateFilter = DateFormatter.parse(endDateFilterText);
     }
 
     ArrayList<BudgetModel> results = new ArrayList<>();
@@ -488,10 +488,10 @@ public class BudgetsView extends javax.swing.JFrame {
       // Filtro de data.
       boolean matchesDate = true;
       if (initialDateFilter != null && budget.getInitialDate() != null) {
-        matchesDate = !budget.getInitialDate().toLocalDate().isBefore(initialDateFilter);
+        matchesDate = !budget.getInitialDate().isBefore(initialDateFilter);
       }
       if (matchesDate && endDateFilter != null && budget.getEndDate() != null) {
-        matchesDate = !budget.getEndDate().toLocalDate().isAfter(endDateFilter);
+        matchesDate = !budget.getEndDate().isAfter(endDateFilter);
       }
 
       // Checagem das filtragens.
