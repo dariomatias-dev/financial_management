@@ -102,9 +102,10 @@ public class RevenueView extends javax.swing.JFrame {
     valueMaxFilterField = new javax.swing.JTextField();
     valueFilterLabel = new javax.swing.JLabel();
     searchField = new javax.swing.JTextField();
-    searchButton = new javax.swing.JButton();
     exitButton = new javax.swing.JLabel();
     screenTitle = new javax.swing.JLabel();
+    searchButton = new javax.swing.JButton();
+    clearFiltersButton = new javax.swing.JButton();
 
     jMenu1.setText("jMenu1");
 
@@ -189,13 +190,6 @@ public class RevenueView extends javax.swing.JFrame {
 
     valueFilterLabel.setText("Valor:");
 
-    searchButton.setText("Filtrar");
-    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        searchButtonMouseClicked(evt);
-      }
-    });
-
     exitButton.setForeground(new java.awt.Color(255, 0, 51));
     exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -207,6 +201,20 @@ public class RevenueView extends javax.swing.JFrame {
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
     screenTitle.setText("Receitas");
 
+    searchButton.setText("Filtrar");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
+    clearFiltersButton.setText("Limpar Filtros");
+    clearFiltersButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearFiltersButtonMouseClicked(evt);
+      }
+    });
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -215,10 +223,6 @@ public class RevenueView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(jScrollPane1)
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(searchField)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(searchButton))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(valueMinFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -227,13 +231,6 @@ public class RevenueView extends javax.swing.JFrame {
             .addComponent(valueMaxFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(addButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(updateButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(deleteButton))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(valueFilterLabel)
@@ -245,7 +242,20 @@ public class RevenueView extends javax.swing.JFrame {
                 .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(screenTitle)))
-            .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(addButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(updateButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(deleteButton))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addComponent(searchField)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(searchButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(clearFiltersButton)))
         .addContainerGap())
     );
     backgroundLayout.setVerticalGroup(
@@ -258,7 +268,9 @@ public class RevenueView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(searchButton))
+          .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(clearFiltersButton)
+            .addComponent(searchButton)))
         .addGap(1, 1, 1)
         .addComponent(valueFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -392,22 +404,33 @@ public class RevenueView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar as receitas de acordo com os filtros definidos.
-   */
-  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    search();
-  }//GEN-LAST:event_searchButtonMouseClicked
-
-  /**
    * Método chamado para sair da tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
+  
+  /**
+   * Método chamado para filtrar os orçamentos de acordo com os filtros
+   * definidos.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
+  }//GEN-LAST:event_searchButtonMouseClicked
+
+  private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
+    searchField.setText("Pesquisar...");
+    valueMinFilterField.setText("");
+    valueMaxFilterField.setText("");
+    periodFilterField.setSelectedItem("Todos");
+
+    search();
+  }//GEN-LAST:event_clearFiltersButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
+  private javax.swing.JButton clearFiltersButton;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel exitButton;
   private javax.swing.JMenu jMenu1;

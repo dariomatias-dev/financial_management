@@ -180,7 +180,6 @@ public class BudgetView extends javax.swing.JFrame {
     itemsText = new javax.swing.JLabel();
     nameText = new javax.swing.JLabel();
     searchField = new javax.swing.JTextField();
-    searchButton = new javax.swing.JButton();
     labelInvisible = new javax.swing.JLabel();
     periodFilterLabel = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
@@ -196,6 +195,8 @@ public class BudgetView extends javax.swing.JFrame {
     jScrollPane1 = new javax.swing.JScrollPane();
     monetaryInfoTable = new javax.swing.JTable();
     jLabel1 = new javax.swing.JLabel();
+    searchButton = new javax.swing.JButton();
+    clearFiltersButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -236,13 +237,6 @@ public class BudgetView extends javax.swing.JFrame {
     itemsText.setText("Itens:");
 
     nameText.setText("Nome");
-
-    searchButton.setText("Filtrar");
-    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        searchButtonMouseClicked(evt);
-      }
-    });
 
     periodFilterLabel.setText("Período:");
 
@@ -331,6 +325,20 @@ public class BudgetView extends javax.swing.JFrame {
 
     jLabel1.setText("Resumo Financeiro do Orçamento:");
 
+    searchButton.setText("Filtrar");
+    searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchButtonMouseClicked(evt);
+      }
+    });
+
+    clearFiltersButton.setText("Limpar Filtros");
+    clearFiltersButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearFiltersButtonMouseClicked(evt);
+      }
+    });
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -388,7 +396,9 @@ public class BudgetView extends javax.swing.JFrame {
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(searchField)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchButton))
+                .addComponent(searchButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(clearFiltersButton))
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(jLabel1)
@@ -435,7 +445,9 @@ public class BudgetView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(searchButton))
+          .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(clearFiltersButton)
+            .addComponent(searchButton)))
         .addGap(6, 6, 6)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -584,25 +596,35 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar os itens do orçamento de acordo com os filtros
-   * definidos.
-   */
-  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    search();
-  }//GEN-LAST:event_searchButtonMouseClicked
-
-  /**
    * Método chamado para sair da tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  /**
+   * Método chamado para filtrar os orçamentos de acordo com os filtros
+   * definidos.
+   */
+  private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+    search();
+  }//GEN-LAST:event_searchButtonMouseClicked
+
+  private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
+    searchField.setText("Pesquisar...");
+    valueMinFilterField.setText("");
+    valueMaxFilterField.setText("");
+    periodFilterField.setSelectedItem("Todos");
+
+    search();
+  }//GEN-LAST:event_clearFiltersButtonMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
   private javax.swing.JTable budgetItemsTable;
   private javax.swing.JLabel categoryText;
+  private javax.swing.JButton clearFiltersButton;
   private javax.swing.JButton deleteButton;
   private javax.swing.JLabel descriptionText;
   private javax.swing.JLabel endDateText;
