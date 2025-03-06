@@ -510,8 +510,7 @@ public class BudgetsView extends javax.swing.JFrame {
   }
 
   /**
-   * Método chamado para filtrar os orçamentos de acordo com os filtros
-   * definidos.
+   * Método chamado para remover todos os filtros.
    */
   private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
     searchField.setText("Pesquisar...");
