@@ -12,7 +12,7 @@ import org.cafe.utils.SetBackIcon;
 import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
-public class RevenueView extends javax.swing.JFrame {
+public class RevenuesView extends javax.swing.JFrame {
   private final RevenueController revenueController;
   private ArrayList<RevenueModel> allRevenues;
   private ArrayList<RevenueModel> displayedRevenues;
@@ -22,7 +22,7 @@ public class RevenueView extends javax.swing.JFrame {
    *
    * @param revenueController Controlador de receitas.
    */
-  public RevenueView(RevenueController revenueController) {
+  public RevenuesView(RevenueController revenueController) {
     this.revenueController = revenueController;
 
     initComponents();
