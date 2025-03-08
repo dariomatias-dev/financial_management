@@ -100,8 +100,8 @@
                       <Component id="revenuesArrowIcon" min="-2" pref="40" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="revenuesTitle" min="-2" max="-2" attributes="0"/>
-                          <Component id="revenuesValue" min="-2" max="-2" attributes="0"/>
+                          <Component id="revenuesTitleLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="revenuesValueLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -113,9 +113,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="revenuesTitle" min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="revenuesTitleLabel" min="-2" pref="12" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="revenuesValue" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="revenuesValueLabel" min="-2" pref="16" max="-2" attributes="0"/>
                           </Group>
                           <Component id="revenuesArrowIcon" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -135,7 +135,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="revenuesValue">
+            <Component class="javax.swing.JLabel" name="revenuesValueLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="1"/>
@@ -144,10 +144,10 @@
                   <Color blue="0" green="cc" red="33" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="R$ 4.595.60"/>
+                <Property name="text" type="java.lang.String" value="R$ 0.00"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="revenuesTitle">
+            <Component class="javax.swing.JLabel" name="revenuesTitleLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="11" style="0"/>
@@ -174,15 +174,15 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="expensesArrowIcon" min="-2" pref="40" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="expensesTitle" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="expensesValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="expensesTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="expensesValueLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="46" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -192,9 +192,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="expensesTitle" min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="expensesTitleLabel" min="-2" pref="12" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="expensesValue" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="expensesValueLabel" min="-2" pref="16" max="-2" attributes="0"/>
                           </Group>
                           <Component id="expensesArrowIcon" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -204,7 +204,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="expensesTitle">
+            <Component class="javax.swing.JLabel" name="expensesTitleLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="11" style="0"/>
@@ -216,7 +216,7 @@
                 <Property name="text" type="java.lang.String" value="Despesa Mensal"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="expensesValue">
+            <Component class="javax.swing.JLabel" name="expensesValueLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="1"/>
@@ -225,7 +225,7 @@
                   <Color blue="0" green="0" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="R$ 3.577.90"/>
+                <Property name="text" type="java.lang.String" value="R$ 0.00"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="expensesArrowIcon">

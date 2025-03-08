@@ -4,15 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.database.controllers.RevenueController;
+import org.cafe.models.expense.ExpenseModel;
+import org.cafe.models.revenue.RevenueModel;
+import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.views.expenses.ExpensesView;
 import org.cafe.views.revenues.RevenuesView;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -36,20 +41,45 @@ public class MainView extends javax.swing.JFrame {
     this.revenueController = revenueController;
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
-    
+
     initComponents();
-    
+
     revenuesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_green.png")));
     expensesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_red.png")));
     userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_icon.png")));
     greetingLabel.setText(getGreeting() + ",");
-    
-    graphicAdd();
+
+    double revenuesValue = calculateTotalByPeriod(revenueController.getAll());
+    double expensesValue = calculateTotalByPeriod(expenseController.getAll());
+
+    String formattedRevenuesValue = CurrencyFormatterUtil.format(revenuesValue);
+    String formattedExpensesValue = CurrencyFormatterUtil.format(expensesValue);
+
+    revenuesValueLabel.setText(formattedRevenuesValue);
+    expensesValueLabel.setText(formattedExpensesValue);
+
+    graphicAdd(revenuesValue, expensesValue);
   }
-  
-  private void graphicAdd() {
+
+  /**
+   * Obtém a saudação de acordo com o horário.
+   */
+  private static String getGreeting() {
+    LocalTime currentTime = LocalTime.now();
+    int hour = currentTime.getHour();
+
+    if (hour >= 6 && hour < 12) {
+      return "Bom dia";
+    } else if (hour >= 12 && hour < 18) {
+      return "Boa tarde";
+    } else {
+      return "Boa noite";
+    }
+  }
+
+  private void graphicAdd(double revenuesValue, double expensesValue) {
     // Criar os dados do gráfico.
-    PieDataset dataset = createDataset();
+    PieDataset dataset = createDataset(revenuesValue, expensesValue);
 
     // Cria o gráfico.
     JFreeChart chart = ChartFactory.createPieChart(
@@ -69,7 +99,7 @@ public class MainView extends javax.swing.JFrame {
     chart.setBackgroundPaint(Color.WHITE);
     plot.setBackgroundPaint(Color.WHITE);
 
-    //Cor das fatias do gráfico.
+    // Cor das fatias do gráfico.
     plot.setSectionPaint("Receitas", Color.GREEN);
     plot.setSectionPaint("Despesas", Color.RED);
 
@@ -79,6 +109,9 @@ public class MainView extends javax.swing.JFrame {
     // Remover rótulos das fatias.
     plot.setLabelGenerator(null);
 
+    // Configuração para exibir apenas as porcentagens nas fatias.
+    plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
+
     // Adiciona o gráfico ao painel.
     graphicPanel.removeAll();
     graphicPanel.setLayout(new BorderLayout());
@@ -86,26 +119,43 @@ public class MainView extends javax.swing.JFrame {
     graphicPanel.revalidate();
     graphicPanel.repaint();
   }
-  
-  private PieDataset createDataset() {
+
+  private PieDataset createDataset(double revenuesValue, double expensesValue) {
     DefaultPieDataset dataset = new DefaultPieDataset();
-    dataset.setValue("Receitas", 150);
-    dataset.setValue("Despesas", 90);
-    
+    dataset.setValue("Receitas", revenuesValue);
+    dataset.setValue("Despesas", expensesValue);
+
     return dataset;
   }
-  
-  public static String getGreeting() {
-    LocalTime currentTime = LocalTime.now();
-    int hour = currentTime.getHour();
-    
-    if (hour >= 6 && hour < 12) {
-      return "Bom dia";
-    } else if (hour >= 12 && hour < 18) {
-      return "Boa tarde";
-    } else {
-      return "Boa noite";
+
+  private <T> double calculateTotalByPeriod(ArrayList<T> records) {
+    double total = 0;
+
+    for (T record : records) {
+      total += switch (record) {
+        case ExpenseModel expense ->
+          calculateValueByPeriod(expense.getValue(), expense.getPeriod());
+        case RevenueModel revenue ->
+          calculateValueByPeriod(revenue.getValue(), revenue.getPeriod());
+        default ->
+          0;
+      };
     }
+
+    return total;
+  }
+
+  private double calculateValueByPeriod(double value, String period) {
+    return switch (period) {
+      case "Diário" ->
+        value;
+      case "Semanal" ->
+        value * 4;
+      case "Mensal" ->
+        value * 30;
+      default ->
+        throw new IllegalArgumentException("Invalid period: " + period);
+    };
   }
 
   /**
@@ -120,11 +170,11 @@ public class MainView extends javax.swing.JFrame {
     jPanel1 = new javax.swing.JPanel();
     revenuesPainel = new javax.swing.JPanel();
     revenuesArrowIcon = new javax.swing.JLabel();
-    revenuesValue = new javax.swing.JLabel();
-    revenuesTitle = new javax.swing.JLabel();
+    revenuesValueLabel = new javax.swing.JLabel();
+    revenuesTitleLabel = new javax.swing.JLabel();
     expensesPanel = new javax.swing.JPanel();
-    expensesTitle = new javax.swing.JLabel();
-    expensesValue = new javax.swing.JLabel();
+    expensesTitleLabel = new javax.swing.JLabel();
+    expensesValueLabel = new javax.swing.JLabel();
     expensesArrowIcon = new javax.swing.JLabel();
     graphicPanel = new javax.swing.JPanel();
     jPanel2 = new javax.swing.JPanel();
@@ -147,15 +197,15 @@ public class MainView extends javax.swing.JFrame {
     revenuesArrowIcon.setBackground(new java.awt.Color(0, 0, 0));
     revenuesArrowIcon.setForeground(new java.awt.Color(0, 0, 0));
 
-    revenuesValue.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    revenuesValue.setForeground(new java.awt.Color(51, 204, 0));
-    revenuesValue.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-    revenuesValue.setText("R$ 4.595.60");
+    revenuesValueLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    revenuesValueLabel.setForeground(new java.awt.Color(51, 204, 0));
+    revenuesValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+    revenuesValueLabel.setText("R$ 0.00");
 
-    revenuesTitle.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-    revenuesTitle.setForeground(new java.awt.Color(0, 0, 0));
-    revenuesTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    revenuesTitle.setText("Receita Mensal");
+    revenuesTitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+    revenuesTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
+    revenuesTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    revenuesTitleLabel.setText("Receita Mensal");
 
     javax.swing.GroupLayout revenuesPainelLayout = new javax.swing.GroupLayout(revenuesPainel);
     revenuesPainel.setLayout(revenuesPainelLayout);
@@ -166,8 +216,8 @@ public class MainView extends javax.swing.JFrame {
         .addComponent(revenuesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(revenuesPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(revenuesTitle)
-          .addComponent(revenuesValue))
+          .addComponent(revenuesTitleLabel)
+          .addComponent(revenuesValueLabel))
         .addContainerGap())
     );
     revenuesPainelLayout.setVerticalGroup(
@@ -176,9 +226,9 @@ public class MainView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(revenuesPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(revenuesPainelLayout.createSequentialGroup()
-            .addComponent(revenuesTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(revenuesTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(revenuesValue, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(revenuesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addComponent(revenuesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap())
     );
@@ -190,15 +240,15 @@ public class MainView extends javax.swing.JFrame {
       }
     });
 
-    expensesTitle.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-    expensesTitle.setForeground(new java.awt.Color(0, 0, 0));
-    expensesTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    expensesTitle.setText("Despesa Mensal");
+    expensesTitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+    expensesTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
+    expensesTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    expensesTitleLabel.setText("Despesa Mensal");
 
-    expensesValue.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    expensesValue.setForeground(new java.awt.Color(255, 0, 0));
-    expensesValue.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-    expensesValue.setText("R$ 3.577.90");
+    expensesValueLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    expensesValueLabel.setForeground(new java.awt.Color(255, 0, 0));
+    expensesValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+    expensesValueLabel.setText("R$ 0.00");
 
     expensesArrowIcon.setBackground(new java.awt.Color(0, 0, 0));
     expensesArrowIcon.setForeground(new java.awt.Color(0, 0, 0));
@@ -212,9 +262,9 @@ public class MainView extends javax.swing.JFrame {
         .addComponent(expensesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(expensesTitle)
-          .addComponent(expensesValue))
-        .addContainerGap())
+          .addComponent(expensesTitleLabel)
+          .addComponent(expensesValueLabel))
+        .addContainerGap(46, Short.MAX_VALUE))
     );
     expensesPanelLayout.setVerticalGroup(
       expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,9 +272,9 @@ public class MainView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(expensesPanelLayout.createSequentialGroup()
-            .addComponent(expensesTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(expensesTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(expensesValue, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(expensesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addComponent(expensesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap())
     );
@@ -327,29 +377,29 @@ public class MainView extends javax.swing.JFrame {
 
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
     RevenuesView revenuesView = new RevenuesView(revenueController);
-    
+
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked
 
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
     ExpensesView expensesView = new ExpensesView(expenseController);
-    
+
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel expensesArrowIcon;
   private javax.swing.JPanel expensesPanel;
-  private javax.swing.JLabel expensesTitle;
-  private javax.swing.JLabel expensesValue;
+  private javax.swing.JLabel expensesTitleLabel;
+  private javax.swing.JLabel expensesValueLabel;
   private javax.swing.JPanel graphicPanel;
   private javax.swing.JLabel greetingLabel;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel2;
   private javax.swing.JLabel revenuesArrowIcon;
   private javax.swing.JPanel revenuesPainel;
-  private javax.swing.JLabel revenuesTitle;
-  private javax.swing.JLabel revenuesValue;
+  private javax.swing.JLabel revenuesTitleLabel;
+  private javax.swing.JLabel revenuesValueLabel;
   private javax.swing.JLabel userIcon;
   private javax.swing.JLabel welcomeLabel;
   // End of variables declaration//GEN-END:variables
