@@ -1,11 +1,20 @@
 package org.cafe.views.main;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.database.controllers.ExpenseController;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.views.expenses.ExpensesView;
 import org.cafe.views.revenues.RevenuesView;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 public class MainView extends javax.swing.JFrame {
   private final ExpenseController expenseController;
@@ -26,11 +35,61 @@ public class MainView extends javax.swing.JFrame {
     this.revenueController = revenueController;
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
-    
+
     initComponents();
-    
+
     revenuesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_green.png")));
     expensesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_red.png")));
+
+    graphicAdd();
+  }
+
+  private void graphicAdd() {
+    // Criar os dados do gráfico.
+    PieDataset dataset = createDataset();
+
+    // Cria o gráfico.
+    JFreeChart chart = ChartFactory.createPieChart(
+            "",
+            dataset,
+            false,
+            true,
+            false
+    );
+
+    // Cria o painel do gráfico.
+    ChartPanel chartPanel = new ChartPanel(chart);
+    PiePlot plot = (PiePlot) chart.getPlot();
+    plot.setOutlineVisible(false);
+
+    // Cor de fundo do gráfico.
+    chart.setBackgroundPaint(Color.WHITE);
+    plot.setBackgroundPaint(Color.WHITE);
+
+    //Cor das fatias do gráfico.
+    plot.setSectionPaint("Receitas", Color.GREEN);
+    plot.setSectionPaint("Despesas", Color.RED);
+
+    // Dimensões do gráfico.
+    chartPanel.setPreferredSize(new Dimension(300, 200));
+    
+    // Remover rótulos das fatias.
+    plot.setLabelGenerator(null);
+
+    // Adiciona o gráfico ao painel.
+    graphicPanel.removeAll();
+    graphicPanel.setLayout(new BorderLayout());
+    graphicPanel.add(chartPanel, BorderLayout.CENTER);
+    graphicPanel.revalidate();
+    graphicPanel.repaint();
+  }
+
+  private PieDataset createDataset() {
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.setValue("Receitas", 150);
+    dataset.setValue("Despesas", 90);
+
+    return dataset;
   }
 
   /**
@@ -51,6 +110,7 @@ public class MainView extends javax.swing.JFrame {
     expensesTitle = new javax.swing.JLabel();
     expensesValue = new javax.swing.JLabel();
     expensesArrowIcon = new javax.swing.JLabel();
+    graphicPanel = new javax.swing.JPanel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setBackground(new java.awt.Color(255, 255, 255));
@@ -149,6 +209,19 @@ public class MainView extends javax.swing.JFrame {
         .addContainerGap())
     );
 
+    graphicPanel.setPreferredSize(new java.awt.Dimension(300, 200));
+
+    javax.swing.GroupLayout graphicPanelLayout = new javax.swing.GroupLayout(graphicPanel);
+    graphicPanel.setLayout(graphicPanelLayout);
+    graphicPanelLayout.setHorizontalGroup(
+      graphicPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 300, Short.MAX_VALUE)
+    );
+    graphicPanelLayout.setVerticalGroup(
+      graphicPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 200, Short.MAX_VALUE)
+    );
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -159,6 +232,10 @@ public class MainView extends javax.swing.JFrame {
         .addGap(197, 197, 197)
         .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addContainerGap())
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(109, 109, 109))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +244,9 @@ public class MainView extends javax.swing.JFrame {
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(expensesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(revenuesPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap(307, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(101, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -186,13 +265,13 @@ public class MainView extends javax.swing.JFrame {
 
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
     RevenuesView revenuesView = new RevenuesView(revenueController);
-    
+
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked
 
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
     ExpensesView expensesView = new ExpensesView(expenseController);
-    
+
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
 
@@ -201,6 +280,7 @@ public class MainView extends javax.swing.JFrame {
   private javax.swing.JPanel expensesPanel;
   private javax.swing.JLabel expensesTitle;
   private javax.swing.JLabel expensesValue;
+  private javax.swing.JPanel graphicPanel;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JLabel revenuesArrowIcon;
   private javax.swing.JPanel revenuesPainel;
