@@ -27,6 +27,8 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     filterRegisters();
 
+    screenTitle.setFocusable(true);
+
     new SetBackIcon().set(exitButton);
   }
 
@@ -134,6 +136,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     totalValueExpenses = new javax.swing.JLabel();
     expensesTitle = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
+    jSeparator1 = new javax.swing.JSeparator();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,6 +154,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
     screenTitle.setText("Visão Financeira");
 
+    selectPeriodLabel.setForeground(new java.awt.Color(0, 0, 0));
     selectPeriodLabel.setText("Selecione o período:");
 
     expensesTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -203,12 +207,14 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     });
     jScrollPane2.setViewportView(revenuesTable);
 
-    revenuesTitle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    revenuesTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
     revenuesTitle.setForeground(new java.awt.Color(0, 0, 0));
     revenuesTitle.setText("Receitas");
 
+    totalValueRevenues.setForeground(new java.awt.Color(0, 0, 0));
     totalValueRevenues.setText("Valor Total:");
 
+    selectedRevenues.setForeground(new java.awt.Color(0, 0, 0));
     selectedRevenues.setText("Selecionadas:");
 
     calculateButton.setText("Calcular");
@@ -218,11 +224,13 @@ public class FinancialOverviewView extends javax.swing.JFrame {
       }
     });
 
+    selectedExpenses.setForeground(new java.awt.Color(0, 0, 0));
     selectedExpenses.setText("Selecionadas:");
 
+    totalValueExpenses.setForeground(new java.awt.Color(0, 0, 0));
     totalValueExpenses.setText("Valor Total:");
 
-    expensesTitle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    expensesTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
     expensesTitle.setForeground(new java.awt.Color(0, 0, 0));
     expensesTitle.setText("Despesas");
 
@@ -235,13 +243,14 @@ public class FinancialOverviewView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jSeparator1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(selectPeriodLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
             .addComponent(calculateButton))
-          .addComponent(jScrollPane2)
+          .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
           .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +279,9 @@ public class FinancialOverviewView extends javax.swing.JFrame {
           .addComponent(selectPeriodLabel)
           .addComponent(calculateButton)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(revenuesTitle)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(totalValueRevenues)
@@ -278,7 +289,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
         .addComponent(selectedRevenues)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGap(18, 18, 18)
         .addComponent(expensesTitle)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(totalValueExpenses)
@@ -286,7 +297,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
         .addComponent(selectedExpenses)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGap(12, 12, 12))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -297,7 +308,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
     );
 
     pack();
@@ -325,6 +336,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
   private javax.swing.JLabel expensesTitle;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
+  private javax.swing.JSeparator jSeparator1;
   private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JTable revenuesTable;
   private javax.swing.JLabel revenuesTitle;
