@@ -3,7 +3,7 @@ package org.cafe.utils;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CurrencyFormatterUtil {
+public class CurrencyFormatter {
     private static final NumberFormat currencyFormat;
 
     static {

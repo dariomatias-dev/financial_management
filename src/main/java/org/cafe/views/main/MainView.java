@@ -11,7 +11,7 @@ import org.cafe.database.controllers.ExpenseController;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.CurrencyFormatter;
 import org.cafe.views.budgets.BudgetsView;
 import org.cafe.views.expenses.ExpensesView;
 import org.cafe.views.financial_overview.FinancialOverviewView;
@@ -57,8 +57,8 @@ public class MainView extends javax.swing.JFrame {
     double revenuesValue = calculateTotalByPeriod(revenueController.getAll());
     double expensesValue = calculateTotalByPeriod(expenseController.getAll());
 
-    String formattedRevenuesValue = CurrencyFormatterUtil.format(revenuesValue);
-    String formattedExpensesValue = CurrencyFormatterUtil.format(expensesValue);
+    String formattedRevenuesValue = CurrencyFormatter.format(revenuesValue);
+    String formattedExpensesValue = CurrencyFormatter.format(expensesValue);
 
     revenuesValueLabel.setText(formattedRevenuesValue);
     expensesValueLabel.setText(formattedExpensesValue);

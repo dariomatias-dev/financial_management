@@ -8,7 +8,7 @@ public class ConfirmDeleteDialog {
           JTable table,
           Runnable action
   ) {
-    if (RecordVerificationUtil.verifyRecords(table, "excluir")) {
+    if (RecordVerification.verifyRecords(table, "excluir")) {
       // Confirmar remoção de registro.
       int confirm = JOptionPane.showConfirmDialog(
               null,

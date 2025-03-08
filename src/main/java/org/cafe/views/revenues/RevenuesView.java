@@ -5,9 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.ConfirmDeleteDialog;
-import org.cafe.utils.CurrencyFormatterUtil;
-import org.cafe.utils.RecordVerificationUtil;
-import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.RecordVerification;
+import org.cafe.utils.SearchFieldHandler;
 import org.cafe.utils.SetBackIcon;
 import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
@@ -37,7 +37,7 @@ public class RevenuesView extends javax.swing.JFrame {
   private void initializeSearchField() {
     screenTitle.setFocusable(true);
 
-    new SearchFieldHandlerUtil(searchField).initialize();
+    new SearchFieldHandler(searchField).initialize();
   }
 
   /**
@@ -58,7 +58,7 @@ public class RevenuesView extends javax.swing.JFrame {
 
     // Criação das linhas da tabela.
     for (RevenueModel revenue : displayedRevenues) {
-      String formattedValue = CurrencyFormatterUtil.format(revenue.getValue());
+      String formattedValue = CurrencyFormatter.format(revenue.getValue());
 
       Object[] rowData = new Object[4];
       rowData[0] = revenue.getName();
@@ -326,7 +326,7 @@ public class RevenuesView extends javax.swing.JFrame {
    * Abre a tela de atualização da receita selecionada.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(revenuesTable, "atualizar")) {
+    if (RecordVerification.verifyRecords(revenuesTable, "atualizar")) {
       RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
       new ManagerRevenueView(
               revenueController,

@@ -4,10 +4,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.*;
 
-public class SearchFieldHandlerUtil {
+public class SearchFieldHandler {
   private final JTextField searchField;
 
-  public SearchFieldHandlerUtil(JTextField searchField) {
+  public SearchFieldHandler(JTextField searchField) {
     this.searchField = searchField;
   }
 

@@ -6,7 +6,7 @@ import org.cafe.database.controllers.ExpenseController;
 import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.utils.CurrencyFormatter;
 import org.cafe.utils.SetBackIcon;
 
 public class FinancialOverviewView extends javax.swing.JFrame {
@@ -54,8 +54,8 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     showExpenses(filteredExpenses);
 
     // Mostra o valor total das receitas e despesas filtradas.
-    totalValueRevenues.setText("Valor Total: " + CurrencyFormatterUtil.format(totalRevenue));
-    totalValueExpenses.setText("Valor Total: " + CurrencyFormatterUtil.format(totalExpense));
+    totalValueRevenues.setText("Valor Total: " + CurrencyFormatter.format(totalRevenue));
+    totalValueExpenses.setText("Valor Total: " + CurrencyFormatter.format(totalExpense));
   }
 
   private <T> ArrayList<T> filterRegistersByPeriod(ArrayList<T> records) {
@@ -82,7 +82,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     // Criação das linhas da tabela de receitas.
     for (RevenueModel revenue : revenues) {
-      String formattedValue = CurrencyFormatterUtil.format(revenue.getValue());
+      String formattedValue = CurrencyFormatter.format(revenue.getValue());
 
       Object[] rowData = new Object[3];
       rowData[0] = revenue.getName();
@@ -101,7 +101,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     // Criação das linhas da tabela de despesas.
     for (ExpenseModel expense : expenses) {
-      String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
+      String formattedValue = CurrencyFormatter.format(expense.getValue());
 
       Object[] rowData = new Object[3];
       rowData[0] = expense.getName();

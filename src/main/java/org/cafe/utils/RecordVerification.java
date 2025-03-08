@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class RecordVerificationUtil {
+public class RecordVerification {
   public static boolean verifyRecords(JTable table, String actionName) {
     // Verifica se existe registros.
     DefaultTableModel model = (DefaultTableModel) table.getModel();

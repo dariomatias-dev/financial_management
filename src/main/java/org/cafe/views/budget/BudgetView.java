@@ -11,9 +11,9 @@ import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
 import org.cafe.utils.ConfirmDeleteDialog;
-import org.cafe.utils.CurrencyFormatterUtil;
-import org.cafe.utils.RecordVerificationUtil;
-import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.CurrencyFormatter;
+import org.cafe.utils.RecordVerification;
+import org.cafe.utils.SearchFieldHandler;
 import org.cafe.utils.SetBackIcon;
 import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemView;
@@ -65,7 +65,7 @@ public class BudgetView extends javax.swing.JFrame {
   private void initializeSearchField() {
     screenTitle.setFocusable(true);
 
-    new SearchFieldHandlerUtil(searchField).initialize();
+    new SearchFieldHandler(searchField).initialize();
   }
 
   /**
@@ -97,7 +97,7 @@ public class BudgetView extends javax.swing.JFrame {
 
     // Criação das linhas da tabela.
     for (BudgetItemModel budgetItem : displayedBudgetItems) {
-      String formattedValue = CurrencyFormatterUtil.format(budgetItem.getValue());
+      String formattedValue = CurrencyFormatter.format(budgetItem.getValue());
       Object[] rowData = new Object[5];
 
       String createdAtFormatted = budgetItem.getCreatedAt().format(DATE_FORMATTER);
@@ -494,7 +494,7 @@ public class BudgetView extends javax.swing.JFrame {
    * Abre a tela de atualização do item de orçamento selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetItemsTable, "atualizar")) {
+    if (RecordVerification.verifyRecords(budgetItemsTable, "atualizar")) {
       BudgetItemModel selectedBudgetItem = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
       new ManagerBudgetItemView(
               budget.getId(),
@@ -586,7 +586,7 @@ public class BudgetView extends javax.swing.JFrame {
     monetaryModel.setRowCount(0);
 
     // Adição das informações
-    monetaryModel.addRow(new Object[]{CurrencyFormatterUtil.format(totalBudget), CurrencyFormatterUtil.format(totalSpent), CurrencyFormatterUtil.format(remainingValue)});
+    monetaryModel.addRow(new Object[]{CurrencyFormatter.format(totalBudget), CurrencyFormatter.format(totalSpent), CurrencyFormatter.format(remainingValue)});
   }
 
   /**

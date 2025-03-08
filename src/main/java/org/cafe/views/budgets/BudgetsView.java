@@ -9,8 +9,8 @@ import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.DateFormatter;
-import org.cafe.utils.RecordVerificationUtil;
-import org.cafe.utils.SearchFieldHandlerUtil;
+import org.cafe.utils.RecordVerification;
+import org.cafe.utils.SearchFieldHandler;
 import org.cafe.utils.SetBackIcon;
 import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.budget.BudgetView;
@@ -52,7 +52,7 @@ public class BudgetsView extends javax.swing.JFrame {
   private void initializeSearchField() {
     screenTitle.setFocusable(true);
 
-    new SearchFieldHandlerUtil(searchField).initialize();
+    new SearchFieldHandler(searchField).initialize();
   }
 
   /**
@@ -395,7 +395,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Abre a tela de atualização do orçamento selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetsTable, "atualizar")) {
+    if (RecordVerification.verifyRecords(budgetsTable, "atualizar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
       new ManagerBudgetView(
               budgetController,
@@ -420,7 +420,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Abre a tela do orçamento selecionado.
    */
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
-    if (RecordVerificationUtil.verifyRecords(budgetsTable, "acessar")) {
+    if (RecordVerification.verifyRecords(budgetsTable, "acessar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
       new BudgetView(
               budgetController,
