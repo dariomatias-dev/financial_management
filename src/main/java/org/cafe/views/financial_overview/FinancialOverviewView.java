@@ -136,7 +136,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     totalValueExpenses = new javax.swing.JLabel();
     expensesTitle = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
-    jSeparator1 = new javax.swing.JSeparator();
+    separator1 = new javax.swing.JSeparator();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -243,7 +243,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jSeparator1)
+          .addComponent(separator1)
           .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(selectPeriodLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -280,7 +280,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
           .addComponent(calculateButton)
           .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(separator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(revenuesTitle)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,7 +336,6 @@ public class FinancialOverviewView extends javax.swing.JFrame {
   private javax.swing.JLabel expensesTitle;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JSeparator jSeparator1;
   private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JTable revenuesTable;
   private javax.swing.JLabel revenuesTitle;
@@ -344,6 +343,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
   private javax.swing.JLabel selectPeriodLabel;
   private javax.swing.JLabel selectedExpenses;
   private javax.swing.JLabel selectedRevenues;
+  private javax.swing.JSeparator separator1;
   private javax.swing.JLabel totalValueExpenses;
   private javax.swing.JLabel totalValueRevenues;
   // End of variables declaration//GEN-END:variables

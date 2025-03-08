@@ -63,7 +63,7 @@ public class BudgetView extends javax.swing.JFrame {
   }
 
   private void initializeSearchField() {
-    labelInvisible.setFocusable(true);
+    screenTitle.setFocusable(true);
 
     new SearchFieldHandlerUtil(searchField).initialize();
   }
@@ -180,7 +180,6 @@ public class BudgetView extends javax.swing.JFrame {
     itemsText = new javax.swing.JLabel();
     nameText = new javax.swing.JLabel();
     searchField = new javax.swing.JTextField();
-    labelInvisible = new javax.swing.JLabel();
     periodFilterLabel = new javax.swing.JLabel();
     periodFilterField = new javax.swing.JComboBox<>();
     valueMinFilterLabel = new javax.swing.JLabel();
@@ -194,7 +193,7 @@ public class BudgetView extends javax.swing.JFrame {
     screenTitle = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
     monetaryInfoTable = new javax.swing.JTable();
-    jLabel1 = new javax.swing.JLabel();
+    budgetFinancialSummaryLabel = new javax.swing.JLabel();
     searchButton = new javax.swing.JButton();
     clearFiltersButton = new javax.swing.JButton();
 
@@ -323,7 +322,7 @@ public class BudgetView extends javax.swing.JFrame {
     });
     jScrollPane1.setViewportView(monetaryInfoTable);
 
-    jLabel1.setText("Resumo Financeiro do Orçamento:");
+    budgetFinancialSummaryLabel.setText("Resumo Financeiro do Orçamento:");
 
     searchButton.setText("Filtrar");
     searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -354,9 +353,7 @@ public class BudgetView extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(descriptionText)
               .addComponent(nameText))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labelInvisible)
-            .addContainerGap())
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(categoryText)
@@ -401,7 +398,7 @@ public class BudgetView extends javax.swing.JFrame {
                 .addComponent(clearFiltersButton))
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(jLabel1)
+                  .addComponent(budgetFinancialSummaryLabel)
                   .addGroup(backgroundLayout.createSequentialGroup()
                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
@@ -420,22 +417,19 @@ public class BudgetView extends javax.swing.JFrame {
           .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(screenTitle))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(labelInvisible)
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(nameText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(descriptionText)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(categoryText)
-              .addComponent(statusText))))
+        .addComponent(nameText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(descriptionText)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(categoryText)
+          .addComponent(statusText))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(initialDateText, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(endDateText))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jLabel1)
+        .addComponent(budgetFinancialSummaryLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -625,6 +619,7 @@ public class BudgetView extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton addButton;
   private javax.swing.JPanel background;
+  private javax.swing.JLabel budgetFinancialSummaryLabel;
   private javax.swing.JTable budgetItemsTable;
   private javax.swing.JLabel categoryText;
   private javax.swing.JButton clearFiltersButton;
@@ -634,10 +629,8 @@ public class BudgetView extends javax.swing.JFrame {
   private javax.swing.JLabel exitButton;
   private javax.swing.JLabel initialDateText;
   private javax.swing.JLabel itemsText;
-  private javax.swing.JLabel jLabel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JLabel labelInvisible;
   private javax.swing.JTable monetaryInfoTable;
   private javax.swing.JLabel nameText;
   private javax.swing.JComboBox<String> periodFilterField;
