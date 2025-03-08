@@ -3,6 +3,7 @@ package org.cafe.views.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.time.LocalTime;
 import org.cafe.database.controllers.BudgetController;
 import org.cafe.database.controllers.BudgetItemController;
 import org.cafe.database.controllers.ExpenseController;
@@ -35,15 +36,17 @@ public class MainView extends javax.swing.JFrame {
     this.revenueController = revenueController;
     this.budgetController = budgetController;
     this.budgetItemController = budgetItemController;
-
+    
     initComponents();
-
+    
     revenuesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_green.png")));
     expensesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_red.png")));
-
+    userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_icon.png")));
+    greetingLabel.setText(getGreeting() + ",");
+    
     graphicAdd();
   }
-
+  
   private void graphicAdd() {
     // Criar os dados do gráfico.
     PieDataset dataset = createDataset();
@@ -72,7 +75,7 @@ public class MainView extends javax.swing.JFrame {
 
     // Dimensões do gráfico.
     chartPanel.setPreferredSize(new Dimension(300, 200));
-    
+
     // Remover rótulos das fatias.
     plot.setLabelGenerator(null);
 
@@ -83,13 +86,26 @@ public class MainView extends javax.swing.JFrame {
     graphicPanel.revalidate();
     graphicPanel.repaint();
   }
-
+  
   private PieDataset createDataset() {
     DefaultPieDataset dataset = new DefaultPieDataset();
     dataset.setValue("Receitas", 150);
     dataset.setValue("Despesas", 90);
-
+    
     return dataset;
+  }
+  
+  public static String getGreeting() {
+    LocalTime currentTime = LocalTime.now();
+    int hour = currentTime.getHour();
+    
+    if (hour >= 6 && hour < 12) {
+      return "Bom dia";
+    } else if (hour >= 12 && hour < 18) {
+      return "Boa tarde";
+    } else {
+      return "Boa noite";
+    }
   }
 
   /**
@@ -111,6 +127,10 @@ public class MainView extends javax.swing.JFrame {
     expensesValue = new javax.swing.JLabel();
     expensesArrowIcon = new javax.swing.JLabel();
     graphicPanel = new javax.swing.JPanel();
+    jPanel2 = new javax.swing.JPanel();
+    greetingLabel = new javax.swing.JLabel();
+    welcomeLabel = new javax.swing.JLabel();
+    userIcon = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setBackground(new java.awt.Color(255, 255, 255));
@@ -222,31 +242,73 @@ public class MainView extends javax.swing.JFrame {
       .addGap(0, 200, Short.MAX_VALUE)
     );
 
+    jPanel2.setBackground(new java.awt.Color(0, 204, 0));
+    jPanel2.setPreferredSize(new java.awt.Dimension(0, 100));
+    jPanel2.setRequestFocusEnabled(false);
+
+    greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
+    greetingLabel.setText("Bom dia,");
+
+    welcomeLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+    welcomeLabel.setForeground(new java.awt.Color(255, 255, 255));
+    welcomeLabel.setText("Seja Bem-Vindo(a)");
+
+    javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+    jPanel2.setLayout(jPanel2Layout);
+    jPanel2Layout.setHorizontalGroup(
+      jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel2Layout.createSequentialGroup()
+        .addGap(12, 12, 12)
+        .addComponent(userIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(welcomeLabel)
+          .addComponent(greetingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGap(165, 165, 165))
+    );
+    jPanel2Layout.setVerticalGroup(
+      jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel2Layout.createSequentialGroup()
+        .addGap(34, 34, 34)
+        .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        .addContainerGap(23, Short.MAX_VALUE)
+        .addComponent(userIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(17, 17, 17))
+    );
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanel1Layout.createSequentialGroup()
-        .addContainerGap()
-        .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addGap(197, 197, 197)
-        .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addContainerGap())
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(109, 109, 109))
+        .addContainerGap()
+        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(197, 197, 197)
+            .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(103, 103, 103)))
+        .addContainerGap())
+      .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanel1Layout.createSequentialGroup()
-        .addGap(76, 76, 76)
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(expensesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(revenuesPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(101, Short.MAX_VALUE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -265,13 +327,13 @@ public class MainView extends javax.swing.JFrame {
 
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
     RevenuesView revenuesView = new RevenuesView(revenueController);
-
+    
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked
 
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
     ExpensesView expensesView = new ExpensesView(expenseController);
-
+    
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
 
@@ -281,10 +343,14 @@ public class MainView extends javax.swing.JFrame {
   private javax.swing.JLabel expensesTitle;
   private javax.swing.JLabel expensesValue;
   private javax.swing.JPanel graphicPanel;
+  private javax.swing.JLabel greetingLabel;
   private javax.swing.JPanel jPanel1;
+  private javax.swing.JPanel jPanel2;
   private javax.swing.JLabel revenuesArrowIcon;
   private javax.swing.JPanel revenuesPainel;
   private javax.swing.JLabel revenuesTitle;
   private javax.swing.JLabel revenuesValue;
+  private javax.swing.JLabel userIcon;
+  private javax.swing.JLabel welcomeLabel;
   // End of variables declaration//GEN-END:variables
 }
