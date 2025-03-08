@@ -77,6 +77,9 @@ public class MainView extends javax.swing.JFrame {
     }
   }
 
+  /**
+   * Criação do gráfico.
+   */
   private void graphicAdd(double revenuesValue, double expensesValue) {
     // Criar os dados do gráfico.
     PieDataset dataset = createDataset(revenuesValue, expensesValue);
@@ -106,10 +109,10 @@ public class MainView extends javax.swing.JFrame {
     // Dimensões do gráfico.
     chartPanel.setPreferredSize(new Dimension(300, 200));
 
-    // Remover rótulos das fatias.
+    // Remove todos os rótulos das fatias.
     plot.setLabelGenerator(null);
 
-    // Configuração para exibir apenas as porcentagens nas fatias.
+    // Deixa apenas as porcentagens das fatias nos rótulos.
     plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
 
     // Adiciona o gráfico ao painel.
@@ -120,6 +123,9 @@ public class MainView extends javax.swing.JFrame {
     graphicPanel.repaint();
   }
 
+  /**
+   * Cria as fatias do gráfico.
+   */
   private PieDataset createDataset(double revenuesValue, double expensesValue) {
     DefaultPieDataset dataset = new DefaultPieDataset();
     dataset.setValue("Receitas", revenuesValue);
@@ -128,6 +134,9 @@ public class MainView extends javax.swing.JFrame {
     return dataset;
   }
 
+  /**
+   * Cálcula o valor total das receitas ou despesas.
+   */
   private <T> double calculateTotalByPeriod(ArrayList<T> records) {
     double total = 0;
 
@@ -145,6 +154,9 @@ public class MainView extends javax.swing.JFrame {
     return total;
   }
 
+  /**
+   * Cálcula o valor com base no seu período.
+   */
   private double calculateValueByPeriod(double value, String period) {
     return switch (period) {
       case "Diário" ->
@@ -375,12 +387,18 @@ public class MainView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Abre a tela de receitas.
+   */
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
     RevenuesView revenuesView = new RevenuesView(revenueController);
 
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked
 
+  /**
+   * Abre a tela de despesas.
+   */
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
     ExpensesView expensesView = new ExpensesView(expenseController);
 
