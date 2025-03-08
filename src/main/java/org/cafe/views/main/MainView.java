@@ -12,7 +12,9 @@ import org.cafe.database.controllers.RevenueController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.CurrencyFormatterUtil;
+import org.cafe.views.budgets.BudgetsView;
 import org.cafe.views.expenses.ExpensesView;
+import org.cafe.views.financial_overview.FinancialOverviewView;
 import org.cafe.views.revenues.RevenuesView;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -47,6 +49,9 @@ public class MainView extends javax.swing.JFrame {
     revenuesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_green.png")));
     expensesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_red.png")));
     userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_icon.png")));
+    financialOverviewIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financial_vision_icon.png")));
+    budgetsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/budgets_icon.png")));
+    
     greetingLabel.setText(getGreeting() + ",");
 
     double revenuesValue = calculateTotalByPeriod(revenueController.getAll());
@@ -179,6 +184,7 @@ public class MainView extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    buttonGroup1 = new javax.swing.ButtonGroup();
     jPanel1 = new javax.swing.JPanel();
     revenuesPainel = new javax.swing.JPanel();
     revenuesArrowIcon = new javax.swing.JLabel();
@@ -193,6 +199,14 @@ public class MainView extends javax.swing.JFrame {
     greetingLabel = new javax.swing.JLabel();
     welcomeLabel = new javax.swing.JLabel();
     userIcon = new javax.swing.JLabel();
+    financialOverviewPainel = new javax.swing.JPanel();
+    financialOverviewLabel = new javax.swing.JLabel();
+    financialOverviewIcon = new javax.swing.JLabel();
+    jLabel2 = new javax.swing.JLabel();
+    budgetsPainel = new javax.swing.JPanel();
+    budgetsLabel = new javax.swing.JLabel();
+    budgetsIcon = new javax.swing.JLabel();
+    jSeparator1 = new javax.swing.JSeparator();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setBackground(new java.awt.Color(255, 255, 255));
@@ -342,23 +356,120 @@ public class MainView extends javax.swing.JFrame {
         .addGap(17, 17, 17))
     );
 
+    financialOverviewPainel.setBackground(new java.awt.Color(255, 255, 255));
+    financialOverviewPainel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    financialOverviewPainel.setPreferredSize(new java.awt.Dimension(240, 120));
+    financialOverviewPainel.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        financialOverviewPainelMouseClicked(evt);
+      }
+    });
+
+    financialOverviewLabel.setForeground(new java.awt.Color(0, 0, 0));
+    financialOverviewLabel.setText("Visão Financeira");
+
+    financialOverviewIcon.setBackground(new java.awt.Color(0, 0, 0));
+    financialOverviewIcon.setForeground(new java.awt.Color(0, 0, 0));
+    financialOverviewIcon.setPreferredSize(new java.awt.Dimension(44, 44));
+
+    javax.swing.GroupLayout financialOverviewPainelLayout = new javax.swing.GroupLayout(financialOverviewPainel);
+    financialOverviewPainel.setLayout(financialOverviewPainelLayout);
+    financialOverviewPainelLayout.setHorizontalGroup(
+      financialOverviewPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(financialOverviewPainelLayout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(financialOverviewIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(financialOverviewLabel)
+        .addContainerGap(89, Short.MAX_VALUE))
+    );
+    financialOverviewPainelLayout.setVerticalGroup(
+      financialOverviewPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(financialOverviewPainelLayout.createSequentialGroup()
+        .addGroup(financialOverviewPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(financialOverviewPainelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(financialOverviewIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGroup(financialOverviewPainelLayout.createSequentialGroup()
+            .addGap(25, 25, 25)
+            .addComponent(financialOverviewLabel)))
+        .addContainerGap(16, Short.MAX_VALUE))
+    );
+
+    jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+    jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+    jLabel2.setText("Ações:");
+
+    budgetsPainel.setBackground(new java.awt.Color(255, 255, 255));
+    budgetsPainel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    budgetsPainel.setPreferredSize(new java.awt.Dimension(240, 120));
+    budgetsPainel.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        budgetsPainelMouseClicked(evt);
+      }
+    });
+
+    budgetsLabel.setForeground(new java.awt.Color(0, 0, 0));
+    budgetsLabel.setText("Orçamentos");
+
+    budgetsIcon.setBackground(new java.awt.Color(0, 0, 0));
+    budgetsIcon.setForeground(new java.awt.Color(0, 0, 0));
+    budgetsIcon.setPreferredSize(new java.awt.Dimension(44, 44));
+
+    javax.swing.GroupLayout budgetsPainelLayout = new javax.swing.GroupLayout(budgetsPainel);
+    budgetsPainel.setLayout(budgetsPainelLayout);
+    budgetsPainelLayout.setHorizontalGroup(
+      budgetsPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(budgetsPainelLayout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(budgetsIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(budgetsLabel)
+        .addContainerGap(109, Short.MAX_VALUE))
+    );
+    budgetsPainelLayout.setVerticalGroup(
+      budgetsPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(budgetsPainelLayout.createSequentialGroup()
+        .addGroup(budgetsPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(budgetsPainelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(budgetsIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGroup(budgetsPainelLayout.createSequentialGroup()
+            .addGap(25, 25, 25)
+            .addComponent(budgetsLabel)))
+        .addContainerGap(16, Short.MAX_VALUE))
+    );
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-        .addContainerGap()
+      .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+      .addGroup(jPanel1Layout.createSequentialGroup()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel1Layout.createSequentialGroup()
-            .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGap(197, 197, 197)
-            .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(108, 108, 108)
             .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(103, 103, 103)))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(197, 197, 197)
+                .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+              .addComponent(jSeparator1)))
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(financialOverviewPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(budgetsPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         .addContainerGap())
-      .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,7 +481,15 @@ public class MainView extends javax.swing.JFrame {
           .addComponent(revenuesPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jLabel2)
+        .addGap(18, 18, 18)
+        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(financialOverviewPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(budgetsPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -388,13 +507,22 @@ public class MainView extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   /**
-   * Abre a tela de receitas.
+   * Abre a tela de orçamentos.
    */
-  private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
-    RevenuesView revenuesView = new RevenuesView(revenueController);
+  private void budgetsPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_budgetsPainelMouseClicked
+    BudgetsView budgetsView = new BudgetsView(budgetController, budgetItemController);
 
-    revenuesView.setVisible(true);
-  }//GEN-LAST:event_revenuesPainelMouseClicked
+    budgetsView.setVisible(true);
+  }//GEN-LAST:event_budgetsPainelMouseClicked
+
+  /**
+   * Abre a tela de visão financeira.
+   */
+  private void financialOverviewPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_financialOverviewPainelMouseClicked
+    FinancialOverviewView financialOverviewView = new FinancialOverviewView(revenueController, expenseController);
+
+    financialOverviewView.setVisible(true);
+  }//GEN-LAST:event_financialOverviewPainelMouseClicked
 
   /**
    * Abre a tela de despesas.
@@ -405,15 +533,33 @@ public class MainView extends javax.swing.JFrame {
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
 
+  /**
+   * Abre a tela de receitas.
+   */
+  private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
+    RevenuesView revenuesView = new RevenuesView(revenueController);
+
+    revenuesView.setVisible(true);
+  }//GEN-LAST:event_revenuesPainelMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel budgetsIcon;
+  private javax.swing.JLabel budgetsLabel;
+  private javax.swing.JPanel budgetsPainel;
+  private javax.swing.ButtonGroup buttonGroup1;
   private javax.swing.JLabel expensesArrowIcon;
   private javax.swing.JPanel expensesPanel;
   private javax.swing.JLabel expensesTitleLabel;
   private javax.swing.JLabel expensesValueLabel;
+  private javax.swing.JLabel financialOverviewIcon;
+  private javax.swing.JLabel financialOverviewLabel;
+  private javax.swing.JPanel financialOverviewPainel;
   private javax.swing.JPanel graphicPanel;
   private javax.swing.JLabel greetingLabel;
+  private javax.swing.JLabel jLabel2;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel2;
+  private javax.swing.JSeparator jSeparator1;
   private javax.swing.JLabel revenuesArrowIcon;
   private javax.swing.JPanel revenuesPainel;
   private javax.swing.JLabel revenuesTitleLabel;

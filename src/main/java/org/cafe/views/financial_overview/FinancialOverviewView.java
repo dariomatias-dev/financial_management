@@ -54,8 +54,8 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     showExpenses(filteredExpenses);
 
     // Mostra o valor total das receitas e despesas filtradas.
-    totalValueRevenues.setText("Valor Total: " + totalRevenue);
-    totalValueExpenses.setText("Valor Total: " + totalExpense);
+    totalValueRevenues.setText("Valor Total: " + CurrencyFormatterUtil.format(totalRevenue));
+    totalValueExpenses.setText("Valor Total: " + CurrencyFormatterUtil.format(totalExpense));
   }
 
   private <T> ArrayList<T> filterRegistersByPeriod(ArrayList<T> records) {
