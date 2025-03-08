@@ -1,17 +1,94 @@
 package org.cafe.views.financial_overview;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import org.cafe.database.controllers.ExpenseController;
+import org.cafe.database.controllers.RevenueController;
+import org.cafe.models.expense.ExpenseModel;
+import org.cafe.models.revenue.RevenueModel;
+import org.cafe.utils.CurrencyFormatterUtil;
 import org.cafe.utils.SetBackIcon;
 
 public class FinancialOverviewView extends javax.swing.JFrame {
+  private final RevenueController revenueController;
+  private final ExpenseController expenseController;
 
   /**
-   * Creates new form FinancialOverviewView
+   * Construtor.
+   *
+   * @param revenueController Controlador de receitas.
+   * @param expenseController Controlador de despesas.
    */
-  public FinancialOverviewView() {
+  public FinancialOverviewView(RevenueController revenueController, ExpenseController expenseController) {
+    this.revenueController = revenueController;
+    this.expenseController = expenseController;
+
     initComponents();
-    
+
+    filterRegisters();
 
     new SetBackIcon().set(exitButton);
+  }
+
+  private void filterRegisters() {
+    ArrayList<RevenueModel> filteredRevenues = filterRegistersByPeriod(revenueController.getAll());
+    ArrayList<ExpenseModel> filteredExpenses = filterRegistersByPeriod(expenseController.getAll());
+
+    showRevenues(filteredRevenues);
+    showExpenses(filteredExpenses);
+  }
+
+  private <T> ArrayList<T> filterRegistersByPeriod(ArrayList<T> records) {
+    String periodFilter = (String) periodFilterField.getSelectedItem();
+    ArrayList<T> filteredRecords = new ArrayList<>();
+
+    for (T record : records) {
+      if (record instanceof ExpenseModel expense && expense.getPeriod().equals(periodFilter)) {
+        filteredRecords.add(record);
+      } else if (record instanceof RevenueModel revenue && revenue.getPeriod().equals(periodFilter)) {
+        filteredRecords.add(record);
+      }
+    }
+
+    return filteredRecords;
+  }
+
+  /**
+   * Mostra as informações das receitas.
+   */
+  private void showRevenues(ArrayList<RevenueModel> revenues) {
+    DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
+    tableModel.setRowCount(0);
+
+    // Criação das linhas da tabela de receitas.
+    for (RevenueModel revenue : revenues) {
+      String formattedValue = CurrencyFormatterUtil.format(revenue.getValue());
+
+      Object[] rowData = new Object[3];
+      rowData[0] = revenue.getName();
+      rowData[1] = revenue.getDescription();
+      rowData[2] = formattedValue;
+      tableModel.addRow(rowData);
+    }
+  }
+
+  /**
+   * Mostra as informações das despesas.
+   */
+  private void showExpenses(ArrayList<ExpenseModel> expenses) {
+    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
+    tableModel.setRowCount(0);
+
+    // Criação das linhas da tabela de despesas.
+    for (ExpenseModel expense : expenses) {
+      String formattedValue = CurrencyFormatterUtil.format(expense.getValue());
+
+      Object[] rowData = new Object[3];
+      rowData[0] = expense.getName();
+      rowData[1] = expense.getDescription();
+      rowData[2] = formattedValue;
+      tableModel.addRow(rowData);
+    }
   }
 
   /**
@@ -34,14 +111,11 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     revenuesTitle = new javax.swing.JLabel();
     totalValueRevenues = new javax.swing.JLabel();
     selectedRevenues = new javax.swing.JLabel();
-    initialDateFilterLabel = new javax.swing.JLabel();
-    initialDateFilterField = new javax.swing.JFormattedTextField();
-    endDateFilterLabel1 = new javax.swing.JLabel();
-    endDateFilterField = new javax.swing.JFormattedTextField();
     calculateButton = new javax.swing.JButton();
     selectedExpenses = new javax.swing.JLabel();
     totalValueExpenses = new javax.swing.JLabel();
     expensesTitle = new javax.swing.JLabel();
+    periodFilterField = new javax.swing.JComboBox<>();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,20 +137,17 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     expensesTable.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null}
+
       },
       new String [] {
-        "Nome", "Descrição", "Valor", "Período"
+        "Nome", "Descrição", "Valor"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
       boolean[] canEdit = new boolean [] {
-        false, true, true, false
+        false, true, true
       };
 
       public Class getColumnClass(int columnIndex) {
@@ -91,20 +162,17 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     revenuesTable.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null}
+
       },
       new String [] {
-        "Nome", "Descrição", "Valor", "Período"
+        "Nome", "Descrição", "Valor"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
       boolean[] canEdit = new boolean [] {
-        false, true, true, false
+        false, true, true
       };
 
       public Class getColumnClass(int columnIndex) {
@@ -125,11 +193,12 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
     selectedRevenues.setText("Selecionadas:");
 
-    initialDateFilterLabel.setText("Data Inicial:");
-
-    endDateFilterLabel1.setText("Data Final:");
-
     calculateButton.setText("Calcular");
+    calculateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        calculateButtonMouseClicked(evt);
+      }
+    });
 
     selectedExpenses.setText("Selecionadas:");
 
@@ -139,6 +208,8 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     expensesTitle.setForeground(new java.awt.Color(0, 0, 0));
     expensesTitle.setText("Despesas");
 
+    periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diário", "Semanal", "Mensal" }));
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -147,15 +218,9 @@ public class FinancialOverviewView extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addComponent(initialDateFilterLabel)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(initialDateFilterField, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(endDateFilterLabel1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGroup(backgroundLayout.createSequentialGroup()
             .addComponent(selectPeriodLabel)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(calculateButton))
           .addComponent(jScrollPane2)
@@ -185,14 +250,9 @@ public class FinancialOverviewView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(selectPeriodLabel)
-          .addComponent(calculateButton))
+          .addComponent(calculateButton)
+          .addComponent(periodFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(initialDateFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(initialDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(endDateFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(endDateFilterLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
         .addComponent(revenuesTitle)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(totalValueRevenues)
@@ -219,7 +279,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
     );
 
     pack();
@@ -229,18 +289,19 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  private void calculateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateButtonMouseClicked
+    filterRegisters();
+  }//GEN-LAST:event_calculateButtonMouseClicked
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JPanel background;
   private javax.swing.JButton calculateButton;
-  private javax.swing.JFormattedTextField endDateFilterField;
-  private javax.swing.JLabel endDateFilterLabel1;
   private javax.swing.JLabel exitButton;
   private javax.swing.JTable expensesTable;
   private javax.swing.JLabel expensesTitle;
-  private javax.swing.JFormattedTextField initialDateFilterField;
-  private javax.swing.JLabel initialDateFilterLabel;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
+  private javax.swing.JComboBox<String> periodFilterField;
   private javax.swing.JTable revenuesTable;
   private javax.swing.JLabel revenuesTitle;
   private javax.swing.JLabel screenTitle;
