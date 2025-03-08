@@ -30,12 +30,30 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     new SetBackIcon().set(exitButton);
   }
 
+  // Filtra as receitas e despesas com base no período selecionado.
   private void filterRegisters() {
     ArrayList<RevenueModel> filteredRevenues = filterRegistersByPeriod(revenueController.getAll());
     ArrayList<ExpenseModel> filteredExpenses = filterRegistersByPeriod(expenseController.getAll());
 
+    // Calcular o valor total das receitas do período selecionado.
+    double totalRevenue = 0.0;
+    for (RevenueModel revenue : filteredRevenues) {
+      totalRevenue += revenue.getValue();
+    }
+
+    // Calcular o valor total das despesas do período selecionado.
+    double totalExpense = 0.0;
+    for (ExpenseModel expense : filteredExpenses) {
+      totalExpense += expense.getValue();
+    }
+
+    // Mostra as receitas e despesas filtradas.
     showRevenues(filteredRevenues);
     showExpenses(filteredExpenses);
+
+    // Mostra o valor total das receitas e despesas filtradas.
+    totalValueRevenues.setText("Valor Total: " + totalRevenue);
+    totalValueExpenses.setText("Valor Total: " + totalExpense);
   }
 
   private <T> ArrayList<T> filterRegistersByPeriod(ArrayList<T> records) {
@@ -285,10 +303,16 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * Método chamado para sair da tela.
+   */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
+  /**
+   * Calcula o valor total das receitas e despesas do períoodo selecionado.
+   */
   private void calculateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateButtonMouseClicked
     filterRegisters();
   }//GEN-LAST:event_calculateButtonMouseClicked
