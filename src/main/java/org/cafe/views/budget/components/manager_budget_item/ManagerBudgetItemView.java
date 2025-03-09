@@ -1,18 +1,11 @@
 package org.cafe.views.budget.components.manager_budget_item;
 
-import java.time.LocalDate;
 import java.util.function.Consumer;
-import javax.swing.JOptionPane;
 import org.cafe.database.controllers.BudgetItemDatabaseController;
 import org.cafe.models.budget_item.BudgetItemModel;
-import org.cafe.models.budget_item.CreateBudgetItemModel;
-import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetItemView extends javax.swing.JFrame {
-  private final String budgetId;
-  private final BudgetItemDatabaseController budgetItemDatabaseController;
-  private final BudgetItemModel data;
-  private final Consumer<BudgetItemModel> onUpdateScreen;
+  private final ManagerBudgetItemController controller;
 
   /**
    * Construtor.
@@ -24,24 +17,21 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
    * despesas.
    */
   public ManagerBudgetItemView(String budgetId, BudgetItemDatabaseController budgetItemDatabaseController, BudgetItemModel data, Consumer<BudgetItemModel> onUpdateScreen) {
-    this.budgetId = budgetId;
-    this.budgetItemDatabaseController = budgetItemDatabaseController;
-    this.data = data;
-    this.onUpdateScreen = onUpdateScreen;
-
     initComponents();
 
-    // Preenche os campos com os atuais dados do item de orçamento caso a tela seja de atualização.
-    if (data != null) {
-      nameField.setText(data.getName());
-      descriptionField.setText(data.getDescription());
-      valueField.setText(String.valueOf(data.getValue()));
-      periodicitySelect.setSelectedItem(data.getPeriod());
-
-      screenTitle.setFocusable(true);
-      screenTitle.setText("Atualizar Item de Orçamento");
-      actionButton.setText("Atualizar");
-    }
+    this.controller = new ManagerBudgetItemController(
+            this,
+            budgetId,
+            budgetItemDatabaseController,
+            data,
+            onUpdateScreen,
+            screenTitle,
+            nameField,
+            valueField,
+            descriptionField,
+            periodicitySelect,
+            actionButton
+    );
   }
 
   /**
@@ -181,77 +171,11 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
    * Método de criação ou atualização de um item de orçamento.
    */
   private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
-    // Obtenção dos dados.
-    String name = nameField.getText();
-    String description = descriptionField.getText();
-    String valueText = valueField.getText();
-
-    // Verificação da presença dos dados necessários.
-    if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
-      JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-
-      return;
-    }
-
-    // Validação do valor numérico.
-    NumberValidator numberValidator = new NumberValidator();
-    if (!numberValidator.validate(this, valueText, "item de orçamento")) {
-      return;
-    }
-
-    String periodicity = (String) periodicitySelect.getSelectedItem();
-
-    BudgetItemModel budgetItem;
-
-    // Verifica se a tela é de atualização ou criação.
-    if (data != null) {
-      // Atualiza os dados do item de orçamento.
-      budgetItem = new BudgetItemModel(
-              data.getId(),
-              budgetId,
-              name,
-              description,
-              numberValidator.getNumber(),
-              periodicity,
-              data.getCreatedAt()
-      );
-
-      budgetItemDatabaseController.update(budgetItem);
-    } else {
-      LocalDate createdAt = LocalDate.now();
-
-      // Cria o modelo de criação de um novo item de orçamento.
-      CreateBudgetItemModel createBudgetItem = new CreateBudgetItemModel(
-              budgetId,
-              name,
-              description,
-              numberValidator.getNumber(),
-              periodicity,
-              createdAt
-      );
-
-      // Registra o novo item de orçamento e obtém o seu ID.
-      String budgetItemId = budgetItemDatabaseController.create(createBudgetItem);
-
-      // Cria o modelo de item de orçamento com o ID do registro.
-      budgetItem = new BudgetItemModel(
-              budgetItemId,
-              budgetId,
-              name,
-              description,
-              numberValidator.getNumber(),
-              periodicity,
-              createdAt
-      );
-    }
-
-    onUpdateScreen.accept(budgetItem);
-
-    this.dispose();
+    controller.actionButton();
   }//GEN-LAST:event_actionButtonMouseClicked
 
   /**
-   * Método chamado para sair da tela.
+   * Método de sair da tela.
    */
   private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
     this.dispose();
