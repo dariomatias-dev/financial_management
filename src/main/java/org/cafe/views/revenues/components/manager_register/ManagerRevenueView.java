@@ -1,15 +1,10 @@
 package org.cafe.views.revenues.components.manager_register;
 
-import javax.swing.JOptionPane;
 import org.cafe.database.controllers.RevenueDatabaseController;
-import org.cafe.models.revenue.CreateRevenueModel;
 import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.NumberValidator;
 
 public class ManagerRevenueView extends javax.swing.JFrame {
-  private final Runnable onUpdateScreen;
-  private final RevenueDatabaseController revenueDatabaseController;
-  private final RevenueModel data;
+  private final ManagerRevenueController controller;
 
   /**
    * Construtor.
@@ -17,26 +12,23 @@ public class ManagerRevenueView extends javax.swing.JFrame {
    * @param revenueDatabaseController Controlador de receitas.
    * @param data Dados do registro selecionado caso seja para atualizar.
    * @param onUpdateScreen Função para atualização da tela de listagem das
-   * despesas.
+   * receitas.
    */
   public ManagerRevenueView(RevenueDatabaseController revenueDatabaseController, RevenueModel data, Runnable onUpdateScreen) {
-    this.revenueDatabaseController = revenueDatabaseController;
-    this.data = data;
-    this.onUpdateScreen = onUpdateScreen;
-
     initComponents();
 
-    // Preenche os campos com os atuais dados da receita caso a tela seja de atualização.
-    if (data != null) {
-      nameField.setText(data.getName());
-      descriptionField.setText(data.getDescription());
-      valueField.setText(String.valueOf(data.getValue()));
-      periodLabel.setText(data.getPeriod());
-
-      screenTitle.setFocusable(true);
-      screenTitle.setText("Atualizar Despesa");
-      actionButton.setText("Atualizar");
-    }
+    controller = new ManagerRevenueController(
+            this,
+            revenueDatabaseController,
+            data,
+            onUpdateScreen,
+            screenTitle,
+            nameField,
+            valueField,
+            descriptionField,
+            periodSelect,
+            actionButton
+    );
   }
 
   /**
@@ -173,7 +165,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   /**
-   * Método chamado para sair da tela.
+   * Método de sair da tela.
    */
     private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
       this.dispose();
@@ -183,53 +175,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
    * Método de criação ou atualização de uma receita.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
-      // Obtenção dos dados.
-      String name = nameField.getText();
-      String valueText = valueField.getText();
-      String description = descriptionField.getText();
-
-      // Verificação da presença dos dados necessários.
-      if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-
-        return;
-      }
-
-      // Validação do valor numérico.
-      NumberValidator numberValidator = new NumberValidator();
-      if (!numberValidator.validate(this, valueText, "receita")) {
-        return;
-      }
-
-      String period = (String) periodSelect.getSelectedItem();
-
-      // Verifica se a tela é de atualização ou criação.
-      if (data != null) {
-        // Atualiza os dados da receita.
-        revenueDatabaseController.update(
-                new RevenueModel(
-                        data.getId(),
-                        name,
-                        description,
-                        numberValidator.getNumber(),
-                        period
-                )
-        );
-      } else {
-        // Cria a receita.
-        revenueDatabaseController.create(
-                new CreateRevenueModel(
-                        name,
-                        description,
-                        numberValidator.getNumber(),
-                        period
-                )
-        );
-      }
-
-      onUpdateScreen.run();
-
-      this.dispose();
+      controller.actionButton();
     }//GEN-LAST:event_actionButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
