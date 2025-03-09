@@ -1,6 +1,5 @@
 package org.cafe.database;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,16 +10,12 @@ public class DatabaseManager {
   String dbPath;
 
   public DatabaseManager() {
-    Dotenv dotEnv = Dotenv.load();
-
-    this.dbPath = dotEnv.get("DB_PATH");
-
     connect();
   }
 
   private void connect() {
     try {
-      connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+      connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
 
       if (connection != null) {
         System.out.println("Connected Successfully.");
