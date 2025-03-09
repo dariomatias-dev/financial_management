@@ -14,6 +14,7 @@ import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
 public class RevenuesView extends javax.swing.JFrame {
   private final RevenueDatabaseController revenueDatabaseController;
+  private final Runnable onUpdateMainScreen;
   private ArrayList<RevenueModel> allRevenues;
   private ArrayList<RevenueModel> displayedRevenues;
 
@@ -21,9 +22,11 @@ public class RevenuesView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param revenueDatabaseController Controlador de receitas.
+   * @param onUpdateMainScreen Método para atualização da tela principal.
    */
-  public RevenuesView(RevenueDatabaseController revenueDatabaseController) {
+  public RevenuesView(RevenueDatabaseController revenueDatabaseController, Runnable onUpdateMainScreen) {
     this.revenueDatabaseController = revenueDatabaseController;
+    this.onUpdateMainScreen = onUpdateMainScreen;
 
     initComponents();
 
@@ -73,6 +76,7 @@ public class RevenuesView extends javax.swing.JFrame {
    * Atualiza a lista de receitas.
    */
   private void updateScreen() {
+    onUpdateMainScreen.run();
     listRevenues();
 
     search();

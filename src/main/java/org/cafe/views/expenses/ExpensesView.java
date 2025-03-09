@@ -14,6 +14,7 @@ import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
   private final ExpenseDatabaseController expenseDatabaseController;
+  private  final Runnable onUpdateMainScreen;
   private ArrayList<ExpenseModel> allExpenses;
   private ArrayList<ExpenseModel> displayedExpenses;
 
@@ -21,9 +22,11 @@ public class ExpensesView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param expenseDatabaseController Controlador de despesas.
+   * @param onUpdateMainScreen Método para atualização da tela principal.
    */
-  public ExpensesView(ExpenseDatabaseController expenseDatabaseController) {
+  public ExpensesView(ExpenseDatabaseController expenseDatabaseController, Runnable onUpdateMainScreen) {
     this.expenseDatabaseController = expenseDatabaseController;
+    this.onUpdateMainScreen = onUpdateMainScreen;
 
     initComponents();
 
@@ -74,6 +77,7 @@ public class ExpensesView extends javax.swing.JFrame {
    * Atualiza a lista de despesas.
    */
   private void updateScreen() {
+    onUpdateMainScreen.run();
     listExpenses();
 
     search();

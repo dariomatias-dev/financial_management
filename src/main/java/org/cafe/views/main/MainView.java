@@ -51,9 +51,16 @@ public class MainView extends javax.swing.JFrame {
     userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_icon.png")));
     financialOverviewIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financial_vision_icon.png")));
     budgetsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/budgets_icon.png")));
-    
+
     greetingLabel.setText(getGreeting() + ",");
 
+    loadData();
+  }
+
+  /**
+   * Carrega os dados que serão exibidos na tela.
+   */
+  private void loadData() {
     double revenuesValue = calculateTotalByPeriod(revenueDatabaseController.getAll());
     double expensesValue = calculateTotalByPeriod(expenseDatabaseController.getAll());
 
@@ -527,7 +534,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de despesas.
    */
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
-    ExpensesView expensesView = new ExpensesView(expenseDatabaseController);
+    ExpensesView expensesView = new ExpensesView(expenseDatabaseController, this::loadData);
 
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
@@ -536,7 +543,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de receitas.
    */
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
-    RevenuesView revenuesView = new RevenuesView(revenueDatabaseController);
+    RevenuesView revenuesView = new RevenuesView(revenueDatabaseController, this::loadData);
 
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked
