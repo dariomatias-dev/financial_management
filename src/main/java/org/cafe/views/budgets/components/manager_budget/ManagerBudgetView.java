@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import org.cafe.core.formatters.DateMaskFormatter;
-import org.cafe.database.controllers.BudgetController;
+import org.cafe.database.controllers.BudgetDatabaseController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
 import org.cafe.utils.DateFormatter;
@@ -15,18 +15,18 @@ import org.cafe.utils.NumberValidator;
 public class ManagerBudgetView extends javax.swing.JFrame {
   private final Consumer<String> onUpdateScreen;
   private final BudgetModel data;
-  private final BudgetController budgetController;
+  private final BudgetDatabaseController budgetDatabaseController;
 
   /**
    * Construtor.
    *
-   * @param budgetController Controlador de orçamentos.
+   * @param budgetDatabaseController Controlador de orçamentos.
    * @param data Dados do registro selecionado.
    * @param onUpdateScreen Função para atualização da tela de listagem dos
    * orçamentos.
    */
-  public ManagerBudgetView(BudgetController budgetController, BudgetModel data, Consumer<String> onUpdateScreen) {
-    this.budgetController = budgetController;
+  public ManagerBudgetView(BudgetDatabaseController budgetDatabaseController, BudgetModel data, Consumer<String> onUpdateScreen) {
+    this.budgetDatabaseController = budgetDatabaseController;
     this.data = data;
     this.onUpdateScreen = onUpdateScreen;
 
@@ -280,7 +280,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
       // Verifica se a tela é de atualização ou criação.
       if (data != null) {
         // Atualiza os dados do orçamento.
-        budgetController.update(
+        budgetDatabaseController.update(
                 new BudgetModel(
                         data.getId(),
                         name,
@@ -297,7 +297,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         budgetId = data.getId();
       } else {
         // Cria o orçamento e obtém o ID do registro.
-        budgetId = budgetController.create(
+        budgetId = budgetDatabaseController.create(
                 new CreateBudgetModel(
                         name,
                         category,

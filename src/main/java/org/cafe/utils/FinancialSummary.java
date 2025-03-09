@@ -3,34 +3,34 @@ package org.cafe.utils;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import org.cafe.database.controllers.ExpenseController;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 
 public class FinancialSummary {
-  private final RevenueController revenueController;
-  private final ExpenseController expenseController;
+  private final RevenueDatabaseController revenueDatabaseController;
+  private final ExpenseDatabaseController expenseDatabaseController;
   private final Date startDate;
   private final Date endDate;
 
   public FinancialSummary(
-          RevenueController revenueController,
-          ExpenseController expenseController,
+          RevenueDatabaseController revenueDatabaseController,
+          ExpenseDatabaseController expenseDatabaseController,
           Date startDate,
           Date endDate
   ) {
-    this.revenueController = revenueController;
-    this.expenseController = expenseController;
+    this.revenueDatabaseController = revenueDatabaseController;
+    this.expenseDatabaseController = expenseDatabaseController;
     this.startDate = startDate;
     this.endDate = endDate;
   }
 
   public double calculateAndDisplaySummary() {
-    double totalRevenue = revenueController.getAll().stream()
+    double totalRevenue = revenueDatabaseController.getAll().stream()
             .filter(revenue -> isWithinDateRange(revenue.getPeriod(), startDate, endDate))
             .mapToDouble(revenue -> calculateValueForPeriod(revenue.getPeriod(), revenue.getValue(), startDate, endDate))
             .sum();
 
-    double totalExpense = expenseController.getAll().stream()
+    double totalExpense = expenseDatabaseController.getAll().stream()
             .filter(expense -> isWithinDateRange(expense.getPeriod(), startDate, endDate))
             .mapToDouble(expense -> calculateValueForPeriod(expense.getPeriod(), expense.getValue(), startDate, endDate))
             .sum();

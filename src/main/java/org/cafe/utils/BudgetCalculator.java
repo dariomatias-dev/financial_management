@@ -3,14 +3,14 @@ package org.cafe.utils;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import org.cafe.database.controllers.BudgetController;
+import org.cafe.database.controllers.BudgetDatabaseController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 
 public class BudgetCalculator {
   public BudgetModel calculate(
           BudgetModel budget,
-          BudgetController budgetController,
+          BudgetDatabaseController budgetDatabaseController,
           List<BudgetItemModel> budgetItems
   ) {
     double totalBudget = 0.0;
@@ -33,7 +33,7 @@ public class BudgetCalculator {
             budget.getEndDate()
     );
 
-    budgetController.update(newBudget);
+    budgetDatabaseController.update(newBudget);
 
     return newBudget;
   }

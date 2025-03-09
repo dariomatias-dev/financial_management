@@ -3,14 +3,14 @@ package org.cafe.views.budget.components.manager_budget_item;
 import java.time.LocalDate;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
-import org.cafe.database.controllers.BudgetItemController;
+import org.cafe.database.controllers.BudgetItemDatabaseController;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.models.budget_item.CreateBudgetItemModel;
 import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetItemView extends javax.swing.JFrame {
   private final String budgetId;
-  private final BudgetItemController budgetItemController;
+  private final BudgetItemDatabaseController budgetItemDatabaseController;
   private final BudgetItemModel data;
   private final Consumer<BudgetItemModel> onUpdateScreen;
 
@@ -18,14 +18,14 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
    * Construtor.
    *
    * @param budgetId ID do orçamento.
-   * @param budgetItemController Controlador de itens de orçamento.
+   * @param budgetItemDatabaseController Controlador de itens de orçamento.
    * @param data Dados do registro selecionado.
    * @param onUpdateScreen Função para atualização da tela de listagem das
    * despesas.
    */
-  public ManagerBudgetItemView(String budgetId, BudgetItemController budgetItemController, BudgetItemModel data, Consumer<BudgetItemModel> onUpdateScreen) {
+  public ManagerBudgetItemView(String budgetId, BudgetItemDatabaseController budgetItemDatabaseController, BudgetItemModel data, Consumer<BudgetItemModel> onUpdateScreen) {
     this.budgetId = budgetId;
-    this.budgetItemController = budgetItemController;
+    this.budgetItemDatabaseController = budgetItemDatabaseController;
     this.data = data;
     this.onUpdateScreen = onUpdateScreen;
 
@@ -216,7 +216,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
               data.getCreatedAt()
       );
 
-      budgetItemController.update(budgetItem);
+      budgetItemDatabaseController.update(budgetItem);
     } else {
       LocalDate createdAt = LocalDate.now();
 
@@ -231,7 +231,7 @@ public class ManagerBudgetItemView extends javax.swing.JFrame {
       );
 
       // Registra o novo item de orçamento e obtém o seu ID.
-      String budgetItemId = budgetItemController.create(createBudgetItem);
+      String budgetItemId = budgetItemDatabaseController.create(createBudgetItem);
 
       // Cria o modelo de item de orçamento com o ID do registro.
       budgetItem = new BudgetItemModel(

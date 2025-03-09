@@ -7,8 +7,8 @@ import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget.CreateBudgetModel;
 import org.cafe.utils.DateFormatter;
 
-public class BudgetController extends DatabaseController<BudgetModel> {
-  public BudgetController(DatabaseService databaseService) {
+public class BudgetDatabaseController extends DatabaseController<BudgetModel> {
+  public BudgetDatabaseController(DatabaseService databaseService) {
     super(
             databaseService,
             "Budgets",

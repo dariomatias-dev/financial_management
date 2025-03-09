@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.cafe.database.controllers.BudgetController;
-import org.cafe.database.controllers.BudgetItemController;
+import org.cafe.database.controllers.BudgetDatabaseController;
+import org.cafe.database.controllers.BudgetItemDatabaseController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.utils.BudgetCalculator;
@@ -20,8 +20,8 @@ import org.cafe.views.budget.components.manager_budget_item.ManagerBudgetItemVie
 
 public class BudgetView extends javax.swing.JFrame {
   private BudgetModel budget;
-  private final BudgetController budgetController;
-  private final BudgetItemController budgetItemController;
+  private final BudgetDatabaseController budgetDatabaseController;
+  private final BudgetItemDatabaseController budgetItemDatabaseController;
   private ArrayList<BudgetItemModel> allBudgetItems;
   private ArrayList<BudgetItemModel> displayedBudgetItems;
   private final Consumer<BudgetModel> onUpdateBudget;
@@ -31,20 +31,20 @@ public class BudgetView extends javax.swing.JFrame {
   /**
    * Construtor.
    *
-   * @param budgetController Controlador de orçamentos.
-   * @param budgetItemController Controlador de itens de orçamento.
+   * @param budgetDatabaseController Controlador de orçamentos.
+   * @param budgetItemDatabaseController Controlador de itens de orçamento.
    * @param budget Dados do registro selecionado.
    * @param onUpdateBudget Metódo para atualização do orçamento.
    */
   public BudgetView(
-          BudgetController budgetController,
-          BudgetItemController budgetItemController,
+          BudgetDatabaseController budgetDatabaseController,
+          BudgetItemDatabaseController budgetItemDatabaseController,
           BudgetModel budget,
           Consumer<BudgetModel> onUpdateBudget
   ) {
     this.budget = budget;
-    this.budgetController = budgetController;
-    this.budgetItemController = budgetItemController;
+    this.budgetDatabaseController = budgetDatabaseController;
+    this.budgetItemDatabaseController = budgetItemDatabaseController;
     this.onUpdateBudget = onUpdateBudget;
 
     initComponents();
@@ -84,7 +84,7 @@ public class BudgetView extends javax.swing.JFrame {
    * Obtém todos os itens do orçamento.
    */
   private void listBudgetItems() {
-    allBudgetItems = budgetItemController.getAllByBudgetId(budget.getId());
+    allBudgetItems = budgetItemDatabaseController.getAllByBudgetId(budget.getId());
     displayedBudgetItems = allBudgetItems;
   }
 
@@ -148,7 +148,7 @@ public class BudgetView extends javax.swing.JFrame {
    * Cálcula o valor total dos itens do orçamento.
    */
   private void calculateBudgetValue() {
-    budget = new BudgetCalculator().calculate(budget, budgetController, allBudgetItems);
+    budget = new BudgetCalculator().calculate(budget, budgetDatabaseController, allBudgetItems);
 
     if (budget.getTotalSpent() > budget.getTotalBudgetValue()) {
       JOptionPane.showMessageDialog(null, "Aviso: O valor dos itens do orçamento ultrapassou o orçamento total!", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -482,7 +482,7 @@ public class BudgetView extends javax.swing.JFrame {
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
     new ManagerBudgetItemView(
             budget.getId(),
-            budgetItemController,
+            budgetItemDatabaseController,
             null,
             (value) -> {
               onBudgetItemCreated();
@@ -498,7 +498,7 @@ public class BudgetView extends javax.swing.JFrame {
       BudgetItemModel selectedBudgetItem = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
       new ManagerBudgetItemView(
               budget.getId(),
-              budgetItemController,
+              budgetItemDatabaseController,
               selectedBudgetItem,
               (value) -> {
                 onBudgetItemUpdated(selectedBudgetItem, value);
@@ -515,7 +515,7 @@ public class BudgetView extends javax.swing.JFrame {
             budgetItemsTable,
             () -> {
               BudgetItemModel selectedExpense = displayedBudgetItems.get(budgetItemsTable.getSelectedRow());
-              budgetItemController.removeById(selectedExpense.getId());
+              budgetItemDatabaseController.removeById(selectedExpense.getId());
 
               updateScreen();
 

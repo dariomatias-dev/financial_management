@@ -8,8 +8,8 @@ import org.cafe.database.DatabaseService;
 import org.cafe.models.budget_item.BudgetItemModel;
 import org.cafe.models.budget_item.CreateBudgetItemModel;
 
-public class BudgetItemController extends DatabaseController<BudgetItemModel> {
-  public BudgetItemController(DatabaseService databaseService) {
+public class BudgetItemDatabaseController extends DatabaseController<BudgetItemModel> {
+  public BudgetItemDatabaseController(DatabaseService databaseService) {
     super(
             databaseService,
             "BudgetItems",

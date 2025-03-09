@@ -6,8 +6,8 @@ import org.cafe.database.DatabaseService;
 import org.cafe.models.revenue.CreateRevenueModel;
 import org.cafe.models.revenue.RevenueModel;
 
-public class RevenueController extends DatabaseController<RevenueModel> {
-  public RevenueController(DatabaseService databaseService) {
+public class RevenueDatabaseController extends DatabaseController<RevenueModel> {
+  public RevenueDatabaseController(DatabaseService databaseService) {
     super(
             databaseService,
             "Revenues",

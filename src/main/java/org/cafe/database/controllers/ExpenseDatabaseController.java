@@ -6,8 +6,8 @@ import org.cafe.database.DatabaseService;
 import org.cafe.models.expense.CreateExpenseModel;
 import org.cafe.models.expense.ExpenseModel;
 
-public class ExpenseController extends DatabaseController<ExpenseModel> {
-  public ExpenseController(DatabaseService databaseService) {
+public class ExpenseDatabaseController extends DatabaseController<ExpenseModel> {
+  public ExpenseDatabaseController(DatabaseService databaseService) {
     super(
             databaseService,
             "Expenses",

@@ -1,21 +1,26 @@
 package org.cafe;
 
 import org.cafe.database.DatabaseService;
-import org.cafe.database.controllers.BudgetController;
-import org.cafe.database.controllers.BudgetItemController;
-import org.cafe.database.controllers.ExpenseController;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.BudgetDatabaseController;
+import org.cafe.database.controllers.BudgetItemDatabaseController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 import org.cafe.views.main.MainView;
 
 public class Main {
   public static void main(String[] args) {
     DatabaseService databaseService = new DatabaseService();
-    ExpenseController expenseController = new ExpenseController(databaseService);
-    RevenueController revenueController = new RevenueController(databaseService);
-    BudgetController budgetController = new BudgetController(databaseService);
-    BudgetItemController budgetItemController = new BudgetItemController(databaseService);
+    ExpenseDatabaseController expenseDatabaseController = new ExpenseDatabaseController(databaseService);
+    RevenueDatabaseController revenueDatabaseController = new RevenueDatabaseController(databaseService);
+    BudgetDatabaseController budgetDatabaseController = new BudgetDatabaseController(databaseService);
+    BudgetItemDatabaseController budgetItemDatabaseController = new BudgetItemDatabaseController(databaseService);
 
-    MainView mainView = new MainView(expenseController, revenueController, budgetController, budgetItemController);
+    MainView mainView = new MainView(
+            expenseDatabaseController,
+            revenueDatabaseController,
+            budgetDatabaseController,
+            budgetItemDatabaseController
+    );
 
     mainView.setVisible(true);
   }

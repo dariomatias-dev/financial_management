@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import org.cafe.core.formatters.DateMaskFormatter;
-import org.cafe.database.controllers.BudgetController;
-import org.cafe.database.controllers.BudgetItemController;
+import org.cafe.database.controllers.BudgetDatabaseController;
+import org.cafe.database.controllers.BudgetItemDatabaseController;
 import org.cafe.models.budget.BudgetModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.DateFormatter;
@@ -17,23 +17,23 @@ import org.cafe.views.budget.BudgetView;
 import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
 public class BudgetsView extends javax.swing.JFrame {
-  private final BudgetController budgetController;
-  private final BudgetItemController budgetItemController;
+  private final BudgetDatabaseController budgetDatabaseController;
+  private final BudgetItemDatabaseController budgetItemDatabaseController;
   private ArrayList<BudgetModel> allBudgets;
   private ArrayList<BudgetModel> displayedBudgets;
 
   /**
    * Construtor.
    *
-   * @param budgetController Controlador de orçamentos.
-   * @param budgetItemController Controlador de itens de orçamento.
+   * @param budgetDatabaseController Controlador de orçamentos.
+   * @param budgetItemDatabaseController Controlador de itens de orçamento.
    */
   public BudgetsView(
-          BudgetController budgetController,
-          BudgetItemController budgetItemController
+          BudgetDatabaseController budgetDatabaseController,
+          BudgetItemDatabaseController budgetItemDatabaseController
   ) {
-    this.budgetController = budgetController;
-    this.budgetItemController = budgetItemController;
+    this.budgetDatabaseController = budgetDatabaseController;
+    this.budgetItemDatabaseController = budgetItemDatabaseController;
 
     initComponents();
 
@@ -59,7 +59,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Obtém todos os orçamento.
    */
   private void listBudgets() {
-    allBudgets = budgetController.getAll();
+    allBudgets = budgetDatabaseController.getAll();
     displayedBudgets = allBudgets;
   }
 
@@ -103,10 +103,10 @@ public class BudgetsView extends javax.swing.JFrame {
   private void onBudgetCreated(
           String budgetId
   ) {
-    BudgetModel selectedBudget = budgetController.getById(budgetId);
+    BudgetModel selectedBudget = budgetDatabaseController.getById(budgetId);
     new BudgetView(
-            budgetController,
-            budgetItemController,
+            budgetDatabaseController,
+            budgetItemDatabaseController,
             selectedBudget,
             (value) -> {
               updateScreen();
@@ -384,7 +384,7 @@ public class BudgetsView extends javax.swing.JFrame {
             budgetsTable,
             () -> {
               BudgetModel selectedExpense = displayedBudgets.get(budgetsTable.getSelectedRow());
-              budgetController.removeById(selectedExpense.getId());
+              budgetDatabaseController.removeById(selectedExpense.getId());
 
               updateScreen();
             }
@@ -398,7 +398,7 @@ public class BudgetsView extends javax.swing.JFrame {
     if (RecordVerification.verifyRecords(budgetsTable, "atualizar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
       new ManagerBudgetView(
-              budgetController,
+              budgetDatabaseController,
               selectedBudget,
               (budgetId) -> {
                 updateScreen();
@@ -411,7 +411,7 @@ public class BudgetsView extends javax.swing.JFrame {
    * Abre a tela de criação de orçamento.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetController, null, this::onBudgetCreated);
+    ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetDatabaseController, null, this::onBudgetCreated);
 
     createManagerBudgetView.setVisible(true);
   }//GEN-LAST:event_addButtonMouseClicked
@@ -423,8 +423,8 @@ public class BudgetsView extends javax.swing.JFrame {
     if (RecordVerification.verifyRecords(budgetsTable, "acessar")) {
       BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
       new BudgetView(
-              budgetController,
-              budgetItemController,
+              budgetDatabaseController,
+              budgetItemDatabaseController,
               selectedBudget,
               (value) -> {
                 onUpdateBudget(budgetsTable.getSelectedRow(), value);

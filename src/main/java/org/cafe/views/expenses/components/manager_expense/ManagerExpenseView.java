@@ -1,26 +1,26 @@
 package org.cafe.views.expenses.components.manager_expense;
 
 import javax.swing.JOptionPane;
-import org.cafe.database.controllers.ExpenseController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
 import org.cafe.models.expense.CreateExpenseModel;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.NumberValidator;
 
 public class ManagerExpenseView extends javax.swing.JFrame {
   private final Runnable onUpdateScreen;
-  private final ExpenseController expenseController;
+  private final ExpenseDatabaseController expenseDatabaseController;
   private final ExpenseModel data;
 
   /**
    * Construtor.
    *
-   * @param expenseController Controlador de despesas.
+   * @param expenseDatabaseController Controlador de despesas.
    * @param data Dados do registro selecionado caso seja para atualizar.
    * @param onUpdateScreen Função para atualização da tela de listagem das
    * despesas.
    */
-  public ManagerExpenseView(ExpenseController expenseController, ExpenseModel data, Runnable onUpdateScreen) {
-    this.expenseController = expenseController;
+  public ManagerExpenseView(ExpenseDatabaseController expenseDatabaseController, ExpenseModel data, Runnable onUpdateScreen) {
+    this.expenseDatabaseController = expenseDatabaseController;
     this.data = data;
     this.onUpdateScreen = onUpdateScreen;
 
@@ -206,7 +206,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
       // Verifica se a tela é de atualização ou criação.
       if (data != null) {
         // Atualiza os dados da despesa.
-        expenseController.update(
+        expenseDatabaseController.update(
                 new ExpenseModel(
                         data.getId(),
                         name,
@@ -217,7 +217,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
         );
       } else {
         // Cria a despesa.
-        expenseController.create(
+        expenseDatabaseController.create(
                 new CreateExpenseModel(
                         name,
                         numberValidator.getNumber(),

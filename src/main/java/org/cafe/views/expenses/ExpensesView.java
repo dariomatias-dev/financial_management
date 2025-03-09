@@ -2,7 +2,7 @@ package org.cafe.views.expenses;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import org.cafe.database.controllers.ExpenseController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatter;
@@ -13,17 +13,17 @@ import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
-  private final ExpenseController expenseController;
+  private final ExpenseDatabaseController expenseDatabaseController;
   private ArrayList<ExpenseModel> allExpenses;
   private ArrayList<ExpenseModel> displayedExpenses;
 
   /**
    * Construtor.
    *
-   * @param expenseController Controlador de despesas.
+   * @param expenseDatabaseController Controlador de despesas.
    */
-  public ExpensesView(ExpenseController expenseController) {
-    this.expenseController = expenseController;
+  public ExpensesView(ExpenseDatabaseController expenseDatabaseController) {
+    this.expenseDatabaseController = expenseDatabaseController;
 
     initComponents();
 
@@ -44,7 +44,7 @@ public class ExpensesView extends javax.swing.JFrame {
    * Obtém todas as despesas.
    */
   private void listExpenses() {
-    allExpenses = expenseController.getAll();
+    allExpenses = expenseDatabaseController.getAll();
     displayedExpenses = allExpenses;
 
     showExpenses();
@@ -316,7 +316,7 @@ public class ExpensesView extends javax.swing.JFrame {
               expensesTable,
               () -> {
                 ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
-                expenseController.removeById(selectedExpense.getId());
+                expenseDatabaseController.removeById(selectedExpense.getId());
 
                 updateScreen();
               }
@@ -328,7 +328,7 @@ public class ExpensesView extends javax.swing.JFrame {
    */
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
       new ManagerExpenseView(
-              expenseController,
+              expenseDatabaseController,
               null,
               this::updateScreen
       ).setVisible(true);
@@ -341,7 +341,7 @@ public class ExpensesView extends javax.swing.JFrame {
       if (RecordVerification.verifyRecords(expensesTable, "atualizar")) {
         ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
         new ManagerExpenseView(
-                expenseController,
+                expenseDatabaseController,
                 selectedExpense,
                 this::updateScreen
         ).setVisible(true);

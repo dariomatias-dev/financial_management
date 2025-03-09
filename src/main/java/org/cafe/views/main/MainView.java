@@ -5,10 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import org.cafe.database.controllers.BudgetController;
-import org.cafe.database.controllers.BudgetItemController;
-import org.cafe.database.controllers.ExpenseController;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.BudgetDatabaseController;
+import org.cafe.database.controllers.BudgetItemDatabaseController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.CurrencyFormatter;
@@ -25,24 +25,24 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 public class MainView extends javax.swing.JFrame {
-  private final ExpenseController expenseController;
-  private final RevenueController revenueController;
-  private final BudgetController budgetController;
-  private final BudgetItemController budgetItemController;
+  private final ExpenseDatabaseController expenseDatabaseController;
+  private final RevenueDatabaseController revenueDatabaseController;
+  private final BudgetDatabaseController budgetDatabaseController;
+  private final BudgetItemDatabaseController budgetItemDatabaseController;
 
   /**
    * Construtor.
    *
-   * @param expenseController Controlador de despesas.
-   * @param revenueController Controlador de receitas.
-   * @param budgetController Controlador de orçamentos.
-   * @param budgetItemController Controlador de itens de orçamento.
+   * @param expenseDatabaseController Controlador de despesas.
+   * @param revenueDatabaseController Controlador de receitas.
+   * @param budgetDatabaseController Controlador de orçamentos.
+   * @param budgetItemDatabaseController Controlador de itens de orçamento.
    */
-  public MainView(ExpenseController expenseController, RevenueController revenueController, BudgetController budgetController, BudgetItemController budgetItemController) {
-    this.expenseController = expenseController;
-    this.revenueController = revenueController;
-    this.budgetController = budgetController;
-    this.budgetItemController = budgetItemController;
+  public MainView(ExpenseDatabaseController expenseDatabaseController, RevenueDatabaseController revenueDatabaseController, BudgetDatabaseController budgetDatabaseController, BudgetItemDatabaseController budgetItemDatabaseController) {
+    this.expenseDatabaseController = expenseDatabaseController;
+    this.revenueDatabaseController = revenueDatabaseController;
+    this.budgetDatabaseController = budgetDatabaseController;
+    this.budgetItemDatabaseController = budgetItemDatabaseController;
 
     initComponents();
 
@@ -54,8 +54,8 @@ public class MainView extends javax.swing.JFrame {
     
     greetingLabel.setText(getGreeting() + ",");
 
-    double revenuesValue = calculateTotalByPeriod(revenueController.getAll());
-    double expensesValue = calculateTotalByPeriod(expenseController.getAll());
+    double revenuesValue = calculateTotalByPeriod(revenueDatabaseController.getAll());
+    double expensesValue = calculateTotalByPeriod(expenseDatabaseController.getAll());
 
     String formattedRevenuesValue = CurrencyFormatter.format(revenuesValue);
     String formattedExpensesValue = CurrencyFormatter.format(expensesValue);
@@ -509,7 +509,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de orçamentos.
    */
   private void budgetsPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_budgetsPainelMouseClicked
-    BudgetsView budgetsView = new BudgetsView(budgetController, budgetItemController);
+    BudgetsView budgetsView = new BudgetsView(budgetDatabaseController, budgetItemDatabaseController);
 
     budgetsView.setVisible(true);
   }//GEN-LAST:event_budgetsPainelMouseClicked
@@ -518,7 +518,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de visão financeira.
    */
   private void financialOverviewPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_financialOverviewPainelMouseClicked
-    FinancialOverviewView financialOverviewView = new FinancialOverviewView(revenueController, expenseController);
+    FinancialOverviewView financialOverviewView = new FinancialOverviewView(revenueDatabaseController, expenseDatabaseController);
 
     financialOverviewView.setVisible(true);
   }//GEN-LAST:event_financialOverviewPainelMouseClicked
@@ -527,7 +527,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de despesas.
    */
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
-    ExpensesView expensesView = new ExpensesView(expenseController);
+    ExpensesView expensesView = new ExpensesView(expenseDatabaseController);
 
     expensesView.setVisible(true);
   }//GEN-LAST:event_expensesPanelMouseClicked
@@ -536,7 +536,7 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de receitas.
    */
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
-    RevenuesView revenuesView = new RevenuesView(revenueController);
+    RevenuesView revenuesView = new RevenuesView(revenueDatabaseController);
 
     revenuesView.setVisible(true);
   }//GEN-LAST:event_revenuesPainelMouseClicked

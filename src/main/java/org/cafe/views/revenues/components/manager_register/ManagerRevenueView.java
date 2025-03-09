@@ -1,26 +1,26 @@
 package org.cafe.views.revenues.components.manager_register;
 
 import javax.swing.JOptionPane;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 import org.cafe.models.revenue.CreateRevenueModel;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.NumberValidator;
 
 public class ManagerRevenueView extends javax.swing.JFrame {
   private final Runnable onUpdateScreen;
-  private final RevenueController revenueController;
+  private final RevenueDatabaseController revenueDatabaseController;
   private final RevenueModel data;
 
   /**
    * Construtor.
    *
-   * @param revenueController Controlador de receitas.
+   * @param revenueDatabaseController Controlador de receitas.
    * @param data Dados do registro selecionado caso seja para atualizar.
    * @param onUpdateScreen Função para atualização da tela de listagem das
    * despesas.
    */
-  public ManagerRevenueView(RevenueController revenueController, RevenueModel data, Runnable onUpdateScreen) {
-    this.revenueController = revenueController;
+  public ManagerRevenueView(RevenueDatabaseController revenueDatabaseController, RevenueModel data, Runnable onUpdateScreen) {
+    this.revenueDatabaseController = revenueDatabaseController;
     this.data = data;
     this.onUpdateScreen = onUpdateScreen;
 
@@ -206,7 +206,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
       // Verifica se a tela é de atualização ou criação.
       if (data != null) {
         // Atualiza os dados da receita.
-        revenueController.update(
+        revenueDatabaseController.update(
                 new RevenueModel(
                         data.getId(),
                         name,
@@ -217,7 +217,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
         );
       } else {
         // Cria a receita.
-        revenueController.create(
+        revenueDatabaseController.create(
                 new CreateRevenueModel(
                         name,
                         description,

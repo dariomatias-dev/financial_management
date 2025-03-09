@@ -2,7 +2,7 @@ package org.cafe.views.revenues;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.ConfirmDeleteDialog;
 import org.cafe.utils.CurrencyFormatter;
@@ -13,17 +13,17 @@ import org.cafe.utils.ValueRangeFilter;
 import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
 public class RevenuesView extends javax.swing.JFrame {
-  private final RevenueController revenueController;
+  private final RevenueDatabaseController revenueDatabaseController;
   private ArrayList<RevenueModel> allRevenues;
   private ArrayList<RevenueModel> displayedRevenues;
 
   /**
    * Construtor.
    *
-   * @param revenueController Controlador de receitas.
+   * @param revenueDatabaseController Controlador de receitas.
    */
-  public RevenuesView(RevenueController revenueController) {
-    this.revenueController = revenueController;
+  public RevenuesView(RevenueDatabaseController revenueDatabaseController) {
+    this.revenueDatabaseController = revenueDatabaseController;
 
     initComponents();
 
@@ -44,7 +44,7 @@ public class RevenuesView extends javax.swing.JFrame {
    * Lista todas as receitas.
    */
   private void listRevenues() {
-    allRevenues = revenueController.getAll();
+    allRevenues = revenueDatabaseController.getAll();
     displayedRevenues = allRevenues;
     showRevenues();
   }
@@ -316,7 +316,7 @@ public class RevenuesView extends javax.swing.JFrame {
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
     new ManagerRevenueView(
-            revenueController,
+            revenueDatabaseController,
             null,
             this::updateScreen
     ).setVisible(true);
@@ -329,7 +329,7 @@ public class RevenuesView extends javax.swing.JFrame {
     if (RecordVerification.verifyRecords(revenuesTable, "atualizar")) {
       RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
       new ManagerRevenueView(
-              revenueController,
+              revenueDatabaseController,
               selectedRevenue,
               this::updateScreen
       ).setVisible(true);
@@ -344,7 +344,7 @@ public class RevenuesView extends javax.swing.JFrame {
             revenuesTable,
             () -> {
               RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
-              revenueController.removeById(selectedRevenue.getId());
+              revenueDatabaseController.removeById(selectedRevenue.getId());
 
               updateScreen();
             }

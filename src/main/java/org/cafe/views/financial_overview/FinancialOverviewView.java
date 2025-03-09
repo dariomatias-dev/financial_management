@@ -2,26 +2,26 @@ package org.cafe.views.financial_overview;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import org.cafe.database.controllers.ExpenseController;
-import org.cafe.database.controllers.RevenueController;
+import org.cafe.database.controllers.ExpenseDatabaseController;
+import org.cafe.database.controllers.RevenueDatabaseController;
 import org.cafe.models.expense.ExpenseModel;
 import org.cafe.models.revenue.RevenueModel;
 import org.cafe.utils.CurrencyFormatter;
 import org.cafe.utils.SetBackIcon;
 
 public class FinancialOverviewView extends javax.swing.JFrame {
-  private final RevenueController revenueController;
-  private final ExpenseController expenseController;
+  private final RevenueDatabaseController revenueDatabaseController;
+  private final ExpenseDatabaseController expenseDatabaseController;
 
   /**
    * Construtor.
    *
-   * @param revenueController Controlador de receitas.
-   * @param expenseController Controlador de despesas.
+   * @param revenueDatabaseController Controlador de receitas.
+   * @param expenseDatabaseController Controlador de despesas.
    */
-  public FinancialOverviewView(RevenueController revenueController, ExpenseController expenseController) {
-    this.revenueController = revenueController;
-    this.expenseController = expenseController;
+  public FinancialOverviewView(RevenueDatabaseController revenueDatabaseController, ExpenseDatabaseController expenseDatabaseController) {
+    this.revenueDatabaseController = revenueDatabaseController;
+    this.expenseDatabaseController = expenseDatabaseController;
 
     initComponents();
 
@@ -34,8 +34,8 @@ public class FinancialOverviewView extends javax.swing.JFrame {
 
   // Filtra as receitas e despesas com base no período selecionado.
   private void filterRegisters() {
-    ArrayList<RevenueModel> filteredRevenues = filterRegistersByPeriod(revenueController.getAll());
-    ArrayList<ExpenseModel> filteredExpenses = filterRegistersByPeriod(expenseController.getAll());
+    ArrayList<RevenueModel> filteredRevenues = filterRegistersByPeriod(revenueDatabaseController.getAll());
+    ArrayList<ExpenseModel> filteredExpenses = filterRegistersByPeriod(expenseDatabaseController.getAll());
 
     // Calcular o valor total das receitas do período selecionado.
     double totalRevenue = 0.0;
