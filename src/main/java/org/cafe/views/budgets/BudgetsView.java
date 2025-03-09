@@ -150,12 +150,12 @@ public class BudgetsView extends javax.swing.JFrame {
       budgetsTable.getColumnModel().getColumn(3).setMinWidth(88);
       budgetsTable.getColumnModel().getColumn(3).setPreferredWidth(88);
       budgetsTable.getColumnModel().getColumn(3).setMaxWidth(88);
-      budgetsTable.getColumnModel().getColumn(4).setMinWidth(68);
-      budgetsTable.getColumnModel().getColumn(4).setPreferredWidth(68);
-      budgetsTable.getColumnModel().getColumn(4).setMaxWidth(68);
-      budgetsTable.getColumnModel().getColumn(5).setMinWidth(68);
-      budgetsTable.getColumnModel().getColumn(5).setPreferredWidth(68);
-      budgetsTable.getColumnModel().getColumn(5).setMaxWidth(68);
+      budgetsTable.getColumnModel().getColumn(4).setMinWidth(72);
+      budgetsTable.getColumnModel().getColumn(4).setPreferredWidth(72);
+      budgetsTable.getColumnModel().getColumn(4).setMaxWidth(72);
+      budgetsTable.getColumnModel().getColumn(5).setMinWidth(72);
+      budgetsTable.getColumnModel().getColumn(5).setPreferredWidth(72);
+      budgetsTable.getColumnModel().getColumn(5).setMaxWidth(72);
     }
 
     endDateFilterLabel1.setText("Data Final:");

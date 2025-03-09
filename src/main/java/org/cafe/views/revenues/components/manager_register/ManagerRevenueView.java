@@ -59,7 +59,7 @@ public class ManagerRevenueView extends javax.swing.JFrame {
 
     screenTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
     screenTitle.setForeground(new java.awt.Color(0, 0, 0));
-    screenTitle.setText("Criar Despesa");
+    screenTitle.setText("Criar Receita");
 
     nameLabel.setBackground(new java.awt.Color(0, 0, 0));
     nameLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -97,17 +97,13 @@ public class ManagerRevenueView extends javax.swing.JFrame {
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-        .addContainerGap(147, Short.MAX_VALUE)
-        .addComponent(screenTitle)
-        .addGap(138, 138, 138))
       .addGroup(backgroundLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(descriptionField)
           .addComponent(nameField)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 234, Short.MAX_VALUE)
             .addComponent(calcelButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(actionButton))
@@ -121,6 +117,10 @@ public class ManagerRevenueView extends javax.swing.JFrame {
               .addComponent(periodSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(0, 0, Short.MAX_VALUE)))
         .addContainerGap())
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(screenTitle)
+        .addGap(145, 145, 145))
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

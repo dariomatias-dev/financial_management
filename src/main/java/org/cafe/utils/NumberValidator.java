@@ -19,10 +19,10 @@ public class NumberValidator {
 
         return false;
       }
-      
+
       return true;
     } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(parentComponent, String.format("Por favor, insira um valor válido para %s.", term), "Erro", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(parentComponent, "Por favor, insira valor(es) numérico(s) válido(s).", "Erro", JOptionPane.ERROR_MESSAGE);
 
       return false;
     }

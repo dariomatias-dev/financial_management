@@ -125,12 +125,17 @@ public class BudgetController {
    * Mostra as informações do orçamento.
    */
   private void showInfos() {
-    nameText.setText("Nome: " + budget.getName());
-    categoryText.setText("Categoria: " + budget.getCategory());
-    descriptionText.setText("Descrição: " + budget.getDescription());
-    statusText.setText("Status: " + budget.getStatus());
-    initialDateText.setText("Data Inicial: " + budget.getInitialDate().format(DATE_FORMATTER));
-    endDateText.setText("Data Final: " + budget.getEndDate().format(DATE_FORMATTER));
+    String description = budget.getDescription();
+    if (description.length() > 94) {
+      description = description.substring(0, 94) + "...";
+    }
+
+    nameText.setText(budget.getName());
+    categoryText.setText(budget.getCategory());
+    descriptionText.setText(description);
+    statusText.setText(budget.getStatus());
+    initialDateText.setText(budget.getInitialDate().format(DATE_FORMATTER));
+    endDateText.setText(budget.getEndDate().format(DATE_FORMATTER));
   }
 
   /**

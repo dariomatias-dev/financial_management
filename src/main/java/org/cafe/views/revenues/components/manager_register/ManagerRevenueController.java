@@ -86,7 +86,7 @@ public class ManagerRevenueController {
 
     // Validação do valor numérico.
     NumberValidator numberValidator = new NumberValidator();
-    if (!numberValidator.validate(parentComponent, valueText, "despesa")) {
+    if (!numberValidator.validate(parentComponent, valueText, "receita")) {
       return;
     }
 

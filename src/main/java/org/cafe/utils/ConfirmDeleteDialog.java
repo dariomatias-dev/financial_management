@@ -13,7 +13,7 @@ public class ConfirmDeleteDialog {
       int confirm = JOptionPane.showConfirmDialog(
               null,
               "Você realmente deseja excluir este registro?",
-              "Confirmar Exclusão",
+              "Confirmar Remoção",
               JOptionPane.YES_NO_OPTION,
               JOptionPane.WARNING_MESSAGE
       );
