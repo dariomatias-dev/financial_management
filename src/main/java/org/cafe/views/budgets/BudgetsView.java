@@ -1,26 +1,10 @@
 package org.cafe.views.budgets;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
-import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetDatabaseController;
 import org.cafe.database.controllers.BudgetItemDatabaseController;
-import org.cafe.models.budget.BudgetModel;
-import org.cafe.utils.ConfirmDeleteDialog;
-import org.cafe.utils.DateFormatter;
-import org.cafe.utils.RecordVerification;
-import org.cafe.utils.SearchFieldHandler;
-import org.cafe.utils.SetBackIcon;
-import org.cafe.utils.ValueRangeFilter;
-import org.cafe.views.budget.BudgetView;
-import org.cafe.views.budgets.components.manager_budget.ManagerBudgetView;
 
 public class BudgetsView extends javax.swing.JFrame {
-  private final BudgetDatabaseController budgetDatabaseController;
-  private final BudgetItemDatabaseController budgetItemDatabaseController;
-  private ArrayList<BudgetModel> allBudgets;
-  private ArrayList<BudgetModel> displayedBudgets;
+  private final BudgetsController controller;
 
   /**
    * Construtor.
@@ -32,97 +16,22 @@ public class BudgetsView extends javax.swing.JFrame {
           BudgetDatabaseController budgetDatabaseController,
           BudgetItemDatabaseController budgetItemDatabaseController
   ) {
-    this.budgetDatabaseController = budgetDatabaseController;
-    this.budgetItemDatabaseController = budgetItemDatabaseController;
-
     initComponents();
 
-    initializeSearchField();
-
-    listBudgets();
-
-    showBudgets();
-
-    new DateMaskFormatter().applyMask(initialDateFilterField);
-    new DateMaskFormatter().applyMask(endDateFilterField);
-
-    new SetBackIcon().set(exitButton);
-  }
-
-  private void initializeSearchField() {
-    screenTitle.setFocusable(true);
-
-    new SearchFieldHandler(searchField).initialize();
-  }
-
-  /**
-   * Obtém todos os orçamento.
-   */
-  private void listBudgets() {
-    allBudgets = budgetDatabaseController.getAll();
-    displayedBudgets = allBudgets;
-  }
-
-  /**
-   * Exibi os dados dos orçamentos repassados.
-   */
-  private void showBudgets() {
-    DefaultTableModel tableModel = (DefaultTableModel) budgetsTable.getModel();
-    tableModel.setRowCount(0);
-
-    // Criação das linhas da tabela.
-    for (BudgetModel budget : displayedBudgets) {
-      String initialDateFormatted = DateFormatter.format(budget.getInitialDate());
-      String endDateFormatted = DateFormatter.format(budget.getEndDate());
-      String valueFormatted = String.format("%.2f", budget.getTotalBudgetValue());
-
-      Object[] rowData = new Object[6];
-      rowData[0] = budget.getName();
-      rowData[1] = budget.getCategory();
-      rowData[2] = "R$ " + valueFormatted;
-      rowData[3] = budget.getStatus();
-      rowData[4] = initialDateFormatted;
-      rowData[5] = endDateFormatted;
-
-      tableModel.addRow(rowData);
-    }
-  }
-
-  /**
-   * Atualiza a lista de orçamentos.
-   */
-  private void updateScreen() {
-    listBudgets();
-
-    search();
-  }
-
-  /**
-   * Método chamado quando um novo orçamento é criado.
-   */
-  private void onBudgetCreated(
-          String budgetId
-  ) {
-    BudgetModel selectedBudget = budgetDatabaseController.getById(budgetId);
-    new BudgetView(
+    this.controller = new BudgetsController(
+            this,
             budgetDatabaseController,
             budgetItemDatabaseController,
-            selectedBudget,
-            (value) -> {
-              updateScreen();
-            }
-    ).setVisible(true);
-
-    updateScreen();
-  }
-
-  /**
-   * Método chamado quando um orçamento é atualizado.
-   */
-  private void onUpdateBudget(int index, BudgetModel value) {
-    allBudgets.set(index, value);
-
-    displayedBudgets = allBudgets;
+            exitButton,
+            screenTitle,
+            searchField,
+            valueMinFilterField,
+            valueMaxFilterField,
+            statusFilterSelect,
+            initialDateFilterField,
+            endDateFilterField,
+            budgetsTable
+    );
   }
 
   /**
@@ -380,162 +289,49 @@ public class BudgetsView extends javax.swing.JFrame {
    * Remove o orçamento selecionado.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    ConfirmDeleteDialog.showDeleteConfirmation(
-            budgetsTable,
-            () -> {
-              BudgetModel selectedExpense = displayedBudgets.get(budgetsTable.getSelectedRow());
-              budgetDatabaseController.removeById(selectedExpense.getId());
-
-              updateScreen();
-            }
-    );
+    controller.deleteButton();
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
    * Abre a tela de atualização do orçamento selecionado.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerification.verifyRecords(budgetsTable, "atualizar")) {
-      BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
-      new ManagerBudgetView(
-              budgetDatabaseController,
-              selectedBudget,
-              (budgetId) -> {
-                updateScreen();
-              }
-      ).setVisible(true);
-    }
+    controller.updateButton();
   }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
    * Abre a tela de criação de orçamento.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    ManagerBudgetView createManagerBudgetView = new ManagerBudgetView(budgetDatabaseController, null, this::onBudgetCreated);
-
-    createManagerBudgetView.setVisible(true);
+    controller.addButton();
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
    * Abre a tela do orçamento selecionado.
    */
   private void accessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessButtonMouseClicked
-    if (RecordVerification.verifyRecords(budgetsTable, "acessar")) {
-      BudgetModel selectedBudget = displayedBudgets.get(budgetsTable.getSelectedRow());
-      new BudgetView(
-              budgetDatabaseController,
-              budgetItemDatabaseController,
-              selectedBudget,
-              (value) -> {
-                onUpdateBudget(budgetsTable.getSelectedRow(), value);
-              }
-      ).setVisible(true);
-    }
+    controller.accessButton();
   }//GEN-LAST:event_accessButtonMouseClicked
 
   /**
-   * Método de pesquisa das despesas.
-   */
-  private void search() {
-    // Obtenção dos filtros.
-    String query = searchField.getText().trim();
-    String valueMinFilterText = valueMinFilterField.getText().trim();
-    String valueMaxFilterText = valueMaxFilterField.getText().trim();
-    String statusFilter = (String) statusFilterSelect.getSelectedItem();
-    String initialDateFilterText = initialDateFilterField.getText().trim();
-    String endDateFilterText = endDateFilterField.getText().trim();
-
-    // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")
-            && initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE) && endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
-      displayedBudgets = allBudgets;
-      showBudgets();
-
-      return;
-    }
-
-    // Obtenção dos filtros de valor mínimo e máximo.
-    ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-    if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
-      return;
-    }
-
-    // Formatação da data inicial e final.
-    LocalDate initialDateFilter = null;
-    if (!initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
-      initialDateFilter = DateFormatter.parse(initialDateFilterText);
-    }
-
-    LocalDate endDateFilter = null;
-    if (!endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
-      endDateFilter = DateFormatter.parse(endDateFilterText);
-    }
-
-    ArrayList<BudgetModel> results = new ArrayList<>();
-
-    // Filtragem dos orçamentos.
-    for (BudgetModel budget : allBudgets) {
-      // Filtro de texto e status.
-      boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
-      boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
-
-      // Filtros de valor.
-      boolean matchesValue = true;
-      if (valueRangeFilter.getApplyValueMinFilter()) {
-        matchesValue = budget.getTotalBudgetValue() >= valueRangeFilter.getValueMinFilter();
-      }
-      if (valueRangeFilter.getApplyValueMaxFilter() && matchesValue) {
-        matchesValue = budget.getTotalBudgetValue() <= valueRangeFilter.getValueMaxFilter();
-      }
-
-      // Filtro de data.
-      boolean matchesDate = true;
-      if (initialDateFilter != null && budget.getInitialDate() != null) {
-        matchesDate = !budget.getInitialDate().isBefore(initialDateFilter);
-      }
-      if (matchesDate && endDateFilter != null && budget.getEndDate() != null) {
-        matchesDate = !budget.getEndDate().isAfter(endDateFilter);
-      }
-
-      // Checagem das filtragens.
-      if (matchesQuery && matchesStatus && matchesValue && matchesDate) {
-        results.add(budget);
-      }
-    }
-
-    // Processo de exibição dos orçamentos filtrados.
-    displayedBudgets = results;
-
-    showBudgets();
-  }
-
-  /**
-   * Método chamado para remover todos os filtros.
+   * Remove todos os filtros.
    */
   private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
-    searchField.setText("Pesquisar...");
-    valueMinFilterField.setText("");
-    valueMaxFilterField.setText("");
-    statusFilterSelect.setSelectedItem("Todos");
-    initialDateFilterField.setText(DateFormatter.PLACEHOLDER_DATE);
-    endDateFilterField.setText(DateFormatter.PLACEHOLDER_DATE);
-
-    search();
+    controller.clearFiltersButton();
   }//GEN-LAST:event_clearFiltersButtonMouseClicked
 
   /**
-   * Método chamado para sair da tela.
+   * Fecha a tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
-   * Método chamado para filtrar os orçamentos de acordo com os filtros
-   * definidos.
+   * Filtra os orçamentos de acordo com os filtros definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    search();
+    controller.search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
