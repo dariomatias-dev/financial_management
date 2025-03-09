@@ -1,17 +1,10 @@
 package org.cafe.views.financial_overview;
 
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.ExpenseDatabaseController;
 import org.cafe.database.controllers.RevenueDatabaseController;
-import org.cafe.models.expense.ExpenseModel;
-import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.CurrencyFormatter;
-import org.cafe.utils.SetBackIcon;
 
 public class FinancialOverviewView extends javax.swing.JFrame {
-  private final RevenueDatabaseController revenueDatabaseController;
-  private final ExpenseDatabaseController expenseDatabaseController;
+  private final FinancialOverviewController controller;
 
   /**
    * Construtor.
@@ -20,95 +13,19 @@ public class FinancialOverviewView extends javax.swing.JFrame {
    * @param expenseDatabaseController Controlador de despesas.
    */
   public FinancialOverviewView(RevenueDatabaseController revenueDatabaseController, ExpenseDatabaseController expenseDatabaseController) {
-    this.revenueDatabaseController = revenueDatabaseController;
-    this.expenseDatabaseController = expenseDatabaseController;
-
     initComponents();
-
-    filterRegisters();
-
-    screenTitle.setFocusable(true);
-
-    new SetBackIcon().set(exitButton);
-  }
-
-  // Filtra as receitas e despesas com base no período selecionado.
-  private void filterRegisters() {
-    ArrayList<RevenueModel> filteredRevenues = filterRegistersByPeriod(revenueDatabaseController.getAll());
-    ArrayList<ExpenseModel> filteredExpenses = filterRegistersByPeriod(expenseDatabaseController.getAll());
-
-    // Calcular o valor total das receitas do período selecionado.
-    double totalRevenue = 0.0;
-    for (RevenueModel revenue : filteredRevenues) {
-      totalRevenue += revenue.getValue();
-    }
-
-    // Calcular o valor total das despesas do período selecionado.
-    double totalExpense = 0.0;
-    for (ExpenseModel expense : filteredExpenses) {
-      totalExpense += expense.getValue();
-    }
-
-    // Mostra as receitas e despesas filtradas.
-    showRevenues(filteredRevenues);
-    showExpenses(filteredExpenses);
-
-    // Mostra o valor total das receitas e despesas filtradas.
-    totalValueRevenues.setText("Valor Total: " + CurrencyFormatter.format(totalRevenue));
-    totalValueExpenses.setText("Valor Total: " + CurrencyFormatter.format(totalExpense));
-  }
-
-  private <T> ArrayList<T> filterRegistersByPeriod(ArrayList<T> records) {
-    String periodFilter = (String) periodFilterField.getSelectedItem();
-    ArrayList<T> filteredRecords = new ArrayList<>();
-
-    for (T record : records) {
-      if (record instanceof ExpenseModel expense && expense.getPeriod().equals(periodFilter)) {
-        filteredRecords.add(record);
-      } else if (record instanceof RevenueModel revenue && revenue.getPeriod().equals(periodFilter)) {
-        filteredRecords.add(record);
-      }
-    }
-
-    return filteredRecords;
-  }
-
-  /**
-   * Mostra as informações das receitas.
-   */
-  private void showRevenues(ArrayList<RevenueModel> revenues) {
-    DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
-    tableModel.setRowCount(0);
-
-    // Criação das linhas da tabela de receitas.
-    for (RevenueModel revenue : revenues) {
-      String formattedValue = CurrencyFormatter.format(revenue.getValue());
-
-      Object[] rowData = new Object[3];
-      rowData[0] = revenue.getName();
-      rowData[1] = revenue.getDescription();
-      rowData[2] = formattedValue;
-      tableModel.addRow(rowData);
-    }
-  }
-
-  /**
-   * Mostra as informações das despesas.
-   */
-  private void showExpenses(ArrayList<ExpenseModel> expenses) {
-    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
-    tableModel.setRowCount(0);
-
-    // Criação das linhas da tabela de despesas.
-    for (ExpenseModel expense : expenses) {
-      String formattedValue = CurrencyFormatter.format(expense.getValue());
-
-      Object[] rowData = new Object[3];
-      rowData[0] = expense.getName();
-      rowData[1] = expense.getDescription();
-      rowData[2] = formattedValue;
-      tableModel.addRow(rowData);
-    }
+    
+    this.controller = new FinancialOverviewController(
+            revenueDatabaseController,
+            expenseDatabaseController,
+            exitButton,
+            screenTitle,
+            periodFilterField,
+            totalValueRevenues,
+            totalValueExpenses,
+            revenuesTable,
+            expensesTable
+    );
   }
 
   /**
@@ -325,7 +242,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
    * Calcula o valor total das receitas e despesas do períoodo selecionado.
    */
   private void calculateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateButtonMouseClicked
-    filterRegisters();
+    controller.filterRegisters();
   }//GEN-LAST:event_calculateButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

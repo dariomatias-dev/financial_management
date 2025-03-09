@@ -80,13 +80,13 @@ public class ExpensesController {
   }
 
   /**
-   * Exibe as despesas na tabela.
+   * Exibe as despesas.
    */
   private void showExpenses() {
     DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
     tableModel.setRowCount(0);
 
-    // Criação das linhas da tabela com base nas despesas
+    // Criação das linhas da tabela.
     for (ExpenseModel expense : displayedExpenses) {
       String formattedValue = CurrencyFormatter.format(expense.getValue());
       Object[] rowData = {
