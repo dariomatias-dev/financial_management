@@ -61,8 +61,8 @@ public class ManagerExpenseController {
     // Preenche os campos com os atuais dados da despesa caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
-      valueField.setText(data.getDescription());
-      descriptionField.setText(String.valueOf(data.getValue()));
+      descriptionField.setText(data.getDescription());
+      valueField.setText(String.valueOf(data.getValue()));
       periodSelect.setSelectedItem(data.getPeriod());
 
       screenTitle.setFocusable(true);

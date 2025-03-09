@@ -28,7 +28,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
             descriptionField,
             categoryField,
             statusSelect,
-            nameField,
+            totalBudgetField,
             initialDateField,
             endDateField,
             actionButton

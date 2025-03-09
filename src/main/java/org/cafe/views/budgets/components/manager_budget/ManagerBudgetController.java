@@ -104,6 +104,7 @@ public class ManagerBudgetController {
   protected void actionButton() {
     // Obtenção dos dados.
     String name = nameField.getText();
+    String description = descriptionField.getText();
     String category = categoryField.getText();
     String initialDateText = initialDateField.getText();
     String endDateText = endDateField.getText();
@@ -149,7 +150,7 @@ public class ManagerBudgetController {
               new BudgetModel(
                       data.getId(),
                       name,
-                      category,
+                      description,
                       category,
                       status,
                       numberValidator.getNumber(),
@@ -165,7 +166,7 @@ public class ManagerBudgetController {
       budgetId = budgetDatabaseController.create(
               new CreateBudgetModel(
                       name,
-                      category,
+                      description,
                       category,
                       status,
                       numberValidator.getNumber(),

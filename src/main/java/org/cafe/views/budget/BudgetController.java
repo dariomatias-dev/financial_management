@@ -203,10 +203,6 @@ public class BudgetController {
   private void calculateBudgetValue() {
     budget = new BudgetCalculator().calculate(budget, budgetDatabaseController, allBudgetItems);
 
-    if (budget.getTotalSpent() > budget.getTotalBudgetValue()) {
-      JOptionPane.showMessageDialog(null, "Aviso: O valor dos itens do orçamento ultrapassou o orçamento total!", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
-
     showFinancialSummaryBudget();
 
     onUpdateBudget.accept(budget);
