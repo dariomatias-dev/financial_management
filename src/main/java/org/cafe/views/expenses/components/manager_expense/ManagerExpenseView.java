@@ -18,10 +18,10 @@ public class ManagerExpenseView extends javax.swing.JFrame {
     initComponents();
 
     this.controller = new ManagerExpenseController(
+            this,
             expenseDatabaseController,
             data,
             onUpdateScreen,
-            this,
             screenTitle,
             nameField,
             valueField,
@@ -165,7 +165,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   /**
-   * Método chamado para sair da tela.
+   * Método de sair da tela.
    */
     private void calcelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcelButtonMouseClicked
       this.dispose();

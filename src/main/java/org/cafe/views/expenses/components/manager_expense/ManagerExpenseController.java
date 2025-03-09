@@ -38,10 +38,10 @@ public class ManagerExpenseController {
    * @param actionButton Botão de criação ou atualização.
    */
   public ManagerExpenseController(
+          Window parentComponent,
           ExpenseDatabaseController expenseDatabaseController,
           ExpenseModel data,
           Runnable onUpdateScreen,
-          Window parentComponent,
           JLabel screenTitle,
           JTextField nameField,
           JTextField valueField,
@@ -71,7 +71,11 @@ public class ManagerExpenseController {
     }
   }
 
-  public void actionButton() {
+  // SCREEN ACTIONS
+  /**
+   * Criação ou atualização de uma despesa.
+   */
+  protected void actionButton() {
     // Obtenção dos dados.
     String name = nameField.getText();
     String valueText = valueField.getText();
