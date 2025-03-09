@@ -80,7 +80,7 @@ public class RevenuesController {
   }
 
   /**
-   * Exibe as despesas na tabela.
+   * Exibi as receitas.
    */
   private void showRevenues() {
     DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
@@ -110,7 +110,7 @@ public class RevenuesController {
 
   // SCREEN ACTIONS
   /**
-   * Realiza a pesquisa de receitas com base nos filtros aplicados.
+   * Filtra as receitas de acordo com os filtros definidos.
    */
   protected void search() {
     // Obtém os filtros de pesquisa.
@@ -119,10 +119,11 @@ public class RevenuesController {
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
-    // Verifica se a pesquisa está limpa e exibe todas as despesas.
+    // Verificação da presença de filtragem.
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedRevenues = allRevenues;
       showRevenues();
+
       return;
     }
 
@@ -134,12 +135,13 @@ public class RevenuesController {
 
     ArrayList<RevenueModel> results = new ArrayList<>();
 
-    // Aplica os filtros.
+    // Filtragem das receitas.
     for (RevenueModel expense : allRevenues) {
+      // Filtro de texto e período.
       boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
 
-      // Filtra pelo valor.
+      // Filtros de valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = expense.getValue() >= valueRangeFilter.getValueMinFilter();
@@ -148,13 +150,15 @@ public class RevenuesController {
         matchesValue = expense.getValue() <= valueRangeFilter.getValueMaxFilter();
       }
 
-      // Adiciona a despesa aos resultados caso tenha passado pelos filtros.
+      // Checagem das filtragens para adição da receita.
       if (matchesQuery && matchesPeriod && matchesValue) {
         results.add(expense);
       }
     }
 
+    // Processo de exibição das receitas filtradas.
     displayedRevenues = results;
+
     showRevenues();
   }
 

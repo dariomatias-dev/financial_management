@@ -158,7 +158,7 @@ public class BudgetsController {
 
   // SCREEN ACTIONS
   /**
-   * Seleciona os orçamentos com base nos filtros definidos.
+   * Filtra os orçamentos de acordo com os filtros definidos.
    */
   protected void search() {
     // Obtenção dos filtros.
@@ -178,7 +178,7 @@ public class BudgetsController {
       return;
     }
 
-    // Obtenção dos filtros de valor mínimo e máximo.
+    // Valida o intervalo de valores.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
     if (!valueRangeFilter.validate(parentComponent, valueMinFilterText, valueMaxFilterText)) {
       return;
@@ -221,7 +221,7 @@ public class BudgetsController {
         matchesDate = !budget.getEndDate().isAfter(endDateFilter);
       }
 
-      // Checagem das filtragens.
+      // Checagem das filtragens para adição do orçamento.
       if (matchesQuery && matchesStatus && matchesValue && matchesDate) {
         results.add(budget);
       }

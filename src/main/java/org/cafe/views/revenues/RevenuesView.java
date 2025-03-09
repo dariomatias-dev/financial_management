@@ -283,22 +283,21 @@ public class RevenuesView extends javax.swing.JFrame {
   }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
-   * Método chamado para sair da tela.
+   * Fecha a tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
-   * Método chamado para filtrar os orçamentos de acordo com os filtros
-   * definidos.
+   * Filtra as receitas de acordo com os filtros definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
     controller.search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
   /**
-   * Método chamado para remover todos os filtros.
+   * Remove todos os filtros.
    */
   private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
     controller.clearFiltersButton();
