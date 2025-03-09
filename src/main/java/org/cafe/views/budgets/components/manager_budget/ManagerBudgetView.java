@@ -1,21 +1,11 @@
 package org.cafe.views.budgets.components.manager_budget;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.function.Consumer;
-import javax.swing.JOptionPane;
-import org.cafe.core.formatters.DateMaskFormatter;
 import org.cafe.database.controllers.BudgetDatabaseController;
 import org.cafe.models.budget.BudgetModel;
-import org.cafe.models.budget.CreateBudgetModel;
-import org.cafe.utils.DateFormatter;
-import org.cafe.utils.NumberValidator;
 
 public class ManagerBudgetView extends javax.swing.JFrame {
-  private final Consumer<String> onUpdateScreen;
-  private final BudgetModel data;
-  private final BudgetDatabaseController budgetDatabaseController;
+  private final ManagerBudgetController controller;
 
   /**
    * Construtor.
@@ -26,35 +16,23 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * orçamentos.
    */
   public ManagerBudgetView(BudgetDatabaseController budgetDatabaseController, BudgetModel data, Consumer<String> onUpdateScreen) {
-    this.budgetDatabaseController = budgetDatabaseController;
-    this.data = data;
-    this.onUpdateScreen = onUpdateScreen;
-
     initComponents();
 
-    new DateMaskFormatter().applyMask(initialDateField);
-    new DateMaskFormatter().applyMask(endDateField);
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-    // Preenche os campos com os atuais dados do orçamento caso a tela seja de atualização.
-    if (data != null) {
-      nameField.setText(data.getName());
-      descriptionField.setText(data.getDescription());
-      categoryField.setText(data.getCategory());
-      statusSelect.setSelectedItem(data.getStatus());
-      totalBudgetField.setText(String.valueOf(data.getTotalBudgetValue()));
-
-      initialDateField.setText(formatter.format(data.getInitialDate()));
-      endDateField.setText(formatter.format(data.getEndDate()));
-
-      screenTitle.setFocusable(true);
-      screenTitle.setText("Atualizar Orçamento");
-      actionButton.setText("Atualizar");
-    } else {
-      Date currentDate = new Date();
-      initialDateField.setText(formatter.format(currentDate));
-    }
+    this.controller = new ManagerBudgetController(
+            this,
+            budgetDatabaseController,
+            data,
+            onUpdateScreen,
+            screenTitle,
+            nameField,
+            descriptionField,
+            categoryField,
+            statusSelect,
+            nameField,
+            initialDateField,
+            endDateField,
+            actionButton
+    );
   }
 
   /**
@@ -209,7 +187,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(actionButton)
           .addComponent(cancelButton))
-        .addGap(35, 35, 35))
+        .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -227,7 +205,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   /**
-   * Método chamado para sair da tela.
+   * Método de sair da tela.
    */
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
       this.dispose();
@@ -237,84 +215,7 @@ public class ManagerBudgetView extends javax.swing.JFrame {
    * Método de criação ou atualização de um orçamento.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
-      // Obtenção dos dados.
-      String name = nameField.getText();
-      String category = categoryField.getText();
-      String initialDateText = initialDateField.getText();
-      String endDateText = endDateField.getText();
-      String valueText = totalBudgetField.getText();
-
-      // Verificação da presença dos dados necessários.
-      if (name.isEmpty() || category.isEmpty() || initialDateText.isEmpty() || endDateText.isEmpty()
-              || initialDateText.contains("_") || endDateText.contains("_") || valueText.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
-
-        return;
-      }
-
-      // Validação do valor numérico.
-      NumberValidator numberValidator = new NumberValidator();
-      if (!numberValidator.validate(this, valueText, "orçamento")) {
-        return;
-      }
-
-      // Obtenção das datas.
-      LocalDate initialDate = DateFormatter.parse(initialDateText);
-      if (initialDate == null) {
-        return;
-      }
-      LocalDate endDate = DateFormatter.parse(endDateText);
-      if (endDate == null) {
-        return;
-      }
-
-      if (initialDate.isAfter(endDate)) {
-        JOptionPane.showMessageDialog(this, "A data de início não pode ser posterior à data de término.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-
-      String status = (String) statusSelect.getSelectedItem();
-
-      String budgetId;
-
-      // Verifica se a tela é de atualização ou criação.
-      if (data != null) {
-        // Atualiza os dados do orçamento.
-        budgetDatabaseController.update(
-                new BudgetModel(
-                        data.getId(),
-                        name,
-                        category,
-                        category,
-                        status,
-                        numberValidator.getNumber(),
-                        data.getTotalSpent(),
-                        initialDate,
-                        endDate
-                )
-        );
-
-        budgetId = data.getId();
-      } else {
-        // Cria o orçamento e obtém o ID do registro.
-        budgetId = budgetDatabaseController.create(
-                new CreateBudgetModel(
-                        name,
-                        category,
-                        category,
-                        status,
-                        numberValidator.getNumber(),
-                        0.0,
-                        initialDate,
-                        endDate
-                )
-        );
-      }
-
-      onUpdateScreen.accept(budgetId);
-
-      this.dispose();
-
+      controller.actionButton();
     }//GEN-LAST:event_actionButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
