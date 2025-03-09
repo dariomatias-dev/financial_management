@@ -172,13 +172,13 @@ public class MainView extends javax.swing.JFrame {
   private double calculateValueByPeriod(double value, String period) {
     return switch (period) {
       case "Diário" ->
-        value;
+        value * 30;
       case "Semanal" ->
         value * 4;
       case "Mensal" ->
-        value * 30;
+        value;
       default ->
-        throw new IllegalArgumentException("Invalid period: " + period);
+        0;
     };
   }
 

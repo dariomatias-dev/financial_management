@@ -10,6 +10,7 @@ import org.cafe.views.main.MainView;
 public class Main {
   public static void main(String[] args) {
     DatabaseService databaseService = new DatabaseService();
+    // Inicialização dos controladores de banco de dados para cada tipo de entidade.
     ExpenseDatabaseController expenseDatabaseController = new ExpenseDatabaseController(databaseService);
     RevenueDatabaseController revenueDatabaseController = new RevenueDatabaseController(databaseService);
     BudgetDatabaseController budgetDatabaseController = new BudgetDatabaseController(databaseService);
