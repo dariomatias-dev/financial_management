@@ -65,7 +65,7 @@ public class ExpensesController {
     screenTitle.setFocusable(true);
     new SearchFieldHandler(searchField).initialize();
     new SetBackIcon().set(exitButton);
-    
+
     listExpenses();
   }
 
@@ -113,20 +113,20 @@ public class ExpensesController {
    * Realiza a pesquisa de despesas com base nos filtros aplicados.
    */
   protected void search() {
-    // Obtém os filtros de pesquisa
+    // Obtém os filtros de pesquisa.
     String query = searchField.getText().trim();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
-    // Verifica se a pesquisa está limpa e exibe todas as despesas
+    // Verifica se a pesquisa está limpa e exibe todas as despesas.
     if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedExpenses = allExpenses;
       showExpenses();
       return;
     }
 
-    // Valida o intervalo de valores
+    // Valida o intervalo de valores.
     ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
     if (!valueRangeFilter.validate(parentComponent, valueMinFilterText, valueMaxFilterText)) {
       return;
@@ -134,12 +134,12 @@ public class ExpensesController {
 
     ArrayList<ExpenseModel> results = new ArrayList<>();
 
-    // Aplica os filtros
+    // Aplica os filtros.
     for (ExpenseModel expense : allExpenses) {
       boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
 
-      // Filtra pelo valor
+      // Filtra pelo valor.
       boolean matchesValue = true;
       if (valueRangeFilter.getApplyValueMinFilter()) {
         matchesValue = expense.getValue() >= valueRangeFilter.getValueMinFilter();
