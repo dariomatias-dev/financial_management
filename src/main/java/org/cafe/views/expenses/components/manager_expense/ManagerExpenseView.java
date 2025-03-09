@@ -1,15 +1,10 @@
 package org.cafe.views.expenses.components.manager_expense;
 
-import javax.swing.JOptionPane;
 import org.cafe.database.controllers.ExpenseDatabaseController;
-import org.cafe.models.expense.CreateExpenseModel;
 import org.cafe.models.expense.ExpenseModel;
-import org.cafe.utils.NumberValidator;
 
 public class ManagerExpenseView extends javax.swing.JFrame {
-  private final Runnable onUpdateScreen;
-  private final ExpenseDatabaseController expenseDatabaseController;
-  private final ExpenseModel data;
+  private final ManagerExpenseController controller;
 
   /**
    * Construtor.
@@ -20,23 +15,20 @@ public class ManagerExpenseView extends javax.swing.JFrame {
    * despesas.
    */
   public ManagerExpenseView(ExpenseDatabaseController expenseDatabaseController, ExpenseModel data, Runnable onUpdateScreen) {
-    this.expenseDatabaseController = expenseDatabaseController;
-    this.data = data;
-    this.onUpdateScreen = onUpdateScreen;
-
     initComponents();
 
-    // Preenche os campos com os atuais dados da despesa caso a tela seja de atualização.
-    if (data != null) {
-      nameField.setText(data.getName());
-      descriptionField.setText(data.getDescription());
-      valueField.setText(String.valueOf(data.getValue()));
-      periodLabel.setText(data.getPeriod());
-
-      screenTitle.setFocusable(true);
-      screenTitle.setText("Atualizar Despesa");
-      actionButton.setText("Atualizar");
-    }
+    this.controller = new ManagerExpenseController(
+            expenseDatabaseController,
+            data,
+            onUpdateScreen,
+            this,
+            screenTitle,
+            nameField,
+            valueField,
+            descriptionField,
+            periodSelect,
+            actionButton
+    );
   }
 
   /**
@@ -183,53 +175,7 @@ public class ManagerExpenseView extends javax.swing.JFrame {
    * Método de criação ou atualização de uma despesa.
    */
     private void actionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseClicked
-      // Obtenção dos dados.
-      String name = nameField.getText();
-      String valueText = valueField.getText();
-      String description = descriptionField.getText();
-
-      // Verificação da presença dos dados necessários.
-      if (name.isEmpty() || valueText.isEmpty() || description.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-
-        return;
-      }
-
-      // Validação do valor numérico.
-      NumberValidator numberValidator = new NumberValidator();
-      if (!numberValidator.validate(this, valueText, "despesa")) {
-        return;
-      }
-
-      String period = (String) periodSelect.getSelectedItem();
-
-      // Verifica se a tela é de atualização ou criação.
-      if (data != null) {
-        // Atualiza os dados da despesa.
-        expenseDatabaseController.update(
-                new ExpenseModel(
-                        data.getId(),
-                        name,
-                        numberValidator.getNumber(),
-                        period,
-                        description
-                )
-        );
-      } else {
-        // Cria a despesa.
-        expenseDatabaseController.create(
-                new CreateExpenseModel(
-                        name,
-                        numberValidator.getNumber(),
-                        period,
-                        description
-                )
-        );
-      }
-
-      onUpdateScreen.run();
-
-      this.dispose();
+      controller.actionButton();
     }//GEN-LAST:event_actionButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
