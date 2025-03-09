@@ -1,22 +1,9 @@
 package org.cafe.views.revenues;
 
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.RevenueDatabaseController;
-import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.ConfirmDeleteDialog;
-import org.cafe.utils.CurrencyFormatter;
-import org.cafe.utils.RecordVerification;
-import org.cafe.utils.SearchFieldHandler;
-import org.cafe.utils.SetBackIcon;
-import org.cafe.utils.ValueRangeFilter;
-import org.cafe.views.revenues.components.manager_register.ManagerRevenueView;
 
 public class RevenuesView extends javax.swing.JFrame {
-  private final RevenueDatabaseController revenueDatabaseController;
-  private final Runnable onUpdateMainScreen;
-  private ArrayList<RevenueModel> allRevenues;
-  private ArrayList<RevenueModel> displayedRevenues;
+  private final RevenuesController controller;
 
   /**
    * Construtor.
@@ -25,61 +12,20 @@ public class RevenuesView extends javax.swing.JFrame {
    * @param onUpdateMainScreen Método para atualização da tela principal.
    */
   public RevenuesView(RevenueDatabaseController revenueDatabaseController, Runnable onUpdateMainScreen) {
-    this.revenueDatabaseController = revenueDatabaseController;
-    this.onUpdateMainScreen = onUpdateMainScreen;
-
     initComponents();
 
-    initializeSearchField();
-
-    listRevenues();
-
-    new SetBackIcon().set(exitButton);
-  }
-
-  private void initializeSearchField() {
-    screenTitle.setFocusable(true);
-
-    new SearchFieldHandler(searchField).initialize();
-  }
-
-  /**
-   * Lista todas as receitas.
-   */
-  private void listRevenues() {
-    allRevenues = revenueDatabaseController.getAll();
-    displayedRevenues = allRevenues;
-    showRevenues();
-  }
-
-  /**
-   * Mostra as informações das receitas.
-   */
-  private void showRevenues() {
-    DefaultTableModel tableModel = (DefaultTableModel) revenuesTable.getModel();
-    tableModel.setRowCount(0);
-
-    // Criação das linhas da tabela.
-    for (RevenueModel revenue : displayedRevenues) {
-      String formattedValue = CurrencyFormatter.format(revenue.getValue());
-
-      Object[] rowData = new Object[4];
-      rowData[0] = revenue.getName();
-      rowData[1] = revenue.getDescription();
-      rowData[2] = formattedValue;
-      rowData[3] = revenue.getPeriod();
-      tableModel.addRow(rowData);
-    }
-  }
-
-  /**
-   * Atualiza a lista de receitas.
-   */
-  private void updateScreen() {
-    onUpdateMainScreen.run();
-    listRevenues();
-
-    search();
+    this.controller = new RevenuesController(
+            this,
+            onUpdateMainScreen,
+            revenueDatabaseController,
+            exitButton,
+            screenTitle,
+            searchField,
+            valueMinFilterField,
+            valueMaxFilterField,
+            periodFilterField,
+            revenuesTable
+    );
   }
 
   /**
@@ -319,93 +265,22 @@ public class RevenuesView extends javax.swing.JFrame {
    * Abre a tela de criação de uma receita.
    */
   private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-    new ManagerRevenueView(
-            revenueDatabaseController,
-            null,
-            this::updateScreen
-    ).setVisible(true);
+    controller.addButton();
   }//GEN-LAST:event_addButtonMouseClicked
 
   /**
    * Abre a tela de atualização da receita selecionada.
    */
   private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-    if (RecordVerification.verifyRecords(revenuesTable, "atualizar")) {
-      RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
-      new ManagerRevenueView(
-              revenueDatabaseController,
-              selectedRevenue,
-              this::updateScreen
-      ).setVisible(true);
-    }
+    controller.updateButton();
   }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
    * Remove a receita selecionada.
    */
   private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-    ConfirmDeleteDialog.showDeleteConfirmation(
-            revenuesTable,
-            () -> {
-              RevenueModel selectedRevenue = displayedRevenues.get(revenuesTable.getSelectedRow());
-              revenueDatabaseController.removeById(selectedRevenue.getId());
-
-              updateScreen();
-            }
-    );
+    controller.deleteButton();
   }//GEN-LAST:event_deleteButtonMouseClicked
-
-  /**
-   * Método de pesquisa das despesas.
-   */
-  private void search() {
-    // Obtenção dos filtros.
-    String query = searchField.getText().trim();
-    String periodFilter = (String) periodFilterField.getSelectedItem();
-    String valueMinFilterText = valueMinFilterField.getText().trim();
-    String valueMaxFilterText = valueMaxFilterField.getText().trim();
-
-    // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
-      displayedRevenues = allRevenues;
-      showRevenues();
-
-      return;
-    }
-
-    // Obtenção dos filtros de valor mínimo e máximo.
-    ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-    if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
-      return;
-    }
-
-    ArrayList<RevenueModel> results = new ArrayList<>();
-
-    // Filtragem dos orçamentos.
-    for (RevenueModel revenue : allRevenues) {
-      // Filtro de texto e período.
-      boolean matchesQuery = query.equals("Pesquisar...") || revenue.getName().contains(query) || revenue.getDescription().contains(query);
-      boolean matchesPeriod = periodFilter.equals("Todos") || revenue.getPeriod().equals(periodFilter);
-
-      // Filtros de valor.
-      boolean matchesValue = true;
-      if (valueRangeFilter.getApplyValueMinFilter()) {
-        matchesValue = revenue.getValue() >= valueRangeFilter.getValueMinFilter();
-      }
-      if (valueRangeFilter.getApplyValueMaxFilter() && matchesValue) {
-        matchesValue = revenue.getValue() <= valueRangeFilter.getValueMaxFilter();
-      }
-
-      // Checagem das filtragens.
-      if (matchesQuery && matchesPeriod && matchesValue) {
-        results.add(revenue);
-      }
-    }
-
-    displayedRevenues = results;
-
-    showRevenues();
-  }
 
   /**
    * Método chamado para sair da tela.
@@ -419,19 +294,14 @@ public class RevenuesView extends javax.swing.JFrame {
    * definidos.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    search();
+    controller.search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
   /**
    * Método chamado para remover todos os filtros.
    */
   private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
-    searchField.setText("Pesquisar...");
-    valueMinFilterField.setText("");
-    valueMaxFilterField.setText("");
-    periodFilterField.setSelectedItem("Todos");
-
-    search();
+    controller.clearFiltersButton();
   }//GEN-LAST:event_clearFiltersButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
