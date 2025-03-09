@@ -1,34 +1,12 @@
 package org.cafe.views.main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import org.cafe.database.controllers.BudgetDatabaseController;
 import org.cafe.database.controllers.BudgetItemDatabaseController;
 import org.cafe.database.controllers.ExpenseDatabaseController;
 import org.cafe.database.controllers.RevenueDatabaseController;
-import org.cafe.models.expense.ExpenseModel;
-import org.cafe.models.revenue.RevenueModel;
-import org.cafe.utils.CurrencyFormatter;
-import org.cafe.views.budgets.BudgetsView;
-import org.cafe.views.expenses.ExpensesView;
-import org.cafe.views.financial_overview.FinancialOverviewView;
-import org.cafe.views.revenues.RevenuesView;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 
 public class MainView extends javax.swing.JFrame {
-  private final ExpenseDatabaseController expenseDatabaseController;
-  private final RevenueDatabaseController revenueDatabaseController;
-  private final BudgetDatabaseController budgetDatabaseController;
-  private final BudgetItemDatabaseController budgetItemDatabaseController;
+  private final MainController controller;
 
   /**
    * Construtor.
@@ -39,147 +17,23 @@ public class MainView extends javax.swing.JFrame {
    * @param budgetItemDatabaseController Controlador de itens de orçamento.
    */
   public MainView(ExpenseDatabaseController expenseDatabaseController, RevenueDatabaseController revenueDatabaseController, BudgetDatabaseController budgetDatabaseController, BudgetItemDatabaseController budgetItemDatabaseController) {
-    this.expenseDatabaseController = expenseDatabaseController;
-    this.revenueDatabaseController = revenueDatabaseController;
-    this.budgetDatabaseController = budgetDatabaseController;
-    this.budgetItemDatabaseController = budgetItemDatabaseController;
-
     initComponents();
 
-    revenuesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_green.png")));
-    expensesArrowIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow_red.png")));
-    userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_icon.png")));
-    financialOverviewIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financial_vision_icon.png")));
-    budgetsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/budgets_icon.png")));
-
-    greetingLabel.setText(getGreeting() + ",");
-
-    loadData();
-  }
-
-  /**
-   * Carrega os dados que serão exibidos na tela.
-   */
-  private void loadData() {
-    double revenuesValue = calculateTotalByPeriod(revenueDatabaseController.getAll());
-    double expensesValue = calculateTotalByPeriod(expenseDatabaseController.getAll());
-
-    String formattedRevenuesValue = CurrencyFormatter.format(revenuesValue);
-    String formattedExpensesValue = CurrencyFormatter.format(expensesValue);
-
-    revenuesValueLabel.setText(formattedRevenuesValue);
-    expensesValueLabel.setText(formattedExpensesValue);
-
-    graphicAdd(revenuesValue, expensesValue);
-  }
-
-  /**
-   * Obtém a saudação de acordo com o horário.
-   */
-  private static String getGreeting() {
-    LocalTime currentTime = LocalTime.now();
-    int hour = currentTime.getHour();
-
-    if (hour >= 6 && hour < 12) {
-      return "Bom dia";
-    } else if (hour >= 12 && hour < 18) {
-      return "Boa tarde";
-    } else {
-      return "Boa noite";
-    }
-  }
-
-  /**
-   * Criação do gráfico.
-   */
-  private void graphicAdd(double revenuesValue, double expensesValue) {
-    // Criar os dados do gráfico.
-    PieDataset dataset = createDataset(revenuesValue, expensesValue);
-
-    // Cria o gráfico.
-    JFreeChart chart = ChartFactory.createPieChart(
-            "",
-            dataset,
-            false,
-            true,
-            false
+    this.controller = new MainController(
+            expenseDatabaseController,
+            revenueDatabaseController,
+            budgetDatabaseController,
+            budgetItemDatabaseController,
+            revenuesArrowIcon,
+            expensesArrowIcon,
+            userIcon,
+            financialOverviewIcon,
+            budgetsIcon,
+            greetingLabel,
+            revenuesValueLabel,
+            expensesValueLabel,
+            graphicPanel
     );
-
-    // Cria o painel do gráfico.
-    ChartPanel chartPanel = new ChartPanel(chart);
-    PiePlot plot = (PiePlot) chart.getPlot();
-    plot.setOutlineVisible(false);
-
-    // Cor de fundo do gráfico.
-    chart.setBackgroundPaint(Color.WHITE);
-    plot.setBackgroundPaint(Color.WHITE);
-
-    // Cor das fatias do gráfico.
-    plot.setSectionPaint("Receitas", Color.GREEN);
-    plot.setSectionPaint("Despesas", Color.RED);
-
-    // Dimensões do gráfico.
-    chartPanel.setPreferredSize(new Dimension(300, 200));
-
-    // Remove todos os rótulos das fatias.
-    plot.setLabelGenerator(null);
-
-    // Deixa apenas as porcentagens das fatias nos rótulos.
-    plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
-
-    // Adiciona o gráfico ao painel.
-    graphicPanel.removeAll();
-    graphicPanel.setLayout(new BorderLayout());
-    graphicPanel.add(chartPanel, BorderLayout.CENTER);
-    graphicPanel.revalidate();
-    graphicPanel.repaint();
-  }
-
-  /**
-   * Cria as fatias do gráfico.
-   */
-  private PieDataset createDataset(double revenuesValue, double expensesValue) {
-    DefaultPieDataset dataset = new DefaultPieDataset();
-    dataset.setValue("Receitas", revenuesValue);
-    dataset.setValue("Despesas", expensesValue);
-
-    return dataset;
-  }
-
-  /**
-   * Cálcula o valor total das receitas ou despesas.
-   */
-  private <T> double calculateTotalByPeriod(ArrayList<T> records) {
-    double total = 0;
-
-    for (T record : records) {
-      total += switch (record) {
-        case ExpenseModel expense ->
-          calculateValueByPeriod(expense.getValue(), expense.getPeriod());
-        case RevenueModel revenue ->
-          calculateValueByPeriod(revenue.getValue(), revenue.getPeriod());
-        default ->
-          0;
-      };
-    }
-
-    return total;
-  }
-
-  /**
-   * Cálcula o valor com base no seu período.
-   */
-  private double calculateValueByPeriod(double value, String period) {
-    return switch (period) {
-      case "Diário" ->
-        value * 30;
-      case "Semanal" ->
-        value * 4;
-      case "Mensal" ->
-        value;
-      default ->
-        0;
-    };
   }
 
   /**
@@ -516,36 +370,28 @@ public class MainView extends javax.swing.JFrame {
    * Abre a tela de orçamentos.
    */
   private void budgetsPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_budgetsPainelMouseClicked
-    BudgetsView budgetsView = new BudgetsView(budgetDatabaseController, budgetItemDatabaseController);
-
-    budgetsView.setVisible(true);
+    controller.budgetsButton();
   }//GEN-LAST:event_budgetsPainelMouseClicked
 
   /**
    * Abre a tela de visão financeira.
    */
   private void financialOverviewPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_financialOverviewPainelMouseClicked
-    FinancialOverviewView financialOverviewView = new FinancialOverviewView(revenueDatabaseController, expenseDatabaseController);
-
-    financialOverviewView.setVisible(true);
+    controller.financialOverviewButton();
   }//GEN-LAST:event_financialOverviewPainelMouseClicked
 
   /**
    * Abre a tela de despesas.
    */
   private void expensesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expensesPanelMouseClicked
-    ExpensesView expensesView = new ExpensesView(expenseDatabaseController, this::loadData);
-
-    expensesView.setVisible(true);
+    controller.expensesButton();
   }//GEN-LAST:event_expensesPanelMouseClicked
 
   /**
    * Abre a tela de receitas.
    */
   private void revenuesPainelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revenuesPainelMouseClicked
-    RevenuesView revenuesView = new RevenuesView(revenueDatabaseController, this::loadData);
-
-    revenuesView.setVisible(true);
+    controller.revenuesButton();
   }//GEN-LAST:event_revenuesPainelMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
