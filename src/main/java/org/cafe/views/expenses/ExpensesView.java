@@ -1,22 +1,9 @@
 package org.cafe.views.expenses;
 
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import org.cafe.database.controllers.ExpenseDatabaseController;
-import org.cafe.models.expense.ExpenseModel;
-import org.cafe.utils.ConfirmDeleteDialog;
-import org.cafe.utils.CurrencyFormatter;
-import org.cafe.utils.RecordVerification;
-import org.cafe.utils.SearchFieldHandler;
-import org.cafe.utils.SetBackIcon;
-import org.cafe.utils.ValueRangeFilter;
-import org.cafe.views.expenses.components.manager_expense.ManagerExpenseView;
 
 public class ExpensesView extends javax.swing.JFrame {
-  private final ExpenseDatabaseController expenseDatabaseController;
-  private  final Runnable onUpdateMainScreen;
-  private ArrayList<ExpenseModel> allExpenses;
-  private ArrayList<ExpenseModel> displayedExpenses;
+  private final ExpensesController controller;
 
   /**
    * Construtor.
@@ -25,62 +12,20 @@ public class ExpensesView extends javax.swing.JFrame {
    * @param onUpdateMainScreen Método para atualização da tela principal.
    */
   public ExpensesView(ExpenseDatabaseController expenseDatabaseController, Runnable onUpdateMainScreen) {
-    this.expenseDatabaseController = expenseDatabaseController;
-    this.onUpdateMainScreen = onUpdateMainScreen;
-
     initComponents();
 
-    initializeSearchField();
-
-    listExpenses();
-
-    new SetBackIcon().set(exitButton);
-  }
-
-  private void initializeSearchField() {
-    screenTitle.setFocusable(true);
-
-    new SearchFieldHandler(searchField).initialize();
-  }
-
-  /**
-   * Obtém todas as despesas.
-   */
-  private void listExpenses() {
-    allExpenses = expenseDatabaseController.getAll();
-    displayedExpenses = allExpenses;
-
-    showExpenses();
-  }
-
-  /**
-   * Mostra as informações das despesas.
-   */
-  private void showExpenses() {
-    DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
-    tableModel.setRowCount(0);
-
-    // Criação das linhas da tabela.
-    for (ExpenseModel expense : displayedExpenses) {
-      String formattedValue = CurrencyFormatter.format(expense.getValue());
-
-      Object[] rowData = new Object[4];
-      rowData[0] = expense.getName();
-      rowData[1] = expense.getDescription();
-      rowData[2] = formattedValue;
-      rowData[3] = expense.getPeriod();
-      tableModel.addRow(rowData);
-    }
-  }
-
-  /**
-   * Atualiza a lista de despesas.
-   */
-  private void updateScreen() {
-    onUpdateMainScreen.run();
-    listExpenses();
-
-    search();
+    this.controller = new ExpensesController(
+            this,
+            onUpdateMainScreen,
+            expenseDatabaseController,
+            exitButton,
+            screenTitle,
+            searchField,
+            valueMinFilterField,
+            valueMaxFilterField,
+            periodFilterField,
+            expensesTable
+    );
   }
 
   /**
@@ -165,10 +110,7 @@ public class ExpensesView extends javax.swing.JFrame {
 
     expensesTable.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null}
+
       },
       new String [] {
         "Nome", "Descrição", "Valor", "Período"
@@ -313,122 +255,45 @@ public class ExpensesView extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
   /**
-   * Remove a despesa selecionada.
+   * Método de remoção da despesa selecionada.
    */
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
-      ConfirmDeleteDialog.showDeleteConfirmation(
-              expensesTable,
-              () -> {
-                ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
-                expenseDatabaseController.removeById(selectedExpense.getId());
-
-                updateScreen();
-              }
-      );
+      controller.deleteButton();
     }//GEN-LAST:event_deleteButtonMouseClicked
 
   /**
-   * Abre a tela de criação de uma despesa.
+   * Método de abertura da tela de criação de uma nova despesa.
    */
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-      new ManagerExpenseView(
-              expenseDatabaseController,
-              null,
-              this::updateScreen
-      ).setVisible(true);
+      controller.addButton();
     }//GEN-LAST:event_addButtonMouseClicked
 
   /**
    * Abre a tela de atualização da despesa selecionada.
    */
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
-      if (RecordVerification.verifyRecords(expensesTable, "atualizar")) {
-        ExpenseModel selectedExpense = displayedExpenses.get(expensesTable.getSelectedRow());
-        new ManagerExpenseView(
-                expenseDatabaseController,
-                selectedExpense,
-                this::updateScreen
-        ).setVisible(true);
-      }
+      controller.updateButton();
     }//GEN-LAST:event_updateButtonMouseClicked
 
   /**
-   * Método de pesquisa das despesas.
-   */
-  private void search() {
-    // Obtenção dos filtros.
-    String query = searchField.getText().trim();
-    String periodFilter = (String) periodFilterField.getSelectedItem();
-    String valueMinFilterText = valueMinFilterField.getText().trim();
-    String valueMaxFilterText = valueMaxFilterField.getText().trim();
-
-    // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
-      displayedExpenses = allExpenses;
-      showExpenses();
-
-      return;
-    }
-
-    // Obtenção dos filtros de valor mínimo e máximo.
-    ValueRangeFilter valueRangeFilter = new ValueRangeFilter();
-    if (!valueRangeFilter.validate(this, valueMinFilterText, valueMaxFilterText)) {
-      return;
-    }
-
-    ArrayList<ExpenseModel> results = new ArrayList<>();
-
-    // Filtragem dos orçamentos.
-    for (ExpenseModel expense : allExpenses) {
-      // Filtro de texto e período.
-      boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
-      boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
-
-      // Filtros de valor.
-      boolean matchesValue = true;
-      if (valueRangeFilter.getApplyValueMinFilter()) {
-        matchesValue = expense.getValue() >= valueRangeFilter.getValueMinFilter();
-      }
-      if (valueRangeFilter.getApplyValueMaxFilter() && matchesValue) {
-        matchesValue = expense.getValue() <= valueRangeFilter.getValueMaxFilter();
-      }
-
-      // Checagem das filtragens.
-      if (matchesQuery && matchesPeriod && matchesValue) {
-        results.add(expense);
-      }
-    }
-
-    displayedExpenses = results;
-
-    showExpenses();
-  }
-
-  /**
-   * Método chamado para sair da tela.
+   * Método de sair da tela.
    */
   private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
     this.dispose();
   }//GEN-LAST:event_exitButtonMouseClicked
 
   /**
-   * Método chamado para filtrar os orçamentos de acordo com os filtros
-   * definidos.
+   * Método de pesquisa de despesas com base nos filtros aplicados.
    */
   private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-    search();
+    controller.search();
   }//GEN-LAST:event_searchButtonMouseClicked
 
   /**
-   * Método chamado para remover todos os filtros.
+   * Método de limpeza de todos os filtros.
    */
   private void clearFiltersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFiltersButtonMouseClicked
-    searchField.setText("Pesquisar...");
-    valueMinFilterField.setText("");
-    valueMaxFilterField.setText("");
-    periodFilterField.setSelectedItem("Todos");
-
-    search();
+    controller.clearFiltersButton();
   }//GEN-LAST:event_clearFiltersButtonMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
