@@ -6,9 +6,10 @@ Um aplicativo de gerenciamento financeiro pessoal desenvolvido em Java, utilizan
 
 ## Funcionalidades
 
-*   **Cadastro de Receitas:** Permite registrar novas fontes de renda, especificando a descrição, valor e data do recebimento.
-*   **Cadastro de Despesas:** Possibilita o registro de despesas, categorizando-as (ex: moradia, alimentação, transporte), com descrição, valor e data.
-*   **Listagem de Transações:** Exibe uma lista detalhada de todas as receitas e despesas cadastradas, ordenadas por data ou categoria.
+*   **Receitas:** Permite registrar fontes de renda.
+*   **Despesas:** Possibilita o registro de despesas.
+*   **Visão Financeira:** Exibe as receitas e despesas organizadas por períodos, para facilitar o acompanhamento financeiro.
+*   **Orçamentos:** Auxilia no planejamento de gastos, permitindo a criação e o monitoramento de orçamentos para diferentes áreas ou projetos.
 
 ## Tecnologias Utilizadas
 
@@ -46,6 +47,14 @@ financial_management/               # Nome do projeto
 └── pom.xml                         # Arquivo de configuração do Maven
 ```
 
+## Arquitetura
+
+O projeto adota o padrão arquitetural **MVC (Model-View-Controller)**, que promove a separação de responsabilidades, facilitando a manutenção e testabilidade do código, ficando da seguinte maneira:
+
+- **Model**: Responsável pela representação dos dados. Localizadas no diretório `models`, e com prefixo `Model`.
+- **View**: Responsável pela apresentação dos dados ao usuário e interação com o sistema através de componentes gráficos (ex: janelas, botões, campos de texto).  As telas da aplicação são construídas utilizando a biblioteca Swing e estão localizadas no diretório `views`, com prefixo `View`.
+- **Controller**: Atua como intermediário entre a View e o Model. Recebe as ações que devem ser executadas, como criação, atualização, remoção, acessar tela e dentre outras. Estão presentes nas classes `*Controller` dentro dos pacotes de visualização (e.g. `views/budgets`, `views/expenses`, `views/revenues`), recebendo o prefixo `Controller`.
+
 ## Execução
 
 1. Clone o repositório do projeto:
@@ -68,10 +77,60 @@ java -jar target/financial_management-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 A interface gráfica da aplicação foi desenvolvida utilizando Java Swing, uma biblioteca para criação de interfaces de usuário. O Swing permite a construção de componentes gráficos como botões, campos de texto, tabelas e menus, proporcionando uma experiência fluida e intuitiva para o usuário. Para facilitar o desenvolvimento, a IDE NetBeans foi utilizada, oferecendo ferramentas visuais e suporte a recursos como arrastar e soltar, o que acelera o processo de criação e organização da interface. Com isso, a aplicação garante uma interação eficiente e agradável para o usuário final, com componentes altamente configuráveis e flexíveis.
 
-## Arquitetura
+### Telas
 
-O projeto adota o padrão arquitetural **MVC (Model-View-Controller)**, que promove a separação de responsabilidades, facilitando a manutenção e testabilidade do código, ficando da seguinte maneira:
+- **Tela Principal:**
 
-- **Model**: Responsável pela representação dos dados. Localizadas no diretório `models`, e com prefixo `Model`.
-- **View**: Responsável pela apresentação dos dados ao usuário e interação com o sistema através de componentes gráficos (ex: janelas, botões, campos de texto).  As telas da aplicação são construídas utilizando a biblioteca Swing e estão localizadas no diretório `views`, com prefixo `View`.
-- **Controller**: Atua como intermediário entre a View e o Model. Recebe as ações que devem ser executadas, como criação, atualização, remoção, acessar tela e dentre outras. Estão presentes nas classes `*Controller` dentro dos pacotes de visualização (e.g. `views/budgets`, `views/expenses`, `views/revenues`), recebendo o prefixo `Controller`.
+![Main View](screenshots\main_view_screenshot.png)
+
+- **Tela de Receitas:**
+
+![Revenues View](screenshots\revenues_view_screenshot.png)
+
+- **Tela de Despesas:**
+
+![Expenses](screenshots\expenses_view_screenshot.png)
+
+- **Tela de Visão Financeira:**
+
+![Financial Overview View](screenshots\financial_overview_view_screenshot.png)
+
+- **Tela de Orçamentos:**
+
+![Budgets View](screenshots\budgets_view_screenshot.png)
+
+- **Tela de Orçamento:**
+
+![Budget View](screenshots\budget_view_screenshot.png)
+
+### Diálogos
+
+- **Erro quando algum ou todos os campos não foram preenchidos:**
+
+![Empty Manager Revenue View](screenshots\empty_manager_revenue_view_screenshot.png)
+
+![Fill All Fields Error Dialog](screenshots\fill_all_fields_error_dialog_screenshot.png)
+
+- **Alerta quando a tabela está vazia (mesmo aviso para remoção):**
+
+![Empty Expenses View](screenshots\empty_expenses_view_screenshot.png)
+
+![No Records Alert Dialog](screenshots\no_records_alert_dialog_screenshot.png)
+
+- **Confirmar remoção de registro:**
+
+![Removal Confirmation Alert Dialog](screenshots\removal_confirmation_alert_dialog_screenshot.png)
+
+- **Nenhum registro foi selecionado:**
+
+![No Record Selected Revenues View](screenshots\no_record_selected_revenues_view_screenshot.png)
+
+- **Erro quando inserido um valor númerico inválido, como caracteres não númericos:**
+
+![Invalid Value Manager Revenue View](screenshots\invalid_value_manager_revenue_view_screenshot.png)
+
+![Value Number Valid Error Dialog](screenshots\value_number_valid_error_dialog_screenshot.png)
+
+## Autores
+
+Projeto desenvolvido por [Dário Matias Sales](https://github.com/dariomatias-dev), [Dario Arthur Moura Ramos](https://github.com/Dario-Arthur) e [Arthur dos Santos Lima](https://github.com/Fastusx).
