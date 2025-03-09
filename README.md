@@ -81,55 +81,55 @@ A interface gráfica da aplicação foi desenvolvida utilizando Java Swing, uma 
 
 - **Tela Principal:**
 
-![Main View](screenshots\main_view_screenshot.png)
+![Main View](screenshots/main_view_screenshot.png)
 
 - **Tela de Receitas:**
 
-![Revenues View](screenshots\revenues_view_screenshot.png)
+![Revenues View](screenshots/revenues_view_screenshot.png)
 
 - **Tela de Despesas:**
 
-![Expenses](screenshots\expenses_view_screenshot.png)
+![Expenses](screenshots/expenses_view_screenshot.png)
 
 - **Tela de Visão Financeira:**
 
-![Financial Overview View](screenshots\financial_overview_view_screenshot.png)
+![Financial Overview View](screenshots/financial_overview_view_screenshot.png)
 
 - **Tela de Orçamentos:**
 
-![Budgets View](screenshots\budgets_view_screenshot.png)
+![Budgets View](screenshots/budgets_view_screenshot.png)
 
 - **Tela de Orçamento:**
 
-![Budget View](screenshots\budget_view_screenshot.png)
+![Budget View](screenshots/budget_view_screenshot.png)
 
 ### Diálogos
 
 - **Erro quando algum ou todos os campos não foram preenchidos:**
 
-![Empty Manager Revenue View](screenshots\empty_manager_revenue_view_screenshot.png)
+![Empty Manager Revenue View](screenshots/empty_manager_revenue_view_screenshot.png)
 
-![Fill All Fields Error Dialog](screenshots\fill_all_fields_error_dialog_screenshot.png)
+![Fill All Fields Error Dialog](screenshots/fill_all_fields_error_dialog_screenshot.png)
 
 - **Alerta quando a tabela está vazia (mesmo aviso para remoção):**
 
-![Empty Expenses View](screenshots\empty_expenses_view_screenshot.png)
+![Empty Expenses View](screenshots/empty_expenses_view_screenshot.png)
 
-![No Records Alert Dialog](screenshots\no_records_alert_dialog_screenshot.png)
+![No Records Alert Dialog](screenshots/no_records_alert_dialog_screenshot.png)
 
 - **Confirmar remoção de registro:**
 
-![Removal Confirmation Alert Dialog](screenshots\removal_confirmation_alert_dialog_screenshot.png)
+![Removal Confirmation Alert Dialog](screenshots/removal_confirmation_alert_dialog_screenshot.png)
 
 - **Nenhum registro foi selecionado:**
 
-![No Record Selected Revenues View](screenshots\no_record_selected_revenues_view_screenshot.png)
+![No Record Selected Revenues View](screenshots/no_record_selected_revenues_view_screenshot.png)
 
 - **Erro quando inserido um valor númerico inválido, como caracteres não númericos:**
 
-![Invalid Value Manager Revenue View](screenshots\invalid_value_manager_revenue_view_screenshot.png)
+![Invalid Value Manager Revenue View](screenshots/invalid_value_manager_revenue_view_screenshot.png)
 
-![Value Number Valid Error Dialog](screenshots\value_number_valid_error_dialog_screenshot.png)
+![Value Number Valid Error Dialog](screenshots/value_number_valid_error_dialog_screenshot.png)
 
 ## Autores
 
