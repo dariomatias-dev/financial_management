@@ -85,11 +85,23 @@ A interface gráfica da aplicação foi desenvolvida utilizando Java Swing, uma 
 
 - **Tela de Receitas:**
 
+    Filtros: Texto, valor mínimo e máximo, e período.
+
 ![Revenues View](screenshots/revenues_view_screenshot.png)
+
+Criar Receita:
+
+![Manager Revenue View](screenshots/manager_revenue_view_screenshot.png)
 
 - **Tela de Despesas:**
 
+    Filtros: Texto, valor mínimo e máximo, e período.
+
 ![Expenses](screenshots/expenses_view_screenshot.png)
+
+Criar Despesa:
+
+![Manager Expense View](screenshots/manager_expense_view_screenshot.png)
 
 - **Tela de Visão Financeira:**
 
@@ -97,21 +109,29 @@ A interface gráfica da aplicação foi desenvolvida utilizando Java Swing, uma 
 
 - **Tela de Orçamentos:**
 
+    Filtros: Texto, status, valor mínimo e máximo, e data inicial e final.
+
 ![Budgets View](screenshots/budgets_view_screenshot.png)
+
+Criar Orçamento:
+
+![Manager Budget View](screenshots/manager_budget_view_screenshot.png)
 
 - **Tela de Orçamento:**
 
-![Budget View](screenshots/budget_view_screenshot.png)
+![Budget View](screenshots/budget_view_1_screenshot.png)
+
+![Budget View](screenshots/budget_view_2_screenshot.png)
+
+Criar Item de Orçamento:
+
+![Manager Budget Item View](screenshots/manager_budget_item_view_screenshot.png)
+
+<br/>
 
 ### Diálogos
 
-- **Erro quando algum ou todos os campos não foram preenchidos:**
-
-![Empty Manager Revenue View](screenshots/empty_manager_revenue_view_screenshot.png)
-
-![Fill All Fields Error Dialog](screenshots/fill_all_fields_error_dialog_screenshot.png)
-
-- **Alerta quando a tabela está vazia (mesmo aviso para remoção):**
+- **Tabela está vazia (mesmo aviso para remoção):**
 
 ![Empty Expenses View](screenshots/empty_expenses_view_screenshot.png)
 
@@ -121,15 +141,29 @@ A interface gráfica da aplicação foi desenvolvida utilizando Java Swing, uma 
 
 ![Removal Confirmation Alert Dialog](screenshots/removal_confirmation_alert_dialog_screenshot.png)
 
-- **Nenhum registro foi selecionado:**
+- **Nenhum registro foi selecionado (mesmo aviso para remoção):**
 
 ![No Record Selected Revenues View](screenshots/no_record_selected_revenues_view_screenshot.png)
 
-- **Erro quando inserido um valor númerico inválido, como caracteres não númericos:**
+![No Records Alert Dialog](screenshots/no_records_alert_dialog_screenshot.png)
+
+- **Algum ou todos os campos não foram preenchidos:**
+
+![Empty Manager Revenue View](screenshots/empty_manager_revenue_view_screenshot.png)
+
+![Fill All Fields Error Dialog](screenshots/fill_all_fields_error_dialog_screenshot.png)
+
+- **Inserido um valor númerico inválido, como caracteres não númericos:**
 
 ![Invalid Value Manager Revenue View](screenshots/invalid_value_manager_revenue_view_screenshot.png)
 
 ![Value Number Valid Error Dialog](screenshots/value_number_valid_error_dialog_screenshot.png)
+
+- **Data inicial posterior a data final:**
+
+![Initial Date After The Final Manager Budget View](screenshots/initial_date_after_the_final_manager_budget_view_screenshot.png)
+
+![Initial Date After The Final Error Dialog](screenshots/initial_date_after_the_final_error_dialog_screenshot.png)
 
 ## Autores
 
