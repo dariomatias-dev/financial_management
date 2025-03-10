@@ -16,13 +16,13 @@ public class RevenueDatabaseController extends DatabaseController<RevenueModel> 
   }
 
   public void create(
-          CreateRevenueModel RevenueModel
+          CreateRevenueModel revenue
   ) {
     Object[] values = {
-      RevenueModel.getName(),
-      RevenueModel.getDescription(),
-      RevenueModel.getValue(),
-      RevenueModel.getPeriod()
+      revenue.getName(),
+      revenue.getDescription(),
+      revenue.getValue(),
+      revenue.getPeriod()
     };
 
     super.insert(values);

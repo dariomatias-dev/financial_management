@@ -131,7 +131,7 @@ public class ManagerBudgetController {
     }
 
     if (initialDate.isAfter(endDate)) {
-      JOptionPane.showMessageDialog(parentComponent, "A data de início não pode ser posterior à data de término.", "Erro", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(parentComponent, "A data inicial não pode ser posterior à data final.", "Erro", JOptionPane.ERROR_MESSAGE);
       return;
     }
 
