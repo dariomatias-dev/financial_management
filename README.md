@@ -64,8 +64,7 @@ git clone https://github.com/dariomatias-dev/financial_management.git
 
 2 - Compile o projeto para um arquivo `jar`:
 ```bash
-mvn clean install
-mvn exec:java -Dexec.mainClass="br.edu.ifpb.aluguel_carros.App"
+mvn clean package
 ```
 
 3 - Use o seguinte comando para executar a aplicação:
