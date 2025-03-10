@@ -1,9 +1,7 @@
 package org.cafe.views.budgets.components.manager_budget;
 
 import java.awt.Window;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.function.Consumer;
 import javax.swing.*;
 import org.cafe.core.formatters.DateMaskFormatter;
@@ -75,8 +73,6 @@ public class ManagerBudgetController {
     new DateMaskFormatter().applyMask(initialDateField);
     new DateMaskFormatter().applyMask(endDateField);
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
     // Preenche os campos com os atuais dados do orçamento caso a tela seja de atualização.
     if (data != null) {
       nameField.setText(data.getName());
@@ -85,15 +81,15 @@ public class ManagerBudgetController {
       statusSelect.setSelectedItem(data.getStatus());
       valueField.setText(String.valueOf(data.getTotalBudgetValue()));
 
-      initialDateField.setText(formatter.format(data.getInitialDate()));
-      endDateField.setText(formatter.format(data.getEndDate()));
+      initialDateField.setText(DateFormatter.format(data.getInitialDate()));
+      endDateField.setText(DateFormatter.format(data.getEndDate()));
 
       screenTitle.setFocusable(true);
       screenTitle.setText("Atualizar Orçamento");
       actionButton.setText("Atualizar");
     } else {
-      Date currentDate = new Date();
-      initialDateField.setText(formatter.format(currentDate));
+      LocalDate currentDate = LocalDate.now();
+      initialDateField.setText(DateFormatter.format(currentDate));
     }
   }
 

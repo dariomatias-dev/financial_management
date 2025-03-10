@@ -119,6 +119,8 @@ public class BudgetController {
     new SearchFieldHandler(searchField).initialize();
 
     new SetBackIcon().set(exitButton);
+
+    calculateBudgetValue();
   }
 
   /**
@@ -275,7 +277,11 @@ public class BudgetController {
     monetaryModel.setRowCount(0);
 
     // Adição das informações
-    monetaryModel.addRow(new Object[]{CurrencyFormatter.format(totalBudget), CurrencyFormatter.format(totalSpent), CurrencyFormatter.format(remainingValue)});
+    monetaryModel.addRow(new Object[]{
+      CurrencyFormatter.format(totalBudget),
+      CurrencyFormatter.format(totalSpent),
+      CurrencyFormatter.format(remainingValue)
+    });
   }
 
   // SCREEN ACTIONS

@@ -14,13 +14,13 @@ public class BudgetCalculator {
           List<BudgetItemModel> budgetItems
   ) {
     double totalBudget = 0.0;
-
+    
     for (BudgetItemModel item : budgetItems) {
-      long numberOfPeriods = calculatePeriods(item.getPeriod(), budget.getInitialDate(), budget.getEndDate());
+      long numberOfPeriods = calculatePeriods(item.getPeriod(), budget.getInitialDate(), budget.getEndDate().plusDays(1));
       double itemTotal = numberOfPeriods * item.getValue();
       totalBudget += itemTotal;
     }
-
+    
     BudgetModel newBudget = new BudgetModel(
             budget.getId(),
             budget.getName(),
@@ -32,12 +32,12 @@ public class BudgetCalculator {
             budget.getInitialDate(),
             budget.getEndDate()
     );
-
+    
     budgetDatabaseController.update(newBudget);
-
+    
     return newBudget;
   }
-
+  
   private long calculatePeriods(String period, LocalDate startDate, LocalDate endDate) {
     return switch (period.toLowerCase()) {
       case "diário" ->
