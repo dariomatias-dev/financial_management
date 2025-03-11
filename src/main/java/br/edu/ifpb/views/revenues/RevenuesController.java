@@ -2,13 +2,13 @@ package br.edu.ifpb.views.revenues;
 
 import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.revenue.RevenueModel;
+import br.edu.ifpb.utils.BehaviorOverride;
 import br.edu.ifpb.utils.ConfirmDeleteDialog;
 import br.edu.ifpb.utils.CurrencyFormatter;
 import br.edu.ifpb.utils.RecordVerification;
 import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
-import br.edu.ifpb.utils.BehaviorOverride;
 import br.edu.ifpb.views.revenues.components.manager_register.ManagerRevenueView;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -67,8 +67,6 @@ public class RevenuesController {
     new SearchFieldHandler(searchField).initialize();
     new SetBackIcon().set(exitButton);
 
-    listRevenues();
-    
     BehaviorOverride.apply(parentComponent);
   }
 

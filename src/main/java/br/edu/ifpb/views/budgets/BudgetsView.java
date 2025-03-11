@@ -118,10 +118,7 @@ public class BudgetsView extends javax.swing.JFrame {
 
     budgetsTable.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {null, null, null, null, null, null},
-        {null, null, null, null, null, null},
-        {null, null, null, null, null, null},
-        {null, null, null, null, null, null}
+
       },
       new String [] {
         "Nome", "Categoria", "Valor", "Status", "Data Inicial", "Data Final"
@@ -236,10 +233,9 @@ public class BudgetsView extends javax.swing.JFrame {
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(screenTitle)
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(clearFiltersButton)
-              .addComponent(searchButton))))
+            .addComponent(clearFiltersButton)
+            .addComponent(searchButton))
+          .addComponent(screenTitle))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
