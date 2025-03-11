@@ -1,22 +1,24 @@
 package br.edu.ifpb.views.main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import javax.swing.*;
 import br.edu.ifpb.database.controllers.BudgetDatabaseController;
 import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
 import br.edu.ifpb.database.controllers.ExpenseDatabaseController;
 import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.expense.ExpenseModel;
 import br.edu.ifpb.models.revenue.RevenueModel;
+import br.edu.ifpb.utils.BehaviorOverride;
 import br.edu.ifpb.utils.CurrencyFormatter;
 import br.edu.ifpb.views.budgets.BudgetsView;
 import br.edu.ifpb.views.expenses.ExpensesView;
 import br.edu.ifpb.views.financial_overview.FinancialOverviewView;
 import br.edu.ifpb.views.revenues.RevenuesView;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Window;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -38,6 +40,7 @@ public class MainController {
   /**
    * Construtor.
    *
+   * @param parentComponent Componente pai.
    * @param expenseDatabaseController Controlador de despesas.
    * @param revenueDatabaseController Controlador de receitas.
    * @param budgetDatabaseController Controlador de orçamentos.
@@ -53,6 +56,7 @@ public class MainController {
    * @param graphicPanel Gráfico de porcentagem das receitas e despesas.
    */
   public MainController(
+          Window parentComponent,
           ExpenseDatabaseController expenseDatabaseController,
           RevenueDatabaseController revenueDatabaseController,
           BudgetDatabaseController budgetDatabaseController,
@@ -85,6 +89,8 @@ public class MainController {
     greetingLabel.setText(getGreeting() + ",");
 
     loadData();
+
+    BehaviorOverride.apply(parentComponent);
   }
 
   /**

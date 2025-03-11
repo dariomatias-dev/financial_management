@@ -4,7 +4,7 @@ import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.revenue.CreateRevenueModel;
 import br.edu.ifpb.models.revenue.RevenueModel;
 import br.edu.ifpb.utils.NumberValidator;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import java.awt.Window;
 import javax.swing.*;
 
@@ -67,7 +67,7 @@ public class ManagerRevenueController {
       actionButton.setText("Atualizar");
     }
     
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

@@ -8,7 +8,7 @@ import br.edu.ifpb.utils.RecordVerification;
 import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import br.edu.ifpb.views.expenses.components.manager_expense.ManagerExpenseView;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class ExpensesController {
 
     listExpenses();
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   /**

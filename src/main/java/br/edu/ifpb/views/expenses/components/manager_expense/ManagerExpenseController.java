@@ -4,7 +4,7 @@ import br.edu.ifpb.database.controllers.ExpenseDatabaseController;
 import br.edu.ifpb.models.expense.CreateExpenseModel;
 import br.edu.ifpb.models.expense.ExpenseModel;
 import br.edu.ifpb.utils.NumberValidator;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -71,7 +71,7 @@ public class ManagerExpenseController {
       actionButton.setText("Atualizar");
     }
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

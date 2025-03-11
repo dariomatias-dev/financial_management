@@ -6,7 +6,7 @@ import br.edu.ifpb.models.expense.ExpenseModel;
 import br.edu.ifpb.models.revenue.RevenueModel;
 import br.edu.ifpb.utils.CurrencyFormatter;
 import br.edu.ifpb.utils.SetBackIcon;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -63,7 +63,7 @@ public class FinancialOverviewController {
 
     init();
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   private void init() {

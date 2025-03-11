@@ -20,6 +20,7 @@ public class MainView extends javax.swing.JFrame {
     initComponents();
 
     this.controller = new MainController(
+            this,
             expenseDatabaseController,
             revenueDatabaseController,
             budgetDatabaseController,
@@ -150,7 +151,7 @@ public class MainView extends javax.swing.JFrame {
         .addGroup(expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(expensesTitleLabel)
           .addComponent(expensesValueLabel))
-        .addContainerGap(69, Short.MAX_VALUE))
+        .addContainerGap(98, Short.MAX_VALUE))
     );
     expensesPanelLayout.setVerticalGroup(
       expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,35 +301,36 @@ public class MainView extends javax.swing.JFrame {
         .addContainerGap(16, Short.MAX_VALUE))
     );
 
+    separator1.setAutoscrolls(true);
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addComponent(headerPainel, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
       .addGroup(backgroundLayout.createSequentialGroup()
+        .addContainerGap()
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(backgroundLayout.createSequentialGroup()
-            .addContainerGap()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(backgroundLayout.createSequentialGroup()
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(197, 197, 197)
+                .addGap(167, 167, 167)
                 .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-              .addComponent(separator1)))
-          .addGroup(backgroundLayout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(actionsLabel)
+              .addComponent(separator1)
+              .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(actionsLabel)
+                .addGap(0, 0, Short.MAX_VALUE))
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(financialOverviewPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(budgetsPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGap(0, 0, 0)))
-        .addContainerGap())
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-        .addGap(0, 0, Short.MAX_VALUE)
-        .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(120, 120, 120))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(graphicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
     );
     backgroundLayout.setVerticalGroup(
       backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

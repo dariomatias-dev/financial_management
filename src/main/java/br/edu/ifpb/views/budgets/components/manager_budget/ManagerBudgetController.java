@@ -6,7 +6,7 @@ import br.edu.ifpb.models.budget.BudgetModel;
 import br.edu.ifpb.models.budget.CreateBudgetModel;
 import br.edu.ifpb.utils.DateFormatter;
 import br.edu.ifpb.utils.NumberValidator;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import java.awt.Window;
 import java.time.LocalDate;
 import java.util.function.Consumer;
@@ -93,7 +93,7 @@ public class ManagerBudgetController {
       initialDateField.setText(DateFormatter.format(currentDate));
     }
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

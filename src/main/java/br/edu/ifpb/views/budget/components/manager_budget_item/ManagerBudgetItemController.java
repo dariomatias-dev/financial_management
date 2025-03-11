@@ -4,7 +4,7 @@ import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
 import br.edu.ifpb.models.budget_item.BudgetItemModel;
 import br.edu.ifpb.models.budget_item.CreateBudgetItemModel;
 import br.edu.ifpb.utils.NumberValidator;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import java.awt.Window;
 import java.time.LocalDate;
 import java.util.function.Consumer;
@@ -73,7 +73,7 @@ public class ManagerBudgetItemController {
       actionButton.setText("Atualizar");
     }
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

@@ -11,7 +11,7 @@ import br.edu.ifpb.utils.RecordVerification;
 import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
-import br.edu.ifpb.utils.WindowClosure;
+import br.edu.ifpb.utils.BehaviorOverride;
 import br.edu.ifpb.views.budget.components.manager_budget_item.ManagerBudgetItemView;
 import java.awt.Window;
 import java.time.format.DateTimeFormatter;
@@ -123,7 +123,7 @@ public class BudgetController {
 
     calculateBudgetValue();
 
-    WindowClosure.apply(parentComponent);
+    BehaviorOverride.apply(parentComponent);
   }
 
   /**
