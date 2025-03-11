@@ -62,14 +62,20 @@ O projeto adota o padrão arquitetural **MVC (Model-View-Controller)**, que prom
 git clone https://github.com/dariomatias-dev/financial_management.git
 ```
 
-2 - Compile o projeto para um arquivo `jar`:
+2 - Compile para um arquivo `jar`:
 ```bash
 mvn clean package
 ```
 
-3 - Use o seguinte comando para executar a aplicação:
+3 - Por fim, execute a aplicação:
 ```bash
 java -jar target/financial_management-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+Ou se preferir, baixe o arquivo dentro da pasta `release` e execute:
+
+```bash
+java -jar release/financial_management.jar
 ```
 
 ## Interface Gráfica
