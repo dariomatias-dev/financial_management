@@ -1,11 +1,5 @@
 package br.edu.ifpb.views.budget;
 
-import java.awt.Window;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import br.edu.ifpb.database.controllers.BudgetDatabaseController;
 import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
 import br.edu.ifpb.models.budget.BudgetModel;
@@ -18,6 +12,12 @@ import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
 import br.edu.ifpb.views.budget.components.manager_budget_item.ManagerBudgetItemView;
+import java.awt.Window;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.function.Consumer;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class BudgetController {
   private final Window parentComponent;
@@ -220,13 +220,13 @@ public class BudgetController {
    */
   protected void search() {
     // Obtenção dos filtros.
-    String query = searchField.getText().trim();
+    String query = searchField.getText().trim().toLowerCase();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
     // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
+    if (query.equals("pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedBudgetItems = allBudgetItems;
       showBudgetItems();
 
@@ -244,7 +244,7 @@ public class BudgetController {
     // Filtragem dos orçamentos.
     for (BudgetItemModel budgetItem : allBudgetItems) {
       // Filtro de texto e período.
-      boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().contains(query) || budgetItem.getDescription().contains(query);
+      boolean matchesQuery = query.equals("Pesquisar...") || budgetItem.getName().toLowerCase().contains(query) || budgetItem.getDescription().toLowerCase().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || budgetItem.getPeriod().equals(periodFilter);
 
       // Filtros de valor.
@@ -342,6 +342,8 @@ public class BudgetController {
     valueMaxFilterField.setText("");
     periodFilterField.setSelectedItem("Todos");
 
-    search();
+    displayedBudgetItems = allBudgetItems;
+    
+    showBudgetItems();
   }
 }
