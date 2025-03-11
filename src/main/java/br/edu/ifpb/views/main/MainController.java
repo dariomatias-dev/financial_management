@@ -100,11 +100,8 @@ public class MainController {
     double revenuesValue = calculateTotalByPeriod(revenueDatabaseController.getAll());
     double expensesValue = calculateTotalByPeriod(expenseDatabaseController.getAll());
 
-    String formattedRevenuesValue = CurrencyFormatter.format(revenuesValue);
-    String formattedExpensesValue = CurrencyFormatter.format(expensesValue);
-
-    revenuesValueLabel.setText(formattedRevenuesValue);
-    expensesValueLabel.setText(formattedExpensesValue);
+    revenuesValueLabel.setText(CurrencyFormatter.format(revenuesValue));
+    expensesValueLabel.setText(CurrencyFormatter.format(expensesValue));
 
     graphicAdd(revenuesValue, expensesValue);
   }

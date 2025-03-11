@@ -53,10 +53,9 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="32767" attributes="0"/>
                                   <Component id="revenuesPainel" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="167" max="-2" attributes="0"/>
-                                  <Component id="expensesPanel" max="32767" attributes="0"/>
+                                  <Component id="expensesPanel" pref="165" max="32767" attributes="0"/>
                               </Group>
                               <Component id="separator1" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -125,7 +124,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="revenuesTitleLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="revenuesValueLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="revenuesValueLabel" pref="147" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -139,7 +138,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="revenuesTitleLabel" min="-2" pref="12" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="revenuesValueLabel" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="revenuesValueLabel" min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                           <Component id="revenuesArrowIcon" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -169,6 +168,11 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="R$ 0.00"/>
+                <Property name="horizontalTextPosition" type="int" value="2"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[200, 25]"/>
+                </Property>
+                <Property name="verticalTextPosition" type="int" value="1"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="revenuesTitleLabel">
@@ -190,6 +194,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[200, 52]"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="expensesPanelMouseClicked"/>
@@ -206,7 +213,7 @@
                           <Component id="expensesTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="expensesValueLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="98" max="32767" attributes="0"/>
+                      <EmptySpace pref="30" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -218,7 +225,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="expensesTitleLabel" min="-2" pref="12" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="expensesValueLabel" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="expensesValueLabel" min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                           <Component id="expensesArrowIcon" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -250,6 +257,8 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="R$ 0.00"/>
+                <Property name="horizontalTextPosition" type="int" value="2"/>
+                <Property name="verticalTextPosition" type="int" value="1"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="expensesArrowIcon">

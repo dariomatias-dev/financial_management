@@ -88,6 +88,9 @@ public class MainView extends javax.swing.JFrame {
     revenuesValueLabel.setForeground(new java.awt.Color(51, 204, 0));
     revenuesValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
     revenuesValueLabel.setText("R$ 0.00");
+    revenuesValueLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+    revenuesValueLabel.setPreferredSize(new java.awt.Dimension(200, 25));
+    revenuesValueLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
     revenuesTitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
     revenuesTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -104,7 +107,7 @@ public class MainView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(revenuesPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(revenuesTitleLabel)
-          .addComponent(revenuesValueLabel))
+          .addComponent(revenuesValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
         .addContainerGap())
     );
     revenuesPainelLayout.setVerticalGroup(
@@ -115,12 +118,13 @@ public class MainView extends javax.swing.JFrame {
           .addGroup(revenuesPainelLayout.createSequentialGroup()
             .addComponent(revenuesTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(revenuesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(revenuesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addComponent(revenuesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap())
     );
 
     expensesPanel.setBackground(new java.awt.Color(255, 255, 255));
+    expensesPanel.setPreferredSize(new java.awt.Dimension(200, 52));
     expensesPanel.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         expensesPanelMouseClicked(evt);
@@ -136,6 +140,8 @@ public class MainView extends javax.swing.JFrame {
     expensesValueLabel.setForeground(new java.awt.Color(255, 0, 0));
     expensesValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
     expensesValueLabel.setText("R$ 0.00");
+    expensesValueLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+    expensesValueLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
     expensesArrowIcon.setBackground(new java.awt.Color(0, 0, 0));
     expensesArrowIcon.setForeground(new java.awt.Color(0, 0, 0));
@@ -151,7 +157,7 @@ public class MainView extends javax.swing.JFrame {
         .addGroup(expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(expensesTitleLabel)
           .addComponent(expensesValueLabel))
-        .addContainerGap(98, Short.MAX_VALUE))
+        .addContainerGap(30, Short.MAX_VALUE))
     );
     expensesPanelLayout.setVerticalGroup(
       expensesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +167,7 @@ public class MainView extends javax.swing.JFrame {
           .addGroup(expensesPanelLayout.createSequentialGroup()
             .addComponent(expensesTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(expensesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(expensesValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addComponent(expensesArrowIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap())
     );
@@ -314,10 +320,9 @@ public class MainView extends javax.swing.JFrame {
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(revenuesPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(167, 167, 167)
-                .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(expensesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
               .addComponent(separator1)
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(actionsLabel)
