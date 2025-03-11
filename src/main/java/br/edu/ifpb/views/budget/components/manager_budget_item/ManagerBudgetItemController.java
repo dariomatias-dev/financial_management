@@ -1,13 +1,14 @@
 package br.edu.ifpb.views.budget.components.manager_budget_item;
 
-import java.awt.Window;
-import java.time.LocalDate;
-import java.util.function.Consumer;
-import javax.swing.*;
 import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
 import br.edu.ifpb.models.budget_item.BudgetItemModel;
 import br.edu.ifpb.models.budget_item.CreateBudgetItemModel;
 import br.edu.ifpb.utils.NumberValidator;
+import br.edu.ifpb.utils.WindowClosure;
+import java.awt.Window;
+import java.time.LocalDate;
+import java.util.function.Consumer;
+import javax.swing.*;
 
 public class ManagerBudgetItemController {
   private final String budgetId;
@@ -71,6 +72,8 @@ public class ManagerBudgetItemController {
       screenTitle.setText("Atualizar Item de Orçamento");
       actionButton.setText("Atualizar");
     }
+
+    WindowClosure.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

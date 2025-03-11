@@ -1,15 +1,16 @@
 package br.edu.ifpb.views.expenses.components.manager_expense;
 
+import br.edu.ifpb.database.controllers.ExpenseDatabaseController;
+import br.edu.ifpb.models.expense.CreateExpenseModel;
+import br.edu.ifpb.models.expense.ExpenseModel;
+import br.edu.ifpb.utils.NumberValidator;
+import br.edu.ifpb.utils.WindowClosure;
 import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import br.edu.ifpb.database.controllers.ExpenseDatabaseController;
-import br.edu.ifpb.models.expense.CreateExpenseModel;
-import br.edu.ifpb.models.expense.ExpenseModel;
-import br.edu.ifpb.utils.NumberValidator;
 
 public class ManagerExpenseController {
   private final Runnable onUpdateScreen;
@@ -69,6 +70,8 @@ public class ManagerExpenseController {
       screenTitle.setText("Atualizar Despesa");
       actionButton.setText("Atualizar");
     }
+
+    WindowClosure.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

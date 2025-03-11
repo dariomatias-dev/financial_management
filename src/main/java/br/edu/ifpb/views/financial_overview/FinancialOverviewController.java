@@ -1,14 +1,16 @@
 package br.edu.ifpb.views.financial_overview;
 
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import br.edu.ifpb.database.controllers.ExpenseDatabaseController;
 import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.expense.ExpenseModel;
 import br.edu.ifpb.models.revenue.RevenueModel;
 import br.edu.ifpb.utils.CurrencyFormatter;
 import br.edu.ifpb.utils.SetBackIcon;
+import br.edu.ifpb.utils.WindowClosure;
+import java.awt.Window;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class FinancialOverviewController {
   private final RevenueDatabaseController revenueDatabaseController;
@@ -23,6 +25,7 @@ public class FinancialOverviewController {
   /**
    * Construtor.
    *
+   * @param parentComponent Componente pai.
    * @param revenueDatabaseController Controlador de receitas.
    * @param expenseDatabaseController Controlador de despesas.
    * @param exitButton Botão de sair da tela.
@@ -34,6 +37,7 @@ public class FinancialOverviewController {
    * @param expensesTable Tabela de despesas.
    */
   public FinancialOverviewController(
+          Window parentComponent,
           RevenueDatabaseController revenueDatabaseController,
           ExpenseDatabaseController expenseDatabaseController,
           JLabel exitButton,
@@ -58,6 +62,8 @@ public class FinancialOverviewController {
     new SetBackIcon().set(exitButton);
 
     init();
+
+    WindowClosure.apply(parentComponent);
   }
 
   private void init() {

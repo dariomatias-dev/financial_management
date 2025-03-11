@@ -1,15 +1,16 @@
 package br.edu.ifpb.views.budgets.components.manager_budget;
 
-import java.awt.Window;
-import java.time.LocalDate;
-import java.util.function.Consumer;
-import javax.swing.*;
 import br.edu.ifpb.core.formatters.DateMaskFormatter;
 import br.edu.ifpb.database.controllers.BudgetDatabaseController;
 import br.edu.ifpb.models.budget.BudgetModel;
 import br.edu.ifpb.models.budget.CreateBudgetModel;
 import br.edu.ifpb.utils.DateFormatter;
 import br.edu.ifpb.utils.NumberValidator;
+import br.edu.ifpb.utils.WindowClosure;
+import java.awt.Window;
+import java.time.LocalDate;
+import java.util.function.Consumer;
+import javax.swing.*;
 
 public class ManagerBudgetController {
   private final Consumer<String> onUpdateScreen;
@@ -91,6 +92,8 @@ public class ManagerBudgetController {
       LocalDate currentDate = LocalDate.now();
       initialDateField.setText(DateFormatter.format(currentDate));
     }
+
+    WindowClosure.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

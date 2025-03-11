@@ -10,6 +10,7 @@ import br.edu.ifpb.utils.RecordVerification;
 import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
+import br.edu.ifpb.utils.WindowClosure;
 import br.edu.ifpb.views.budget.BudgetView;
 import br.edu.ifpb.views.budgets.components.manager_budget.ManagerBudgetView;
 import java.awt.Window;
@@ -84,6 +85,8 @@ public class BudgetsController {
     listBudgets();
 
     showBudgets();
+
+    WindowClosure.apply(parentComponent);
   }
 
   /**

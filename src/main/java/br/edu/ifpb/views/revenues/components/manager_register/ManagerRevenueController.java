@@ -1,11 +1,12 @@
 package br.edu.ifpb.views.revenues.components.manager_register;
 
-import java.awt.Window;
-import javax.swing.*;
 import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.revenue.CreateRevenueModel;
 import br.edu.ifpb.models.revenue.RevenueModel;
 import br.edu.ifpb.utils.NumberValidator;
+import br.edu.ifpb.utils.WindowClosure;
+import java.awt.Window;
+import javax.swing.*;
 
 public class ManagerRevenueController {
   private final Runnable onUpdateScreen;
@@ -65,6 +66,8 @@ public class ManagerRevenueController {
       screenTitle.setText("Atualizar Receita");
       actionButton.setText("Atualizar");
     }
+    
+    WindowClosure.apply(parentComponent);
   }
 
   // SCREEN ACTIONS

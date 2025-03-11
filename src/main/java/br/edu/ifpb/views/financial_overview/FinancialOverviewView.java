@@ -16,6 +16,7 @@ public class FinancialOverviewView extends javax.swing.JFrame {
     initComponents();
     
     this.controller = new FinancialOverviewController(
+            this,
             revenueDatabaseController,
             expenseDatabaseController,
             exitButton,
