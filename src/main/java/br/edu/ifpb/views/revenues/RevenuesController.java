@@ -1,9 +1,5 @@
 package br.edu.ifpb.views.revenues;
 
-import java.awt.Window;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import br.edu.ifpb.database.controllers.RevenueDatabaseController;
 import br.edu.ifpb.models.revenue.RevenueModel;
 import br.edu.ifpb.utils.ConfirmDeleteDialog;
@@ -13,6 +9,10 @@ import br.edu.ifpb.utils.SearchFieldHandler;
 import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
 import br.edu.ifpb.views.revenues.components.manager_register.ManagerRevenueView;
+import java.awt.Window;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class RevenuesController {
   private final Window parentComponent;
@@ -114,13 +114,13 @@ public class RevenuesController {
    */
   protected void search() {
     // Obtém os filtros de pesquisa.
-    String query = searchField.getText().trim();
+    String query = searchField.getText().trim().toLowerCase();
     String periodFilter = (String) periodFilterField.getSelectedItem();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
 
     // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
+    if (query.equals("pesquisar...") && periodFilter.equals("Todos") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty()) {
       displayedRevenues = allRevenues;
       showRevenues();
 
@@ -138,7 +138,7 @@ public class RevenuesController {
     // Filtragem das receitas.
     for (RevenueModel expense : allRevenues) {
       // Filtro de texto e período.
-      boolean matchesQuery = query.equals("Pesquisar...") || expense.getName().contains(query) || expense.getDescription().contains(query);
+      boolean matchesQuery = expense.getName().toLowerCase().contains(query) || expense.getDescription().toLowerCase().contains(query);
       boolean matchesPeriod = periodFilter.equals("Todos") || expense.getPeriod().equals(periodFilter);
 
       // Filtros de valor.
