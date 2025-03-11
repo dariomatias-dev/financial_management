@@ -1,10 +1,5 @@
 package br.edu.ifpb.views.budgets;
 
-import java.awt.Window;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import br.edu.ifpb.core.formatters.DateMaskFormatter;
 import br.edu.ifpb.database.controllers.BudgetDatabaseController;
 import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
@@ -17,6 +12,11 @@ import br.edu.ifpb.utils.SetBackIcon;
 import br.edu.ifpb.utils.ValueRangeFilter;
 import br.edu.ifpb.views.budget.BudgetView;
 import br.edu.ifpb.views.budgets.components.manager_budget.ManagerBudgetView;
+import java.awt.Window;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class BudgetsController {
   private final Window parentComponent;
@@ -162,7 +162,7 @@ public class BudgetsController {
    */
   protected void search() {
     // Obtenção dos filtros.
-    String query = searchField.getText().trim();
+    String query = searchField.getText().trim().toLowerCase();
     String valueMinFilterText = valueMinFilterField.getText().trim();
     String valueMaxFilterText = valueMaxFilterField.getText().trim();
     String statusFilter = (String) statusFilterSelect.getSelectedItem();
@@ -170,7 +170,7 @@ public class BudgetsController {
     String endDateFilterText = endDateFilterField.getText().trim();
 
     // Verificação da presença de filtragem.
-    if (query.equals("Pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")
+    if (query.equals("pesquisar...") && valueMinFilterText.isEmpty() && valueMaxFilterText.isEmpty() && statusFilter.equals("Todos")
             && initialDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE) && endDateFilterText.equals(DateFormatter.PLACEHOLDER_DATE)) {
       displayedBudgets = allBudgets;
       showBudgets();
@@ -200,7 +200,7 @@ public class BudgetsController {
     // Filtragem dos orçamentos.
     for (BudgetModel budget : allBudgets) {
       // Filtro de texto e status.
-      boolean matchesQuery = query.equals("Pesquisar...") || budget.getName().contains(query) || budget.getDescription().contains(query);
+      boolean matchesQuery = budget.getName().toLowerCase().contains(query) || budget.getDescription().toLowerCase().contains(query) || budget.getCategory().toLowerCase().contains(query);
       boolean matchesStatus = statusFilter.equals("Todos") || budget.getStatus().equals(statusFilter);
 
       // Filtros de valor.
