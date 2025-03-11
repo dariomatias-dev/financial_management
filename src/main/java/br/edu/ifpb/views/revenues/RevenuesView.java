@@ -50,7 +50,6 @@ public class RevenuesView extends javax.swing.JFrame {
     valueMinFilterField = new javax.swing.JTextField();
     valueMaxFilterLabel = new javax.swing.JLabel();
     valueMaxFilterField = new javax.swing.JTextField();
-    valueFilterLabel = new javax.swing.JLabel();
     searchField = new javax.swing.JTextField();
     exitButton = new javax.swing.JLabel();
     screenTitle = new javax.swing.JLabel();
@@ -134,11 +133,9 @@ public class RevenuesView extends javax.swing.JFrame {
 
     periodFilterField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Diário", "Semanal", "Mensal" }));
 
-    valueMinFilterLabel.setText("Mínimo:");
+    valueMinFilterLabel.setText("Valor Mínimo:");
 
-    valueMaxFilterLabel.setText("Máximo");
-
-    valueFilterLabel.setText("Valor:");
+    valueMaxFilterLabel.setText("Valor Máximo");
 
     exitButton.setForeground(new java.awt.Color(255, 0, 51));
     exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -176,14 +173,13 @@ public class RevenuesView extends javax.swing.JFrame {
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
             .addComponent(valueMinFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(valueMinFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(valueMaxFilterLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(valueMaxFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(backgroundLayout.createSequentialGroup()
             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(valueFilterLabel)
               .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(periodLabel)
                 .addGap(18, 18, 18)
@@ -221,8 +217,6 @@ public class RevenuesView extends javax.swing.JFrame {
             .addComponent(clearFiltersButton)
             .addComponent(searchButton))
           .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(1, 1, 1)
-        .addComponent(valueFilterLabel)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(valueMinFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -247,11 +241,11 @@ public class RevenuesView extends javax.swing.JFrame {
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+      .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
     );
 
     pack();
@@ -318,7 +312,6 @@ public class RevenuesView extends javax.swing.JFrame {
   private javax.swing.JButton searchButton;
   private javax.swing.JTextField searchField;
   private javax.swing.JButton updateButton;
-  private javax.swing.JLabel valueFilterLabel;
   private javax.swing.JTextField valueMaxFilterField;
   private javax.swing.JLabel valueMaxFilterLabel;
   private javax.swing.JTextField valueMinFilterField;

@@ -1,9 +1,9 @@
 package br.edu.ifpb.views.budget;
 
-import java.util.function.Consumer;
 import br.edu.ifpb.database.controllers.BudgetDatabaseController;
 import br.edu.ifpb.database.controllers.BudgetItemDatabaseController;
 import br.edu.ifpb.models.budget.BudgetModel;
+import java.util.function.Consumer;
 
 public class BudgetView extends javax.swing.JFrame {
   private final BudgetController controller;
@@ -222,6 +222,7 @@ public class BudgetView extends javax.swing.JFrame {
     });
     jScrollPane1.setViewportView(monetaryInfoTable);
 
+    budgetFinancialSummaryLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
     budgetFinancialSummaryLabel.setText("Resumo Financeiro do Orçamento:");
 
     searchButton.setText("Filtrar");
@@ -357,7 +358,7 @@ public class BudgetView extends javax.swing.JFrame {
           .addComponent(nameLabel)
           .addComponent(nameText))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(descriptionLabel)
           .addComponent(descriptionText, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
