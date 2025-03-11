@@ -36,7 +36,7 @@ financial_management/               # Nome do projeto
 │    ├── utils/                     # Funções utilitárias
 │    ├── views/                     # Componentes da interface gráfica (GUI)
 │    │ └── components/              # Componentes da tela
-│    ├── Main.java                  # Ponto de entrada do sistema
+│    └── Main.java                  # Ponto de entrada do sistema
 ├── resources/                      # Recursos estáticos
 │   └── images/                     # Imagens
 ├── test/                           # Pasta de testes
@@ -132,7 +132,7 @@ Criar Item de Orçamento:
 
 - **Tabela está vazia (mesmo aviso para remoção):**
 
-![Empty Expenses View](screenshots/empty_expenses_view_screenshot.png)
+![Empty Expenses View](screenshots/empty_revenues_view_screenshot.png)
 
 ![No Records Alert Dialog](screenshots/no_records_alert_dialog_screenshot.png)
 
@@ -142,7 +142,7 @@ Criar Item de Orçamento:
 
 - **Nenhum registro foi selecionado (mesmo aviso para remoção):**
 
-![No Record Selected Revenues View](screenshots/no_record_selected_revenues_view_screenshot.png)
+![No Record Selected Revenues View](screenshots/revenues_view_screenshot.png)
 
 ![No Records Alert Dialog](screenshots/no_records_alert_dialog_screenshot.png)
 
